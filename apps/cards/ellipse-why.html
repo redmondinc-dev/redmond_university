@@ -215,10 +215,8 @@
           <div class="card-face card-back">
             <h2 class="back-title">Why</h2>
             <p class="back-text">
-              Redmond Farm Markets exist to provide our customers with nourishing foods, products
-              from the Heritage Farm, and items from local suppliers. They also serve as hubs for
-              building communities of like-minded individuals who believe in the mission of
-              elevating the human experience.
+              Redmond Heritage Farm exists to provide high quality raw dairy products, eggs, and
+              meat to the surrounding community in Utah.
             </p>
           </div>
         </div>
@@ -238,12 +236,13 @@
           <div class="card-face card-back">
             <h2 class="back-title">Who</h2>
             <p class="back-text">
-              Many people are involved in the operation and success of the Farm Markets. Each
-              market has a team of associates who run the stores on a day-to-day basis. Other
-              associates focus on product buying and ordering, store development, culture, and
-              management. And of course, we can't forget our amazing customers! The Farm Markets
-              are happy to serve northern Utah communities and bring high-quality foods and
-              products to everyone.
+              Redmond's heritage farm team is made up of people who care for the animals at our
+              farm in Redmond, Utah. They continually work to improve the experience of the
+              animals and use dairy byproducts in an intentional way. This includes building more
+              comfortable and efficient pens for the animals, researching the best feed to use,
+              and creating new farm products to be sold in the stores. The who of our heritage
+              farm also includes the cows, chickens, and pigs. Without these animals, we would not
+              have any farm products to offer.
             </p>
           </div>
         </div>
@@ -263,9 +262,8 @@
           <div class="card-face card-back">
             <h2 class="back-title">What</h2>
             <p class="back-text">
-              Redmond Markets serve our communities by connecting people with our farm-raised
-              staples, House Made creations, and products from thoughtful artisans and farmers who
-              share our values.
+              Raw dairy, eggs, and meat made with care, shaped by regenerative methods that keep
+              nourishment at the center.
             </p>
           </div>
         </div>
@@ -275,7 +273,6 @@
     <script>
       (function () {
         const DATA_URL = "ellipse-why-presets.json";
-        const DEFAULT_PRESET_KEY = "farm-markets";
         const ORDERED_KEYS = ["why", "who", "what"];
         const PRESET_ALIASES = {
           market: "farm-markets",
@@ -326,7 +323,7 @@
 
         function normalizePresetKey(rawKey) {
           const normalized = String(rawKey || "").trim().toLowerCase();
-          if (!normalized) return DEFAULT_PRESET_KEY;
+          if (!normalized) return "";
           return PRESET_ALIASES[normalized] || normalized;
         }
 
@@ -335,8 +332,7 @@
             params.get("preset") ||
               params.get("variant") ||
               params.get("copy") ||
-              params.get("key") ||
-              DEFAULT_PRESET_KEY,
+              params.get("key")
           );
         }
 
@@ -476,6 +472,8 @@
 
         (async function initializeContent() {
           const presetKey = getRequestedPresetKey();
+          if (!presetKey) return;
+
           const preset = await fetchPreset(presetKey);
 
           if (preset) {
@@ -484,9 +482,7 @@
             return;
           }
 
-          if (presetKey !== DEFAULT_PRESET_KEY) {
-            console.warn(`Preset "${presetKey}" not found in ${DATA_URL}.`);
-          }
+          console.warn(`Preset "${presetKey}" not found in ${DATA_URL}.`);
         })();
       })();
     </script>
