@@ -27,6 +27,17 @@ const confettiCanvas = document.getElementById("confetti-canvas");
 const confettiCtx = confettiCanvas ? confettiCanvas.getContext("2d") : null;
 
 const STEP_DURATION = 520;
+const CONFETTI_DURATION = 5000;
+const CONFETTI_COLORS = [
+  "#f8d38f",
+  "#f3b574",
+  "#e79b5b",
+  "#f1c78b",
+  "#d9b27d",
+  "#f7e6c6",
+  "#6e8f62",
+  "#c94f3d",
+];
 
 const boardRows = [
   [21, 22, 23, 24, 25],
@@ -77,9 +88,9 @@ const translations = {
     resetButton: "Restart game",
     continueButton: "Continue",
     finishEyebrow: "Delivery complete",
-    finishTitle: "You reached the customer!",
+    finishTitle: "You won!",
     finishBody:
-      "Nice work. Restart to play again.",
+      "You delivered the raw milk from the farm to the customer.",
     finishReset: "Restart",
     stopLabel: "Stop",
     badgeQuestion: "Question",
@@ -134,9 +145,9 @@ const translations = {
     resetButton: "Reiniciar juego",
     continueButton: "Continuar",
     finishEyebrow: "Entrega completada",
-    finishTitle: "¡Llegaste al Cliente!",
+    finishTitle: "¡Ganaste!",
     finishBody:
-      "Buen trabajo. Reinicia para jugar otra vez.",
+      "Entregaste la leche cruda desde la granja hasta el cliente.",
     finishReset: "Reiniciar",
     stopLabel: "Parada",
     badgeQuestion: "Pregunta",
@@ -659,6 +670,8 @@ let applauseBuffer = null;
 let confettiParticles = [];
 let confettiFrame = null;
 let confettiTimer = null;
+let confettiUntil = 0;
+let confettiLastEmit = 0;
 
 function t(key) {
   return translations[currentLang][key];
@@ -777,7 +790,7 @@ function buildBoard() {
 
     const labelEl = document.createElement("div");
     labelEl.className = "label";
-    labelEl.textContent = space.label;
+    labelEl.textContent = space.type === "finish" ? "" : space.label;
 
     const illustration = createTileIllustration(space);
     tile.append(numberEl, labelEl);
@@ -980,14 +993,45 @@ function stopConfetti() {
     clearTimeout(confettiTimer);
     confettiTimer = null;
   }
+  confettiUntil = 0;
+  confettiLastEmit = 0;
   confettiParticles = [];
   confettiCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+}
+
+function createConfettiPiece(width, height, initial = false) {
+  return {
+    x: Math.random() * width,
+    y: initial ? -20 - Math.random() * height * 0.7 : -30 - Math.random() * 80,
+    w: 5 + Math.random() * 7,
+    h: 9 + Math.random() * 12,
+    vx: (Math.random() - 0.5) * 2.4,
+    vy: 2.2 + Math.random() * 3.4,
+    rotation: Math.random() * Math.PI,
+    vr: (Math.random() - 0.5) * 0.32,
+    color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
+    opacity: 1,
+    decay: 0.0012 + Math.random() * 0.002,
+  };
+}
+
+function addConfettiPieces(count, width, height, initial = false) {
+  for (let i = 0; i < count; i += 1) {
+    confettiParticles.push(createConfettiPiece(width, height, initial));
+  }
 }
 
 function animateConfetti() {
   if (!confettiCtx) return;
   const width = window.innerWidth;
   const height = window.innerHeight;
+  const now = performance.now();
+  if (now < confettiUntil && now - confettiLastEmit > 80) {
+    const burstCount = Math.min(42, Math.max(22, Math.floor(width / 70)));
+    addConfettiPieces(burstCount, width, height);
+    confettiLastEmit = now;
+  }
+
   confettiCtx.clearRect(0, 0, width, height);
   confettiParticles = confettiParticles.filter((piece) => {
     piece.x += piece.vx;
@@ -1007,7 +1051,7 @@ function animateConfetti() {
     return true;
   });
 
-  if (confettiParticles.length) {
+  if (confettiParticles.length || performance.now() < confettiUntil) {
     confettiFrame = requestAnimationFrame(animateConfetti);
   } else {
     stopConfetti();
@@ -1020,23 +1064,12 @@ function launchConfetti() {
   resizeConfettiCanvas();
   const width = window.innerWidth;
   const height = window.innerHeight;
-  const colors = ["#f8d38f", "#f3b574", "#e79b5b", "#f1c78b", "#d9b27d", "#f7e6c6"];
-  const count = Math.min(160, Math.max(90, Math.floor(width / 8)));
-  confettiParticles = Array.from({ length: count }, () => ({
-    x: Math.random() * width,
-    y: -20 - Math.random() * height * 0.2,
-    w: 6 + Math.random() * 6,
-    h: 10 + Math.random() * 10,
-    vx: (Math.random() - 0.5) * 1.6,
-    vy: 3 + Math.random() * 4.2,
-    rotation: Math.random() * Math.PI,
-    vr: (Math.random() - 0.5) * 0.25,
-    color: colors[Math.floor(Math.random() * colors.length)],
-    opacity: 1,
-    decay: 0.003 + Math.random() * 0.004,
-  }));
+  const count = Math.min(360, Math.max(180, Math.floor(width / 4.5)));
+  confettiUntil = performance.now() + CONFETTI_DURATION;
+  confettiLastEmit = performance.now();
+  addConfettiPieces(count, width, height, true);
   confettiFrame = requestAnimationFrame(animateConfetti);
-  confettiTimer = setTimeout(stopConfetti, 2800);
+  confettiTimer = setTimeout(stopConfetti, CONFETTI_DURATION + 200);
 }
 
 function getApplauseBuffer() {
@@ -1355,10 +1388,9 @@ async function applyOutcome() {
 
   if (type === "bonus") {
     state.bonusAnswered = true;
+    state.completed.add(spaceNumber);
     updateBoard();
-    launchConfetti();
-    playCelebration();
-    playApplause();
+    openFinishModal();
     return;
   }
 
