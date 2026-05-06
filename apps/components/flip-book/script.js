@@ -285,13 +285,19 @@
         ? rightPage
         : leftPage;
     const turnPage = document.createElement("div");
-
     turnPage.className = `turn-page turn-page--${direction}`;
-    turnPage.innerHTML = sourcePage.innerHTML;
+
+    const front = document.createElement("div");
+    front.className = "turn-page-face turn-page-face--front";
+    front.innerHTML = sourcePage.innerHTML;
 
     const sourceStyle = sourcePage.getAttribute("style");
-    if (sourceStyle) turnPage.setAttribute("style", sourceStyle);
+    if (sourceStyle) front.setAttribute("style", sourceStyle);
 
+    const back = document.createElement("div");
+    back.className = "turn-page-face turn-page-face--back";
+
+    turnPage.append(front, back);
     return turnPage;
   }
 

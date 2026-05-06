@@ -1,99 +1,96 @@
 {
-  "title": "Redmond Farm Guide",
-  "eyebrow": "Farm Systems",
-  "subtitle": "A short guide to how Redmond Farms teams move nourishing food from farm to market.",
+  "title": "401(k) Info Guide",
+  "eyebrow": "Benefits",
+  "subtitle": "Everything you need to know about Redmond's 401(k) retirement plan.",
   "settings": {
     "startPage": 0
   },
   "pages": [
     {
-      "title": "Heritage Farm",
-      "eyebrow": "Who",
-      "description": "Redmond's Heritage Farm team includes the farmers and the dairy cows, pigs, and chickens they care for.",
-      "body": [
-        "Our caretakers incorporate intentional, regenerative farming methods to ensure happy and healthy animals.",
-        "They also develop and produce our signature farm products."
+      "title": "What We'll Cover",
+      "eyebrow": "Overview",
+      "description": "This guide walks you through the essentials of Redmond's 401(k) plan so you can make confident decisions about your retirement savings.",
+      "bullets": [
+        "Overview of Redmond's 401(k) plan",
+        "Types of contributions: ROTH or Traditional",
+        "How to register your account",
+        "How to adjust your contributions and investments"
       ],
-      "image": "../../../assets/imgs/carousell-farms/cow.jpg",
-      "imageAlt": "Dairy cow at Redmond Heritage Farm",
-      "caption": "Farm-raised staples begin with caretakers, animals, and intentional methods.",
-      "accent": "#2f4a37"
-    },
-    {
-      "title": "Heritage Farm Products",
-      "eyebrow": "What",
-      "description": "Raw dairy, eggs, and meat raised with care and shaped by regenerative methods that keep nutrient density at the center.",
-      "image": "../../../assets/imgs/carousell-farms/milk.png",
-      "imageAlt": "Raw milk product",
-      "caption": "Raw dairy, eggs, and meat stay at the center of the farm's staple products.",
-      "accent": "#c89135"
-    },
-    {
-      "title": "Redmond Farm Market",
-      "eyebrow": "Why",
-      "description": "Redmond Farm Markets exist to provide our communities with nourishing products from our farm, production kitchen, and like-minded suppliers.",
-      "body": [
-        "Market teams connect people with farm-raised products, House Made creations, and products from thoughtful suppliers."
-      ],
-      "image": "../../../assets/imgs/carousell-farms/real-foods-market.png",
-      "imageAlt": "Redmond Farm Market storefront",
       "accent": "#314c5f"
     },
     {
-      "title": "Farm Kitchen",
-      "eyebrow": "What",
-      "description": "Redmond Farm Kitchen brings nutrient density, convenience, and flavor together into a casual dining experience.",
-      "body": [
-        "Kitchen associates prepare, cook, and serve nutrient-dense foods and drinks while keeping the restaurant running smoothly.",
-        "Meals are sourced primarily from the Heritage Farm, Production Kitchen, and other local partners."
+      "title": "Plan Summary",
+      "eyebrow": "Your 401(k)",
+      "description": "Redmond's 401(k) plan is operated by Empower Financial Services. Here's what you're automatically enrolled in after 6 months.",
+      "bullets": [
+        "Default contribution: 4% into the ROTH option with a target-date fund",
+        "Automatic 1% annual increase until you reach 8%",
+        "Redmond contributes about half of your contribution, up to 4%",
+        "Redmond's match goes into a Traditional (pre-tax) account",
+        "Redmond's contribution is subject to a vesting period"
       ],
-      "image": "../../../assets/imgs/jpg/rawmilk.jpg",
-      "imageAlt": "Prepared Redmond food and dairy products",
-      "accent": "#7b3f35"
+      "accent": "#2f4a37"
     },
     {
-      "title": "Farm Market Truck",
-      "eyebrow": "What",
-      "description": "A mini Redmond Market on wheels.",
-      "body": [
-        "Servicing about five stops each week, the truck brings farm staples and House Made products to customers who do not live near a store location.",
-        "The team builds relationships with regular customers and keeps communication updated when the truck has downtime."
+      "title": "A Few More Details",
+      "eyebrow": "Plan Summary",
+      "description": "There are a few important things to know before contributions begin.",
+      "bullets": [
+        "Contributions don't start until after 6 months, but you can register your account within your first month",
+        "You can roll over a 401(k) from a previous employer into your Redmond account after registering",
+        "You can change the default settings any time after registering and before contributions start"
       ],
-      "image": "../../../assets/imgs/jpg/redknolls1.jpg",
-      "imageAlt": "Redmond landscape",
       "accent": "#47615b"
     },
     {
-      "title": "Production Kitchen",
-      "eyebrow": "Why",
-      "description": "The Redmond Production Kitchen generates the House Made product line and supports the Farm Kitchens.",
-      "body": [
-        "Production Kitchen associates create new products, prepare food, and make recipes in large batches.",
-        "Providing products that we fully trust allows our customers to fully trust us."
+      "title": "Say Yes to Free Money",
+      "eyebrow": "Maximize Your Match",
+      "description": "If you contribute less than 8% of your paycheck, you're leaving money on the table that Redmond wants to give you.",
+      "bullets": [
+        "Redmond contributes about half of what you put in, up to 4%",
+        "Contribute 4% → Redmond adds 2.5%",
+        "Contribute 8% or more → Redmond adds 4%",
+        "Your contributions are always 100% yours — no vesting required"
       ],
-      "image": "../../../assets/imgs/carousell-farms/paper.png",
-      "imageAlt": "House Made product packaging",
+      "accent": "#805d2f"
+    },
+    {
+      "title": "Contribution Example",
+      "eyebrow": "Biweekly Pay of $2,000",
+      "description": "Here's how your contribution and Redmond's match add up at different contribution rates.",
+      "bullets": [
+        "3% → You: $60 · Redmond: $40",
+        "4% → You: $80 · Redmond: $50",
+        "6% → You: $120 · Redmond: $70",
+        "8% → You: $160 · Redmond: $80",
+        "10% → You: $200 · Redmond: $80 (match maxed out)"
+      ],
+      "caption": "Redmond's contribution is subject to the vesting period.",
+      "accent": "#c89135"
+    },
+    {
+      "title": "ROTH vs. Traditional",
+      "eyebrow": "Contribution Types",
+      "description": "Both options grow your retirement savings — they just differ in when you pay taxes.",
+      "body": [
+        "ROTH (post-tax): You pay taxes now on the money you contribute. When you withdraw in retirement, you won't owe taxes on any of the growth — interest, dividends, or investment returns.",
+        "Traditional (pre-tax): Your contribution reduces your taxable income today. When you withdraw in retirement, the IRS taxes everything you take out — your contributions and all growth.",
+        "Which is better? Experts disagree. Generally, ROTH works well when you're younger or in a lower tax bracket, but it depends on your goals. Consider talking to a financial advisor to find what's right for you."
+      ],
       "accent": "#5b5550"
     },
     {
-      "title": "Freight Trucks",
-      "eyebrow": "What",
-      "description": "Two refrigerated box delivery trucks deliver farm products and distribute goods between stores.",
+      "title": "How to Register",
+      "eyebrow": "Getting Started",
+      "description": "You can register your Empower account within your first month of employment — even before contributions begin.",
       "body": [
-        "The team moves farm products, House Made items, and other ingredients between the Heritage Farm, Production Kitchen, and Market/Kitchen locations.",
-        "The truck also completes additional transfers and takes milk to the state-certified lab for testing."
+        "Visit the Empower participant portal to create your account, set up your investment preferences, and adjust your contribution rate."
       ],
+      "bullets": [
+        "participant.empower-retirement.com"
+      ],
+      "caption": "Register early so you're ready when contributions start at 6 months.",
       "accent": "#253647"
-    },
-    {
-      "title": "A Connected System",
-      "eyebrow": "Overview",
-      "description": "Each part of Redmond Farms supports the next, creating a practical system for nourishing food and community access.",
-      "body": [
-        "The Heritage Farm raises staple products, the Production Kitchen creates House Made items, the Markets and Kitchens serve customers directly, and the truck teams keep products moving.",
-        "Together, the system keeps intentionally sourced food close to the people it serves."
-      ],
-      "accent": "#805d2f"
     }
   ]
 }

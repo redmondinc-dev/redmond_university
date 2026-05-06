@@ -153,6 +153,9 @@ textarea {
   position: relative;
   min-width: 0;
   min-height: 0;
+}
+
+.book-page {
   background:
     linear-gradient(90deg, rgba(45, 52, 46, 0.045), rgba(255, 255, 255, 0) 20%),
     var(--book-surface);
@@ -496,21 +499,66 @@ textarea {
   width: 50%;
   z-index: 12;
   transform-style: preserve-3d;
-  transition: transform 560ms cubic-bezier(0.22, 1, 0.36, 1);
-  box-shadow: 0 10px 30px rgba(12, 19, 18, 0.16);
+  transition: transform 640ms cubic-bezier(0.2, 0.88, 0.36, 1);
 }
 
-.turn-page::after {
+.turn-page-face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.turn-page-face--front {
+  background:
+    linear-gradient(90deg, rgba(45, 52, 46, 0.045), rgba(255, 255, 255, 0) 20%),
+    var(--book-surface);
+  border: 1px solid var(--book-line);
+  box-shadow: -6px 0 18px rgba(12, 19, 18, 0.12);
+}
+
+.turn-page-face--front::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(24, 30, 30, 0.22), rgba(255, 255, 255, 0.12));
+  background: linear-gradient(90deg, rgba(24, 30, 30, 0.2), rgba(255, 255, 255, 0.1));
   opacity: 0;
-  transition: opacity 360ms ease;
+  transition: opacity 400ms ease;
 }
 
-.turn-page.is-flipping::after {
+.turn-page.is-flipping .turn-page-face--front::after {
+  opacity: 1;
+}
+
+.turn-page-face--back {
+  transform: rotateY(180deg);
+  background:
+    repeating-linear-gradient(
+      0deg,
+      rgba(47, 74, 55, 0.028),
+      rgba(47, 74, 55, 0.028) 1px,
+      transparent 1px,
+      transparent 30px
+    ),
+    linear-gradient(150deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0) 60%),
+    var(--book-surface-alt);
+  border: 1px solid var(--book-line);
+}
+
+.turn-page-face--back::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(24, 30, 30, 0.12));
+  opacity: 0;
+  transition: opacity 400ms ease;
+}
+
+.turn-page.is-flipping .turn-page-face--back::after {
   opacity: 1;
 }
 
