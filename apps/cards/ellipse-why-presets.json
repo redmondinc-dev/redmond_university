@@ -1,18 +1,35 @@
 {
+  "heritage-farm": {
+    "name": "Redmond Heritage Farm",
+    "cards": {
+      "why": {
+        "title": "Why",
+        "text": "Redmond Heritage Farm exists to provide high quality raw dairy products, eggs, and meat to the surrounding community in Utah."
+      },
+      "who": {
+        "title": "Who",
+        "text": "Redmond's Heritage Farm team includes the farmers and the dairy cows, pigs, and chickens they care for! Our caretakers incorporate intentional, regenerative farming methods to ensure happy and healthy animals. They also develop and produce our signature farm products."
+      },
+      "what": {
+        "title": "What",
+        "text": "Raw dairy, eggs, and meat raised with care and shaped by regenerative methods that keep nutrient density at the center."
+      }
+    }
+  },
   "farm-markets": {
     "name": "Redmond Farm Markets",
     "cards": {
       "why": {
         "title": "Why",
-        "text": "Redmond Farm Markets exist to provide our customers with nourishing foods, products from the Heritage Farm, and items from local suppliers. They also serve as hubs for building communities of like-minded individuals who believe in the mission of elevating the human experience."
+        "text": "Redmond Farm Markets exist to provide our communities with nourishing products from our farm, production kitchen, and like-minded suppliers."
       },
       "who": {
         "title": "Who",
-        "text": "Many people are involved in the operation and success of the Farm Markets. Each market has a team of associates who run the stores on a day-to-day basis. Other associates focus on product buying and ordering, store development, culture, and management. And of course, we can't forget our amazing customers! The Farm Markets are happy to serve northern Utah communities and bring high-quality foods and products to everyone."
+        "text": "Our market teams include floor staff who facilitate day-to-day store operations and support staff who focus on purchasing, development, and management."
       },
       "what": {
         "title": "What",
-        "text": "Redmond Markets serve our communities by connecting people with our farm-raised staples, House Made creations, and products from thoughtful artisans and farmers who share our values."
+        "text": "Redmond Markets serve our communities by connecting people with nourishing farm-raised products, House Made creations, and products from thoughtful suppliers."
       }
     }
   },
@@ -25,7 +42,7 @@
       },
       "who": {
         "title": "Who",
-        "text": "Our kitchen associates prepare, cook, and serve delicious nutrient-dense foods and drinks to our customers. Whether ringing up a customer, prepping food for the grill, or taking out the trash, kitchen employees work together to improve processes and keep the restaurant running smoothly. Every team member in the Farm Kitchen excels at providing amazing customer service while handling the fast-paced environment of food service."
+        "text": "Our kitchen associates prepare, cook, and serve delicious, nutrient-dense foods and drinks to our customers. Whether ringing up a customer, prepping food for the grill, or taking out the trash, kitchen employees work together to improve processes and keep the restaurant running smoothly while providing an amazing customer experience."
       },
       "what": {
         "title": "What",
@@ -38,15 +55,15 @@
     "cards": {
       "why": {
         "title": "Why",
-        "text": "Redmond Farm Market Truck was created to expand the accessibility of our Heritage Farm products throughout Utah, and to perpetuate community for and education about nutrient-dense, traditional foods."
+        "text": "Redmond Farm Market Truck was created to expand the accessibility of our Heritage Farm products throughout Utah and to perpetuate community education around nutrient-dense, traditional foods."
       },
       "who": {
         "title": "Who",
-        "text": "The Redmond Farm Market Truck's team typically travels long distances and works long days to bring Redmond Farms products to locations without a nearby Farm Market. The truck has a different stop five days a week. A big part of being on the Farm Market Truck team is building relationships with regular customers and keeping up with communication and updates if the truck is down for a period of time."
+        "text": "The Redmond Farm Market Truck's team typically travels long distances and works long days to bring Redmond Farms products to locations without a nearby Farm Market. A big part of being on the Farm Market Truck team is building relationships with regular customers and keeping up with communication and updates if the truck has downtime."
       },
       "what": {
         "title": "What",
-        "text": "Our Farm Market Truck is a mini Redmond Market on wheels! It allows us to bring our farm staples and House Made products to our customers who don't live near a store location."
+        "text": "Our Farm Market Truck is a mini Redmond Market on wheels! Servicing about five stops each week, it allows us to bring our farm staples and House Made products to our customers who don't live near a store location."
       }
     }
   },
@@ -55,15 +72,15 @@
     "cards": {
       "why": {
         "title": "Why",
-        "text": "The Redmond Production Kitchen generates the House Made product line and supports the Farm Kitchens by storing and creating nutrient-dense food made from scratch. Providing products that we fully trust allows our customers to more fully trust us."
+        "text": "The Redmond Production Kitchen generates the House Made product line and supports the Farm Kitchens by storing and creating nutrient-dense food made from scratch. Providing products that we fully trust allows our customers to fully trust us!"
       },
       "who": {
         "title": "Who",
-        "text": "Our Production Kitchen team creates our House Made items for the kitchens and markets. Production Kitchen associates spend most of their time preparing food and making recipes in large batches. Finished products get picked up by our freight truck team and distributed to our market locations. The Production Kitchen team works with our markets and kitchens to ensure that the flow of House Made items is efficient and meeting current needs. Another task this team excels in is developing new, nutrient-dense, and exciting House Made items to be sold in the markets."
+        "text": "Our Production Kitchen team creates our House Made items for the kitchens and markets. Production Kitchen associates spend most of their time creating new products, preparing food, and making recipes in large batches. The Production Kitchen team works with our markets and kitchens to ensure that the flow of House Made items is efficient and meeting current needs."
       },
       "what": {
         "title": "What",
-        "text": "The Redmond Production Kitchen creates scratch (or \"House\") made items and ships them to the different Redmond Farm market and kitchen locations. These house made items include sprouted corn chips, cinnamon almonds, custards, salad dressings made with avocado oil, and so much more!"
+        "text": "The Redmond Production Kitchen creates scratch (or \"House\") made items and ships them to the different Redmond Farm market and kitchen locations. These House Made items include sprouted corn chips, cinnamon almonds, custards, salad dressings made with avocado oil, and so much more!"
       }
     }
   },
@@ -76,11 +93,11 @@
       },
       "who": {
         "title": "Who",
-        "text": "Three times a week, our team drives two freight trucks to the farm in Redmond, Utah. There, they pick up farm products and frozen meat (sourced from cows that are raised in Northern Utah and packaged by our meat packing facility partner) to be distributed to the production kitchen and markets. They then drive to Springville, where they pick up House Made items and other products (like our fries and sauces) from our production kitchen and deliver them to our Farm Market and Kitchen locations. Once they leave the production kitchen, the Freight Truck team drops off their goods at the Farm Markets and Kitchens and completes any needed transfers between locations. They also transport milk to the state certified lab for testing."
+        "text": "Our freight truck team works hard to ensure products go where they need to! The team drives two trucks between our Heritage Farm, Production Kitchen, and Market/Kitchen location to transport farm products, House Made items, and other ingredients to and between locations."
       },
       "what": {
         "title": "What",
-        "text": "Redmond Farms currently has two refrigerated box delivery trucks that deliver farm products and distribute goods between stores."
+        "text": "Redmond Farms currently has two refrigerated box delivery trucks that deliver farm products and distribute goods between stores. Three times per week, the truck team transports farm products and frozen meat (sourced from cows raised in Northern Utah and packaged by our meat-packing partner) to the Production Kitchen and Markets. They then drive to Springville to move House Made items and other products (like fries and sauces) from the Production Kitchen to the Market and Kitchen locations. The truck also completes additional transfers between locations and takes milk to the state-certified lab for testing."
       }
     }
   }

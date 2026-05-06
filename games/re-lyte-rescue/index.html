@@ -15,19 +15,47 @@
   <body>
     <div class="game-shell">
       <header class="hero">
-        <div>
-          <p class="eyebrow">Mini-game</p>
+        <div class="brand-lockup" aria-label="Redmond training arcade">
+          <span class="brand-mark" aria-hidden="true">R</span>
+          <span class="brand-text">Redmond University</span>
+        </div>
+
+        <div class="hero-copy">
+          <p class="eyebrow">Training Arcade</p>
           <h1>Re-Lyte Rescue</h1>
           <p id="instruction-text" class="instruction" role="status" aria-live="polite">
-            Click the pitcher or cup to give him water.
+            Stabilize hydration by pairing water with electrolytes.
           </p>
         </div>
 
-        <button id="reset-btn" class="reset-btn" type="button">Replay</button>
+        <div class="hero-actions">
+          <div class="mission-chip" aria-live="polite">
+            <span>Mission</span>
+            <strong id="mission-status">Stabilize</strong>
+          </div>
+          <button id="reset-btn" class="reset-btn" type="button">Replay</button>
+        </div>
       </header>
 
       <main class="layout">
         <aside class="card status-panel" aria-label="Hydration status">
+          <section class="rescue-card">
+            <div class="section-heading">
+              <h2>Rescue telemetry</h2>
+              <span id="rescue-score">0 pts</span>
+            </div>
+            <div class="stat-grid" aria-label="Rescue metrics">
+              <div class="stat-tile">
+                <span>Retention</span>
+                <strong id="retention-value">18%</strong>
+              </div>
+              <div class="stat-tile">
+                <span>Leak risk</span>
+                <strong id="leak-value">Critical</strong>
+              </div>
+            </div>
+          </section>
+
           <section class="meter-card">
             <div class="meter-header">
               <span>Hydration</span>
@@ -36,6 +64,24 @@
             <div class="hydration-track" aria-hidden="true">
               <div id="hydration-fill" class="hydration-fill"></div>
             </div>
+          </section>
+
+          <section class="mission-card">
+            <h2>Mission path</h2>
+            <ol class="mission-steps" aria-label="Mission progress">
+              <li class="mission-step is-active" data-step="water">
+                <span class="step-number">1</span>
+                <span>Test water retention</span>
+              </li>
+              <li class="mission-step" data-step="electrolytes">
+                <span class="step-number">2</span>
+                <span>Add key electrolytes</span>
+              </li>
+              <li class="mission-step" data-step="rescue">
+                <span class="step-number">3</span>
+                <span>Complete the rescue</span>
+              </li>
+            </ol>
           </section>
 
           <section class="retention-card">
@@ -74,8 +120,24 @@
 
         <section class="card scene-card" aria-label="Game scene">
           <div id="scene" class="scene">
-            <div class="background-orb orb-left" aria-hidden="true"></div>
-            <div class="background-orb orb-right" aria-hidden="true"></div>
+            <div class="arena-backdrop" aria-hidden="true">
+              <span class="backdrop-sun"></span>
+              <span class="backdrop-cloud cloud-a"></span>
+              <span class="backdrop-cloud cloud-b"></span>
+              <span class="backdrop-hill hill-a"></span>
+              <span class="backdrop-hill hill-b"></span>
+            </div>
+
+            <div class="arena-hud" aria-label="Current rescue state">
+              <div>
+                <span class="arena-label">Current phase</span>
+                <strong id="arena-phase">Dehydrated</strong>
+              </div>
+              <div>
+                <span class="arena-label">Body retention</span>
+                <strong id="arena-retention">18%</strong>
+              </div>
+            </div>
 
             <div class="speech-bubble" aria-live="polite">
               <span id="bubble-text">I'm so thirsty!</span>
@@ -194,6 +256,30 @@
 
             <div class="puddle-zone" aria-hidden="true">
               <div id="puddle" class="puddle"></div>
+            </div>
+
+            <div id="action-toast" class="action-toast" aria-live="polite"></div>
+
+            <div
+              id="victory-overlay"
+              class="victory-overlay"
+              aria-live="polite"
+              aria-hidden="true"
+            >
+              <div class="victory-card">
+                <p class="victory-kicker">Rescue complete</p>
+                <h2>Hydration stabilized</h2>
+                <p id="victory-copy">
+                  Re-Lyte delivered the key electrolytes and helped water stay where it belongs.
+                </p>
+                <div class="victory-score">
+                  <span>Final score</span>
+                  <strong id="victory-score">0 pts</strong>
+                </div>
+                <button id="overlay-replay-btn" class="reset-btn victory-replay" type="button">
+                  Play again
+                </button>
+              </div>
             </div>
           </div>
         </section>

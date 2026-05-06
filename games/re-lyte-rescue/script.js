@@ -11,26 +11,40 @@ const SIP_POWER = [22, 30, 38, 46, 54];
 
 const refs = {
   instruction: document.getElementById("instruction-text"),
+  missionStatus: document.getElementById("mission-status"),
   bubble: document.getElementById("bubble-text"),
   hydrationLabel: document.getElementById("hydration-label"),
   hydrationFill: document.getElementById("hydration-fill"),
   retentionCopy: document.getElementById("retention-copy"),
+  retentionValue: document.getElementById("retention-value"),
+  leakValue: document.getElementById("leak-value"),
+  rescueScore: document.getElementById("rescue-score"),
+  arenaPhase: document.getElementById("arena-phase"),
+  arenaRetention: document.getElementById("arena-retention"),
   electrolyteCount: document.getElementById("electrolyte-count"),
   bellyFill: document.getElementById("belly-fill"),
   puddle: document.getElementById("puddle"),
   scene: document.getElementById("scene"),
   character: document.getElementById("character"),
   sparkleLayer: document.getElementById("sparkle-layer"),
+  actionToast: document.getElementById("action-toast"),
+  victoryOverlay: document.getElementById("victory-overlay"),
+  victoryScore: document.getElementById("victory-score"),
+  victoryCopy: document.getElementById("victory-copy"),
+  overlayReplayBtn: document.getElementById("overlay-replay-btn"),
   resetBtn: document.getElementById("reset-btn"),
   shortcutBtn: document.getElementById("shortcut-btn"),
   waterButtons: Array.from(document.querySelectorAll(".water-control")),
   electrolyteButtons: Array.from(document.querySelectorAll(".electrolyte-btn")),
   checklistItems: Array.from(document.querySelectorAll(".checklist-item")),
+  missionSteps: Array.from(document.querySelectorAll(".mission-step")),
 };
 
 let state = createInitialState();
 let hydrationFrame = 0;
 let scheduledTimers = [];
+let toastTimer = 0;
+let audioContext = null;
 
 function createInitialState() {
   return {
@@ -39,7 +53,8 @@ function createInitialState() {
     activeElectrolytes: [],
     puddle: 0,
     isDrinking: false,
-    instruction: "Click the pitcher or cup to give him water.",
+    rescued: false,
+    instruction: "Stabilize hydration by pairing water with electrolytes.",
     message: "I'm so thirsty!",
   };
 }
@@ -58,6 +73,79 @@ function hasAllElectrolytes() {
 
 function getLeakLevel() {
   return LEAK_LEVELS[getElectrolyteCount()];
+}
+
+function getRetentionPercent() {
+  return Math.round(RETENTION_FACTORS[getElectrolyteCount()] * 100);
+}
+
+function getLeakRiskLabel() {
+  const count = getElectrolyteCount();
+  if (count === 0) return "Critical";
+  if (count === 1) return "High";
+  if (count === 2) return "Moderate";
+  if (count === 3) return "Low";
+  return "Sealed";
+}
+
+function getMissionPhase() {
+  if (state.rescued) return "Rescued";
+  if (hasAllElectrolytes() && state.hydration >= 86) return "Stabilizing";
+  if (hasAllElectrolytes()) return "Final sip";
+  if (getElectrolyteCount() > 0) return "Build mix";
+  if (state.puddle > 0 || state.hydration > 0) return "Add minerals";
+  return "Stabilize";
+}
+
+function getRescueScore() {
+  const hydrationScore = Math.round(state.hydration * 6);
+  const electrolyteScore = getElectrolyteCount() * 95;
+  const leakPenalty = Math.round(state.puddle * 1.8);
+  const rescueBonus = state.rescued ? 160 : 0;
+  return Math.max(0, hydrationScore + electrolyteScore + rescueBonus - leakPenalty);
+}
+
+function ensureAudioContext() {
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  if (!AudioCtx) return null;
+  if (!audioContext || audioContext.state === "closed") {
+    audioContext = new AudioCtx();
+  }
+  if (audioContext.state === "suspended") {
+    audioContext.resume().catch(() => {});
+  }
+  return audioContext;
+}
+
+function playTone(type) {
+  const ctx = ensureAudioContext();
+  if (!ctx) return;
+
+  const now = ctx.currentTime;
+  const oscillator = ctx.createOscillator();
+  const gain = ctx.createGain();
+  const filter = ctx.createBiquadFilter();
+  const tones = {
+    water: [420, 540],
+    mineral: [660, 880],
+    shortcut: [520, 720],
+    victory: [523, 659],
+  };
+  const [startFrequency, endFrequency] = tones[type] || tones.water;
+  const duration = type === "victory" ? 0.42 : 0.18;
+
+  oscillator.type = type === "water" ? "sine" : "triangle";
+  oscillator.frequency.setValueAtTime(startFrequency, now);
+  oscillator.frequency.exponentialRampToValueAtTime(endFrequency, now + duration);
+  filter.type = "lowpass";
+  filter.frequency.setValueAtTime(2200, now);
+  gain.gain.setValueAtTime(0.0001, now);
+  gain.gain.exponentialRampToValueAtTime(type === "victory" ? 0.13 : 0.08, now + 0.03);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+  oscillator.connect(filter).connect(gain).connect(ctx.destination);
+  oscillator.start(now);
+  oscillator.stop(now + duration + 0.04);
 }
 
 function getRetentionCopy() {
@@ -116,6 +204,21 @@ function clearQueuedWork() {
   scheduledTimers.forEach((timerId) => clearTimeout(timerId));
   scheduledTimers = [];
   cancelAnimationFrame(hydrationFrame);
+  if (toastTimer) {
+    clearTimeout(toastTimer);
+    toastTimer = 0;
+  }
+}
+
+function showToast(message) {
+  if (!refs.actionToast) return;
+  refs.actionToast.textContent = message;
+  refs.actionToast.classList.add("is-visible");
+  if (toastTimer) clearTimeout(toastTimer);
+  toastTimer = window.setTimeout(() => {
+    refs.actionToast.classList.remove("is-visible");
+    toastTimer = 0;
+  }, 1700);
 }
 
 function burstSparkles(total = 14) {
@@ -168,6 +271,39 @@ function renderChecklist() {
   refs.electrolyteCount.textContent = `${getElectrolyteCount()} / ${ELECTROLYTES.length}`;
 }
 
+function renderMissionState() {
+  const score = getRescueScore();
+  const phase = getMissionPhase();
+  const retention = `${getRetentionPercent()}%`;
+
+  refs.missionStatus.textContent = phase;
+  refs.retentionValue.textContent = retention;
+  refs.leakValue.textContent = getLeakRiskLabel();
+  refs.rescueScore.textContent = `${score} pts`;
+  refs.arenaPhase.textContent = phase;
+  refs.arenaRetention.textContent = retention;
+
+  refs.missionSteps.forEach((step) => {
+    const stepName = step.dataset.step;
+    const waterComplete = state.puddle > 0 || state.hydration > 0 || getElectrolyteCount() > 0;
+    const electrolytesComplete = hasAllElectrolytes();
+    const rescueComplete = state.rescued;
+
+    step.classList.toggle(
+      "is-complete",
+      (stepName === "water" && waterComplete) ||
+        (stepName === "electrolytes" && electrolytesComplete) ||
+        (stepName === "rescue" && rescueComplete)
+    );
+    step.classList.toggle(
+      "is-active",
+      (stepName === "water" && !waterComplete) ||
+        (stepName === "electrolytes" && waterComplete && !electrolytesComplete) ||
+        (stepName === "rescue" && electrolytesComplete && !rescueComplete)
+    );
+  });
+}
+
 function renderHydrationVisuals() {
   const shownHydration = clamp(state.displayHydration, 0, 100);
   const puddleScaleX = 0.18 + state.puddle / 70;
@@ -184,21 +320,27 @@ function render() {
   refs.instruction.textContent = state.instruction;
   refs.bubble.textContent = state.message;
   refs.retentionCopy.textContent = getRetentionCopy();
-  refs.shortcutBtn.disabled = hasAllElectrolytes() && state.hydration >= 100;
+  refs.shortcutBtn.disabled = state.rescued;
 
   updateSceneClasses();
+  renderMissionState();
   renderChecklist();
   renderHydrationVisuals();
 }
 
 function settleAtFullHydration() {
+  if (state.rescued) return;
   state.hydration = 100;
-  state.instruction = "Fully hydrated!";
-  state.message = "Fully hydrated!";
+  state.rescued = true;
+  state.instruction = "Rescue complete. Hydration is stabilized.";
+  state.message = "Rescue complete!";
   animateHydration(100, 500);
   burstSparkles(18);
   pulseCharacter("is-celebrating", 900);
+  showToast("Rescue complete: hydration stabilized.");
+  playTone("victory");
   render();
+  queue(showVictoryOverlay, 520);
 }
 
 function finishDrink() {
@@ -224,7 +366,7 @@ function finishDrink() {
 // Each sip first spikes the bar, then settles back to the retained amount to
 // visualize the water leaking out before the body hangs on to what it can.
 function drinkWater(options = {}) {
-  if (state.isDrinking) return;
+  if (state.isDrinking || state.rescued) return;
 
   const count = options.forceCount ?? getElectrolyteCount();
   const leakLevel = LEAK_LEVELS[count];
@@ -238,6 +380,7 @@ function drinkWater(options = {}) {
 
   state.isDrinking = true;
   refs.scene.classList.add("is-drinking");
+  playTone(options.shortcut ? "shortcut" : "water");
 
   if (options.shortcut) {
     refs.scene.classList.add("is-shortcut");
@@ -246,12 +389,15 @@ function drinkWater(options = {}) {
   } else if (count === 0) {
     state.instruction = "Water alone is slipping right through. Add electrolytes one by one.";
     state.message = "Water alone goes right through me!";
+    showToast("Water added. Retention is low without electrolytes.");
   } else if (count === ELECTROLYTES.length) {
     state.instruction = "Now the leak is tiny. Watch that hydration climb.";
     state.message = "This is way better!";
+    showToast("Full electrolyte mix active. Water retention boosted.");
   } else {
     state.instruction = "Leak reduced. Add more electrolytes or try another sip.";
     state.message = "Okay, that stayed in a little longer.";
+    showToast(`${getRetentionPercent()}% retention active.`);
   }
 
   animateHydration(previewHydration, 520);
@@ -268,20 +414,23 @@ function drinkWater(options = {}) {
 }
 
 function addElectrolyte(id) {
-  if (state.isDrinking || state.activeElectrolytes.includes(id)) return;
+  if (state.isDrinking || state.rescued || state.activeElectrolytes.includes(id)) return;
 
   const electrolyte = ELECTROLYTES.find((entry) => entry.id === id);
   state.activeElectrolytes = [...state.activeElectrolytes, id];
   pulseCharacter("is-popping", 420);
+  playTone("mineral");
 
   if (hasAllElectrolytes()) {
     state.instruction = "All four electrolytes are active. Give him another drink.";
     state.message = "Ready for a real hydration win!";
     burstSparkles(12);
+    showToast("Complete electrolyte profile unlocked.");
   } else {
     state.instruction = `${electrolyte.label} added. The leak will shrink on the next sip.`;
     state.message = `${electrolyte.label} is helping.`;
     burstSparkles(7);
+    showToast(`${electrolyte.label} added. Leak risk reduced.`);
   }
 
   render();
@@ -292,7 +441,7 @@ function addElectrolyte(id) {
 function useShortcut() {
   if (state.isDrinking) return;
 
-  if (state.hydration >= 100 && hasAllElectrolytes()) {
+  if (state.rescued) {
     state.instruction = "Already fully hydrated. Hit replay to run it again.";
     state.message = "Fully hydrated!";
     burstSparkles(10);
@@ -304,6 +453,8 @@ function useShortcut() {
   state.instruction = "Re-Lyte shortcut activated. All four electrolytes hit at once.";
   state.message = "All the key electrolytes, all at once.";
   refs.shortcutBtn.classList.add("is-firing");
+  showToast("Re-Lyte shortcut: all electrolytes activated.");
+  playTone("shortcut");
   burstSparkles(22);
   pulseCharacter("is-popping", 420);
   render();
@@ -318,8 +469,26 @@ function resetGame() {
   refs.character.classList.remove("is-popping", "is-celebrating");
   refs.shortcutBtn.classList.remove("is-firing");
   refs.sparkleLayer.innerHTML = "";
+  hideVictoryOverlay();
   state = createInitialState();
   render();
+}
+
+function showVictoryOverlay() {
+  if (!refs.victoryOverlay) return;
+  refs.victoryScore.textContent = `${getRescueScore()} pts`;
+  refs.victoryCopy.textContent =
+    state.puddle > 45
+      ? "You recovered the rescue after a leaky start. Re-Lyte delivered the key electrolytes and stabilized hydration."
+      : "Clean rescue. The full electrolyte mix helped water stay where it belongs.";
+  refs.victoryOverlay.classList.add("is-visible");
+  refs.victoryOverlay.setAttribute("aria-hidden", "false");
+}
+
+function hideVictoryOverlay() {
+  if (!refs.victoryOverlay) return;
+  refs.victoryOverlay.classList.remove("is-visible");
+  refs.victoryOverlay.setAttribute("aria-hidden", "true");
 }
 
 refs.waterButtons.forEach((button) => {
@@ -332,5 +501,6 @@ refs.electrolyteButtons.forEach((button) => {
 
 refs.shortcutBtn.addEventListener("click", useShortcut);
 refs.resetBtn.addEventListener("click", resetGame);
+refs.overlayReplayBtn.addEventListener("click", resetGame);
 
 render();
