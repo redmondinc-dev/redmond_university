@@ -2,6 +2,7 @@
   "title": "401(k) Info Guide",
   "eyebrow": "Benefits",
   "subtitle": "Everything you need to know about Redmond's 401(k) retirement plan.",
+  "accent": "#e23c30",
   "settings": {
     "startPage": 0
   },
@@ -16,7 +17,7 @@
         "How to register your account",
         "How to adjust your contributions and investments"
       ],
-      "accent": "#314c5f"
+      "accent": "#e23c30"
     },
     {
       "title": "Plan Summary",
@@ -29,7 +30,7 @@
         "Redmond's match goes into a Traditional (pre-tax) account",
         "Redmond's contribution is subject to a vesting period"
       ],
-      "accent": "#2f4a37"
+      "accent": "#e23c30"
     },
     {
       "title": "A Few More Details",
@@ -40,7 +41,7 @@
         "You can roll over a 401(k) from a previous employer into your Redmond account after registering",
         "You can change the default settings any time after registering and before contributions start"
       ],
-      "accent": "#47615b"
+      "accent": "#e23c30"
     },
     {
       "title": "Say Yes to Free Money",
@@ -52,7 +53,7 @@
         "Contribute 8% or more → Redmond adds 4%",
         "Your contributions are always 100% yours — no vesting required"
       ],
-      "accent": "#805d2f"
+      "accent": "#e23c30"
     },
     {
       "title": "Contribution Example",
@@ -66,7 +67,7 @@
         "10% → You: $200 · Redmond: $80 (match maxed out)"
       ],
       "caption": "Redmond's contribution is subject to the vesting period.",
-      "accent": "#c89135"
+      "accent": "#e23c30"
     },
     {
       "title": "ROTH vs. Traditional",
@@ -77,7 +78,7 @@
         "Traditional (pre-tax): Your contribution reduces your taxable income today. When you withdraw in retirement, the IRS taxes everything you take out — your contributions and all growth.",
         "Which is better? Experts disagree. Generally, ROTH works well when you're younger or in a lower tax bracket, but it depends on your goals. Consider talking to a financial advisor to find what's right for you."
       ],
-      "accent": "#5b5550"
+      "accent": "#e23c30"
     },
     {
       "title": "How to Register",
@@ -90,7 +91,7 @@
         "participant.empower-retirement.com"
       ],
       "caption": "Register early so you're ready when contributions start at 6 months.",
-      "accent": "#253647"
+      "accent": "#e23c30"
     }
   ]
 }

@@ -1,13 +1,13 @@
 :root {
-  --book-ink: #1f2b2a;
-  --book-muted: #61706d;
-  --book-bg: #e7ece8;
-  --book-surface: #fbfaf6;
-  --book-surface-alt: #f2f5f1;
-  --book-line: rgba(38, 54, 50, 0.18);
-  --book-shadow: 0 22px 58px rgba(23, 32, 35, 0.2);
+  --book-ink: #271918;
+  --book-muted: #7c5f59;
+  --book-bg: #e8ddd4;
+  --book-surface: #f6eee5;
+  --book-surface-alt: #f0e6db;
+  --book-line: rgba(90, 40, 35, 0.15);
+  --book-shadow: 0 22px 58px rgba(60, 18, 15, 0.22);
   --book-radius: 8px;
-  --accent: #2f4a37;
+  --accent: #e23c30;
 }
 
 * {
@@ -65,8 +65,10 @@ textarea {
   min-height: 18px;
   margin: 0 0 6px;
   color: var(--accent);
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .book-header h1 {
@@ -125,9 +127,9 @@ textarea {
   transform: translateX(-50%);
   background: linear-gradient(
     90deg,
-    rgba(42, 45, 39, 0.16),
-    rgba(255, 255, 255, 0.48) 48%,
-    rgba(42, 45, 39, 0.14)
+    rgba(226, 60, 48, 0.18),
+    rgba(255, 255, 255, 0.55) 48%,
+    rgba(226, 60, 48, 0.15)
   );
   border-radius: 99px;
 }
@@ -136,7 +138,7 @@ textarea {
   right: -5px;
   width: 16px;
   border-radius: 0 var(--book-radius) var(--book-radius) 0;
-  background: linear-gradient(90deg, rgba(54, 48, 38, 0.18), rgba(54, 48, 38, 0));
+  background: linear-gradient(90deg, rgba(70, 35, 28, 0.16), rgba(70, 35, 28, 0));
 }
 
 .spread {
@@ -157,10 +159,21 @@ textarea {
 
 .book-page {
   background:
-    linear-gradient(90deg, rgba(45, 52, 46, 0.045), rgba(255, 255, 255, 0) 20%),
+    linear-gradient(90deg, rgba(90, 40, 35, 0.04), rgba(255, 255, 255, 0) 20%),
     var(--book-surface);
   border: 1px solid var(--book-line);
   overflow: hidden;
+}
+
+.book-page:not(.book-page--empty)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: var(--accent);
+  z-index: 1;
 }
 
 .book-page--left {
@@ -175,8 +188,8 @@ textarea {
   background:
     repeating-linear-gradient(
       0deg,
-      rgba(47, 74, 55, 0.04),
-      rgba(47, 74, 55, 0.04) 1px,
+      rgba(90, 40, 35, 0.035),
+      rgba(90, 40, 35, 0.035) 1px,
       transparent 1px,
       transparent 28px
     ),
@@ -227,7 +240,7 @@ textarea {
   border-radius: var(--book-radius);
   overflow: hidden;
   background: var(--book-surface-alt);
-  border: 1px solid rgba(31, 43, 42, 0.1);
+  border: 1px solid rgba(80, 30, 25, 0.1);
 }
 
 .page-media img {
@@ -244,7 +257,7 @@ textarea {
   min-height: 0;
   overflow: auto;
   padding-right: 4px;
-  scrollbar-color: rgba(47, 74, 55, 0.45) transparent;
+  scrollbar-color: rgba(226, 60, 48, 0.4) transparent;
 }
 
 .page-description {
@@ -288,7 +301,7 @@ textarea {
   gap: 12px;
   color: var(--book-muted);
   font-size: 0.78rem;
-  border-top: 1px solid rgba(31, 43, 42, 0.1);
+  border-top: 1px solid rgba(80, 30, 25, 0.1);
   padding-top: 12px;
 }
 
@@ -383,12 +396,12 @@ textarea {
   height: 44px;
   display: grid;
   place-items: center;
-  border: 1px solid rgba(31, 43, 42, 0.16);
+  border: 1px solid rgba(80, 30, 25, 0.14);
   border-radius: 50%;
   color: var(--book-ink);
   background: rgba(255, 255, 255, 0.7);
   cursor: pointer;
-  box-shadow: 0 10px 26px rgba(28, 37, 36, 0.12);
+  box-shadow: 0 10px 26px rgba(60, 20, 18, 0.12);
   transition:
     transform 180ms ease,
     opacity 180ms ease,
@@ -403,7 +416,7 @@ textarea {
 
 .nav-button:focus-visible,
 .page-dot:focus-visible {
-  outline: 3px solid rgba(47, 74, 55, 0.38);
+  outline: 3px solid rgba(226, 60, 48, 0.4);
   outline-offset: 3px;
 }
 
@@ -441,7 +454,7 @@ textarea {
 .progress-track {
   height: 6px;
   border-radius: 99px;
-  background: rgba(31, 43, 42, 0.12);
+  background: rgba(80, 30, 25, 0.12);
   overflow: hidden;
 }
 
@@ -466,7 +479,7 @@ textarea {
   width: 34px;
   height: 34px;
   flex: 0 0 auto;
-  border: 1px solid rgba(31, 43, 42, 0.18);
+  border: 1px solid rgba(80, 30, 25, 0.16);
   border-radius: 50%;
   color: var(--book-muted);
   background: rgba(255, 255, 255, 0.58);
@@ -513,10 +526,10 @@ textarea {
 
 .turn-page-face--front {
   background:
-    linear-gradient(90deg, rgba(45, 52, 46, 0.045), rgba(255, 255, 255, 0) 20%),
+    linear-gradient(90deg, rgba(90, 40, 35, 0.04), rgba(255, 255, 255, 0) 20%),
     var(--book-surface);
   border: 1px solid var(--book-line);
-  box-shadow: -6px 0 18px rgba(12, 19, 18, 0.12);
+  box-shadow: -6px 0 18px rgba(50, 15, 12, 0.12);
 }
 
 .turn-page-face--front::after {
@@ -524,7 +537,7 @@ textarea {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(24, 30, 30, 0.2), rgba(255, 255, 255, 0.1));
+  background: linear-gradient(90deg, rgba(50, 18, 15, 0.18), rgba(255, 255, 255, 0.1));
   opacity: 0;
   transition: opacity 400ms ease;
 }
@@ -538,8 +551,8 @@ textarea {
   background:
     repeating-linear-gradient(
       0deg,
-      rgba(47, 74, 55, 0.028),
-      rgba(47, 74, 55, 0.028) 1px,
+      rgba(90, 40, 35, 0.025),
+      rgba(90, 40, 35, 0.025) 1px,
       transparent 1px,
       transparent 30px
     ),
@@ -553,7 +566,7 @@ textarea {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(24, 30, 30, 0.12));
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.18), rgba(50, 18, 15, 0.12));
   opacity: 0;
   transition: opacity 400ms ease;
 }
