@@ -1,0 +1,99 @@
+{
+  "title": "Redmond Farm Guide",
+  "eyebrow": "Farm Systems",
+  "subtitle": "A short guide to how Redmond Farms teams move nourishing food from farm to market.",
+  "settings": {
+    "startPage": 0
+  },
+  "pages": [
+    {
+      "title": "Heritage Farm",
+      "eyebrow": "Who",
+      "description": "Redmond's Heritage Farm team includes the farmers and the dairy cows, pigs, and chickens they care for.",
+      "body": [
+        "Our caretakers incorporate intentional, regenerative farming methods to ensure happy and healthy animals.",
+        "They also develop and produce our signature farm products."
+      ],
+      "image": "../../../assets/imgs/carousell-farms/cow.jpg",
+      "imageAlt": "Dairy cow at Redmond Heritage Farm",
+      "caption": "Farm-raised staples begin with caretakers, animals, and intentional methods.",
+      "accent": "#2f4a37"
+    },
+    {
+      "title": "Heritage Farm Products",
+      "eyebrow": "What",
+      "description": "Raw dairy, eggs, and meat raised with care and shaped by regenerative methods that keep nutrient density at the center.",
+      "image": "../../../assets/imgs/carousell-farms/milk.png",
+      "imageAlt": "Raw milk product",
+      "caption": "Raw dairy, eggs, and meat stay at the center of the farm's staple products.",
+      "accent": "#c89135"
+    },
+    {
+      "title": "Redmond Farm Market",
+      "eyebrow": "Why",
+      "description": "Redmond Farm Markets exist to provide our communities with nourishing products from our farm, production kitchen, and like-minded suppliers.",
+      "body": [
+        "Market teams connect people with farm-raised products, House Made creations, and products from thoughtful suppliers."
+      ],
+      "image": "../../../assets/imgs/carousell-farms/real-foods-market.png",
+      "imageAlt": "Redmond Farm Market storefront",
+      "accent": "#314c5f"
+    },
+    {
+      "title": "Farm Kitchen",
+      "eyebrow": "What",
+      "description": "Redmond Farm Kitchen brings nutrient density, convenience, and flavor together into a casual dining experience.",
+      "body": [
+        "Kitchen associates prepare, cook, and serve nutrient-dense foods and drinks while keeping the restaurant running smoothly.",
+        "Meals are sourced primarily from the Heritage Farm, Production Kitchen, and other local partners."
+      ],
+      "image": "../../../assets/imgs/jpg/rawmilk.jpg",
+      "imageAlt": "Prepared Redmond food and dairy products",
+      "accent": "#7b3f35"
+    },
+    {
+      "title": "Farm Market Truck",
+      "eyebrow": "What",
+      "description": "A mini Redmond Market on wheels.",
+      "body": [
+        "Servicing about five stops each week, the truck brings farm staples and House Made products to customers who do not live near a store location.",
+        "The team builds relationships with regular customers and keeps communication updated when the truck has downtime."
+      ],
+      "image": "../../../assets/imgs/jpg/redknolls1.jpg",
+      "imageAlt": "Redmond landscape",
+      "accent": "#47615b"
+    },
+    {
+      "title": "Production Kitchen",
+      "eyebrow": "Why",
+      "description": "The Redmond Production Kitchen generates the House Made product line and supports the Farm Kitchens.",
+      "body": [
+        "Production Kitchen associates create new products, prepare food, and make recipes in large batches.",
+        "Providing products that we fully trust allows our customers to fully trust us."
+      ],
+      "image": "../../../assets/imgs/carousell-farms/paper.png",
+      "imageAlt": "House Made product packaging",
+      "accent": "#5b5550"
+    },
+    {
+      "title": "Freight Trucks",
+      "eyebrow": "What",
+      "description": "Two refrigerated box delivery trucks deliver farm products and distribute goods between stores.",
+      "body": [
+        "The team moves farm products, House Made items, and other ingredients between the Heritage Farm, Production Kitchen, and Market/Kitchen locations.",
+        "The truck also completes additional transfers and takes milk to the state-certified lab for testing."
+      ],
+      "accent": "#253647"
+    },
+    {
+      "title": "A Connected System",
+      "eyebrow": "Overview",
+      "description": "Each part of Redmond Farms supports the next, creating a practical system for nourishing food and community access.",
+      "body": [
+        "The Heritage Farm raises staple products, the Production Kitchen creates House Made items, the Markets and Kitchens serve customers directly, and the truck teams keep products moving.",
+        "Together, the system keeps intentionally sourced food close to the people it serves."
+      ],
+      "accent": "#805d2f"
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Flip Book Component</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main class="flipbook-shell" data-flipbook data-source="content.json">
+      <header class="book-header" id="bookHeader">
+        <div class="book-heading">
+          <p class="book-eyebrow" id="bookEyebrow"></p>
+          <h1 id="bookTitle"></h1>
+          <p class="book-subtitle" id="bookSubtitle"></p>
+        </div>
+      </header>
+
+      <section class="book-stage" aria-labelledby="bookTitle">
+        <button class="nav-button nav-button--prev" id="prevButton" type="button" aria-label="Previous page">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M15.5 19.5 8 12l7.5-7.5" />
+          </svg>
+        </button>
+
+        <div class="book" id="book">
+          <div class="spread" id="spread" aria-live="polite">
+            <article class="book-page book-page--left" id="leftPage"></article>
+            <article class="book-page book-page--right" id="rightPage"></article>
+          </div>
+        </div>
+
+        <button class="nav-button nav-button--next" id="nextButton" type="button" aria-label="Next page">
+          <svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="m8.5 4.5 7.5 7.5-7.5 7.5" />
+          </svg>
+        </button>
+      </section>
+
+      <footer class="book-toolbar">
+        <div class="book-progress" aria-hidden="true">
+          <span id="pageCounter"></span>
+          <div class="progress-track">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+        <div class="page-strip" id="pageStrip" aria-label="Pages"></div>
+      </footer>
+    </main>
+  </body>
+</html>
