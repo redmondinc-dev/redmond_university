@@ -221,6 +221,7 @@ textarea {
   font-size: 1.55rem;
   line-height: 1.15;
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .page-content {
@@ -250,6 +251,33 @@ textarea {
   min-height: 160px;
   object-fit: cover;
   display: block;
+}
+
+.page-media--contain img {
+  object-fit: contain;
+  background: #fff;
+}
+
+.page-content--image-after {
+  grid-template-rows: auto auto;
+  align-content: start;
+}
+
+.page-content--image-after .page-copy {
+  min-height: auto;
+  overflow: visible;
+}
+
+.page-content--image-after .page-media {
+  min-height: 0;
+  height: auto;
+  max-height: none;
+  aspect-ratio: 1.66;
+  align-self: start;
+}
+
+.page-content--image-after .page-media img {
+  min-height: 0;
 }
 
 .page-copy {
@@ -291,6 +319,54 @@ textarea {
 
 .page-list li + li {
   margin-top: 6px;
+}
+
+.page-table-wrap {
+  width: 100%;
+  margin: 0 0 14px;
+  overflow-x: auto;
+  border: 1px solid rgba(80, 30, 25, 0.1);
+  border-radius: 6px;
+}
+
+.page-table {
+  width: 100%;
+  min-width: 380px;
+  border-collapse: collapse;
+  color: var(--book-ink);
+  background: rgba(255, 255, 255, 0.5);
+  text-align: center;
+  font-size: 0.78rem;
+  line-height: 1.25;
+}
+
+.page-table th {
+  padding: 8px 10px;
+  color: #fff;
+  background: var(--page-accent, var(--accent));
+  font-weight: 800;
+}
+
+.page-table td {
+  padding: 8px 10px;
+  font-weight: 800;
+}
+
+.page-table th + th,
+.page-table td + td {
+  border-left: 1px solid rgba(255, 255, 255, 0.86);
+}
+
+.page-table tbody tr {
+  border-top: 1px solid rgba(255, 255, 255, 0.86);
+}
+
+.page-table tbody tr:nth-child(odd) {
+  background: rgba(226, 60, 48, 0.2);
+}
+
+.page-table tbody tr:nth-child(even) {
+  background: rgba(226, 60, 48, 0.1);
 }
 
 .page-footer {
@@ -770,9 +846,25 @@ html.is-embedded .flipbook-shell {
     font-size: 1rem;
   }
 
+  .page-title {
+    font-size: 1.24rem;
+  }
+
   .page-body p,
   .page-list {
     font-size: 0.9rem;
+  }
+
+  .page-table {
+    min-width: 100%;
+    table-layout: fixed;
+    font-size: 0.66rem;
+  }
+
+  .page-table th,
+  .page-table td {
+    padding: 7px 5px;
+    overflow-wrap: anywhere;
   }
 }
 

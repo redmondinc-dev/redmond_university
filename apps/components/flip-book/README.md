@@ -26,8 +26,14 @@ Standalone static component for showing structured content as a book-style flip 
       "description": "Primary page copy.",
       "body": ["Paragraph one.", "Paragraph two."],
       "bullets": ["Optional item"],
+      "table": {
+        "headers": ["Column one", "Column two"],
+        "rows": [["A", "B"]]
+      },
       "image": "../../../assets/imgs/example.jpg",
       "imageAlt": "Image description",
+      "imageFit": "cover",
+      "imagePosition": "before-copy",
       "caption": "Optional image or page caption.",
       "accent": "#2f4a37",
       "layout": "default"
@@ -37,6 +43,8 @@ Standalone static component for showing structured content as a book-style flip 
 ```
 
 Supported `layout` values are `default`, `text-only`, and `image-full`.
+Supported `imageFit` values are `cover` and `contain`.
+Supported `imagePosition` values are `before-copy` and `after-copy`.
 
 By default, the component loads `content.json`. A different JSON file can be passed with:
 

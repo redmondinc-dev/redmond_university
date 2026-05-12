@@ -15,7 +15,6 @@ const refs = {
   bubble: document.getElementById("bubble-text"),
   hydrationLabel: document.getElementById("hydration-label"),
   hydrationFill: document.getElementById("hydration-fill"),
-  retentionCopy: document.getElementById("retention-copy"),
   retentionValue: document.getElementById("retention-value"),
   leakValue: document.getElementById("leak-value"),
   rescueScore: document.getElementById("rescue-score"),
@@ -319,7 +318,6 @@ function renderHydrationVisuals() {
 function render() {
   refs.instruction.textContent = state.instruction;
   refs.bubble.textContent = state.message;
-  refs.retentionCopy.textContent = getRetentionCopy();
   refs.shortcutBtn.disabled = state.rescued;
 
   updateSceneClasses();
@@ -413,11 +411,43 @@ function drinkWater(options = {}) {
   queue(finishDrink, 1450);
 }
 
-function addElectrolyte(id) {
+const ELECTROLYTE_SYMBOLS = { sodium: "Na", potassium: "K", magnesium: "Mg", calcium: "Ca" };
+
+function launchElectrolyte(id, button) {
+  const buttonRect = button.getBoundingClientRect();
+  const sceneRect = refs.scene.getBoundingClientRect();
+  const charRect = refs.character.getBoundingClientRect();
+
+  const startX = buttonRect.left + buttonRect.width / 2 - sceneRect.left;
+  const startY = buttonRect.top + buttonRect.height / 2 - sceneRect.top;
+  const endX = charRect.left + charRect.width / 2 - sceneRect.left;
+  const endY = charRect.top + charRect.height * 0.35 - sceneRect.top;
+
+  const dx = endX - startX;
+  const dy = endY - startY;
+  const midX = dx * 0.5;
+  const midY = dy * 0.5 - Math.abs(dx) * 0.45;
+
+  const pill = document.createElement("div");
+  pill.className = `electrolyte-pill pill-${id}`;
+  pill.textContent = ELECTROLYTE_SYMBOLS[id] || "";
+  pill.style.left = `${startX}px`;
+  pill.style.top = `${startY}px`;
+  pill.style.setProperty("--dx", `${dx}px`);
+  pill.style.setProperty("--dy", `${dy}px`);
+  pill.style.setProperty("--mid-x", `${midX}px`);
+  pill.style.setProperty("--mid-y", `${midY}px`);
+
+  refs.scene.appendChild(pill);
+  queue(() => pill.remove(), 700);
+}
+
+function addElectrolyte(id, button) {
   if (state.isDrinking || state.rescued || state.activeElectrolytes.includes(id)) return;
 
   const electrolyte = ELECTROLYTES.find((entry) => entry.id === id);
   state.activeElectrolytes = [...state.activeElectrolytes, id];
+  if (button) launchElectrolyte(id, button);
   pulseCharacter("is-popping", 420);
   playTone("mineral");
 
@@ -465,6 +495,7 @@ function useShortcut() {
 
 function resetGame() {
   clearQueuedWork();
+  refs.scene.querySelectorAll(".electrolyte-pill").forEach((el) => el.remove());
   refs.scene.classList.remove("is-drinking", "is-shortcut");
   refs.character.classList.remove("is-popping", "is-celebrating");
   refs.shortcutBtn.classList.remove("is-firing");
@@ -496,7 +527,7 @@ refs.waterButtons.forEach((button) => {
 });
 
 refs.electrolyteButtons.forEach((button) => {
-  button.addEventListener("click", () => addElectrolyte(button.dataset.electrolyte));
+  button.addEventListener("click", () => addElectrolyte(button.dataset.electrolyte, button));
 });
 
 refs.shortcutBtn.addEventListener("click", useShortcut);

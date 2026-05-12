@@ -1,96 +1,96 @@
 {
   "title": "401(k) Info Guide",
-  "eyebrow": "Benefits",
-  "subtitle": "Everything you need to know about Redmond's 401(k) retirement plan.",
+  "eyebrow": "",
+  "subtitle": "",
   "accent": "#e23c30",
   "settings": {
     "startPage": 0
   },
   "pages": [
     {
-      "title": "What We'll Cover",
-      "eyebrow": "Overview",
-      "description": "This guide walks you through the essentials of Redmond's 401(k) plan so you can make confident decisions about your retirement savings.",
+      "title": "Topics covered",
       "bullets": [
-        "Overview of Redmond's 401(k) plan",
-        "Types of contributions: ROTH or Traditional",
-        "How to register your account",
-        "How to adjust your contributions and investments"
+        "Overview of Redmond’s 401(k) plan",
+        "Types of contributions (ROTH or Traditional)",
+        "How to register your account (see video)",
+        "How to adjust your contributions and investments (see video)"
       ],
       "accent": "#e23c30"
     },
     {
-      "title": "Plan Summary",
-      "eyebrow": "Your 401(k)",
-      "description": "Redmond's 401(k) plan is operated by Empower Financial Services. Here's what you're automatically enrolled in after 6 months.",
+      "title": "Summary of Redmond’s 401(k) Plan",
       "bullets": [
-        "Default contribution: 4% into the ROTH option with a target-date fund",
-        "Automatic 1% annual increase until you reach 8%",
-        "Redmond contributes about half of your contribution, up to 4%",
-        "Redmond's match goes into a Traditional (pre-tax) account",
-        "Redmond's contribution is subject to a vesting period"
+        "Operated by Empower Financial Services",
+        "All associates are automatically enrolled after 6 months",
+        "Default: 4% into the ROTH option & target fund",
+        "Automatic 1% annual increase until 8%",
+        "Redmond contributes about half of your contribution up to 4%",
+        "Redmond’s contribution is to a Traditional option",
+        "Redmond’s contribution has a vesting period"
       ],
       "accent": "#e23c30"
     },
     {
-      "title": "A Few More Details",
-      "eyebrow": "Plan Summary",
-      "description": "There are a few important things to know before contributions begin.",
+      "title": "(Summary continued)",
       "bullets": [
-        "Contributions don't start until after 6 months, but you can register your account within your first month",
-        "You can roll over a 401(k) from a previous employer into your Redmond account after registering",
-        "You can change the default settings any time after registering and before contributions start"
+        "Contributions don’t start for 6 months, but you can register and log in within one month of your start date",
+        "You can consolidate (rollover) a 401(k) from a previous employer into your Redmond 401(k) after you register your account",
+        "You can change the defaults after you register and before contributions start"
       ],
       "accent": "#e23c30"
     },
     {
-      "title": "Say Yes to Free Money",
-      "eyebrow": "Maximize Your Match",
-      "description": "If you contribute less than 8% of your paycheck, you're leaving money on the table that Redmond wants to give you.",
+      "title": "Say “Yes!” To Free Money",
       "bullets": [
-        "Redmond contributes about half of what you put in, up to 4%",
-        "Contribute 4% → Redmond adds 2.5%",
-        "Contribute 8% or more → Redmond adds 4%",
-        "Your contributions are always 100% yours — no vesting required"
+        "If you’re not contributing at least 8% of your paycheck, you’re saying no to money that Redmond wants to give you.",
+        "Redmond contributes about half of what you contribute up to 4%",
+        "If you only contribute 4%, Redmond will contribute 2.5%",
+        "If you contribute 8% or more, Redmond will contribute 4%"
       ],
       "accent": "#e23c30"
     },
     {
-      "title": "Contribution Example",
-      "eyebrow": "Biweekly Pay of $2,000",
-      "description": "Here's how your contribution and Redmond's match add up at different contribution rates.",
+      "title": "Example: Associate Earning $2,000 Biweekly",
+      "table": {
+        "headers": [
+          "Contribution Percentage",
+          "Associate Contribution",
+          "Redmond Contribution"
+        ],
+        "rows": [
+          ["3.0%", "$60", "$40"],
+          ["4.0%", "$80", "$50"],
+          ["5.0%", "$100", "$60"],
+          ["6.0%", "$120", "$70"],
+          ["7.0%", "$140", "$75"],
+          ["8.0%", "$160", "$80"],
+          ["10.0%", "$200", "$80"]
+        ]
+      },
       "bullets": [
-        "3% → You: $60 · Redmond: $40",
-        "4% → You: $80 · Redmond: $50",
-        "6% → You: $120 · Redmond: $70",
-        "8% → You: $160 · Redmond: $80",
-        "10% → You: $200 · Redmond: $80 (match maxed out)"
+        "Your contribution is 100% yours no matter how long you stay with Redmond",
+        "Redmond’s contribution is subject to “vesting” and isn’t 100% yours until you’ve been an employee for the entire vesting period"
       ],
-      "caption": "Redmond's contribution is subject to the vesting period.",
       "accent": "#e23c30"
     },
     {
-      "title": "ROTH vs. Traditional",
-      "eyebrow": "Contribution Types",
-      "description": "Both options grow your retirement savings — they just differ in when you pay taxes.",
-      "body": [
-        "ROTH (post-tax): You pay taxes now on the money you contribute. When you withdraw in retirement, you won't owe taxes on any of the growth — interest, dividends, or investment returns.",
-        "Traditional (pre-tax): Your contribution reduces your taxable income today. When you withdraw in retirement, the IRS taxes everything you take out — your contributions and all growth.",
-        "Which is better? Experts disagree. Generally, ROTH works well when you're younger or in a lower tax bracket, but it depends on your goals. Consider talking to a financial advisor to find what's right for you."
+      "title": "ROTH Versus Traditional",
+      "bullets": [
+        "ROTH is post-tax--You pay the full tax amount today and the money grows tax free, which means that when you are old enough to withdraw it, you won’t pay tax on the growth, whether from interest, dividends, investment returns, etc.",
+        "Traditional is pre-tax--The amount you contribute is subtracted from your W-2 wages before your income tax is calculated. That reduces how much you owe in taxes today, but when you retire and withdraw the money the IRS will tax whatever you take out—your initial contribution as well as any interest, investment gains, etc.",
+        "Which is better? Experts disagree and it depends on your situation. In general, the ROTH option is better when you’re younger or in a lower tax bracket, but even that depends on what your goals are. Research the options or talk to an advisor to learn what’s best for your situation."
       ],
       "accent": "#e23c30"
     },
     {
-      "title": "How to Register",
-      "eyebrow": "Getting Started",
-      "description": "You can register your Empower account within your first month of employment — even before contributions begin.",
-      "body": [
-        "Visit the Empower participant portal to create your account, set up your investment preferences, and adjust your contribution rate."
-      ],
+      "title": "How to Register and Log In",
+      "image": "assets/empower-register.png",
+      "imageAlt": "Empower login page with the Register button circled",
+      "imageFit": "contain",
+      "imagePosition": "after-copy",
       "bullets": [
-        "participant.empower-retirement.com"
+        "https://participant.empower-retirement.com/"
       ],
-      "caption": "Register early so you're ready when contributions start at 6 months.",
       "accent": "#e23c30"
     }
   ]

@@ -70,6 +70,28 @@
     return text ? [text] : [];
   }
 
+  function padRow(row, columnCount) {
+    return Array.from({ length: columnCount }, (_, index) => row[index] || "");
+  }
+
+  function normalizeTable(rawTable) {
+    const table = rawTable && typeof rawTable === "object" ? rawTable : null;
+    if (!table) return null;
+
+    const headers = toTextArray(table.headers);
+    const rows = Array.isArray(table.rows)
+      ? table.rows.map(toTextArray).filter((row) => row.length)
+      : [];
+    const columnCount = Math.max(headers.length, ...rows.map((row) => row.length), 0);
+
+    if (!columnCount) return null;
+
+    return {
+      headers: headers.length ? padRow(headers, columnCount) : [],
+      rows: rows.map((row) => padRow(row, columnCount)),
+    };
+  }
+
   function normalizePage(rawPage, index) {
     const page = rawPage && typeof rawPage === "object" ? rawPage : {};
     const body = toTextArray(page.body);
@@ -77,6 +99,11 @@
     const image = toText(page.image);
     const layout = toText(page.layout);
     const allowedLayouts = new Set(["default", "text-only", "image-full"]);
+    const imagePosition = toText(page.imagePosition);
+    const allowedImagePositions = new Set(["before-copy", "after-copy"]);
+    const imageFit = toText(page.imageFit);
+    const allowedImageFits = new Set(["cover", "contain"]);
+    const table = normalizeTable(page.table);
 
     return {
       title: toText(page.title) || `Page ${index + 1}`,
@@ -84,8 +111,11 @@
       description: toText(page.description),
       body,
       bullets,
+      table,
       image,
       imageAlt: toText(page.imageAlt) || toText(page.title) || `Page ${index + 1} image`,
+      imageFit: allowedImageFits.has(imageFit) ? imageFit : "cover",
+      imagePosition: allowedImagePositions.has(imagePosition) ? imagePosition : "before-copy",
       caption: toText(page.caption),
       accent: toText(page.accent),
       layout: allowedLayouts.has(layout) ? layout : image ? "default" : "text-only",
@@ -98,12 +128,13 @@
     const pages = rawPages.map(normalizePage).filter((page) => {
       return page.title || page.description || page.body.length || page.image;
     });
+    const hasEyebrow = Object.prototype.hasOwnProperty.call(source, "eyebrow");
 
     const normalizedPages = pages.length ? pages : fallbackBook.pages.map(normalizePage);
 
     return {
       title: toText(source.title) || fallbackBook.title,
-      eyebrow: toText(source.eyebrow) || fallbackBook.eyebrow,
+      eyebrow: hasEyebrow ? toText(source.eyebrow) : fallbackBook.eyebrow,
       subtitle: toText(source.subtitle) || "",
       accent: toText(source.accent) || normalizedPages[0]?.accent || "#2f4a37",
       startPage: Number.isFinite(Number(source.settings?.startPage))
@@ -118,6 +149,46 @@
     if (className) element.className = className;
     if (text) element.textContent = text;
     return element;
+  }
+
+  function renderMedia(page) {
+    const media = makeElement("figure", `page-media page-media--${page.imageFit}`);
+    const image = document.createElement("img");
+    image.src = page.image;
+    image.alt = page.imageAlt;
+    image.loading = "lazy";
+    media.append(image);
+    return media;
+  }
+
+  function renderTable(tableData) {
+    const wrapper = makeElement("div", "page-table-wrap");
+    const table = makeElement("table", "page-table");
+
+    if (tableData.headers.length) {
+      const thead = document.createElement("thead");
+      const headerRow = document.createElement("tr");
+      tableData.headers.forEach((header) => {
+        headerRow.append(makeElement("th", "", header));
+      });
+      thead.append(headerRow);
+      table.append(thead);
+    }
+
+    if (tableData.rows.length) {
+      const tbody = document.createElement("tbody");
+      tableData.rows.forEach((row) => {
+        const tableRow = document.createElement("tr");
+        row.forEach((cell) => {
+          tableRow.append(makeElement("td", "", cell));
+        });
+        tbody.append(tableRow);
+      });
+      table.append(tbody);
+    }
+
+    wrapper.append(table);
+    return wrapper;
   }
 
   function renderStatus(message) {
@@ -161,14 +232,12 @@
     if (page.eyebrow) header.append(makeElement("p", "page-kicker", page.eyebrow));
     header.append(makeElement("h2", "page-title", page.title));
 
-    if (page.image) {
-      const media = makeElement("figure", "page-media");
-      const image = document.createElement("img");
-      image.src = page.image;
-      image.alt = page.imageAlt;
-      image.loading = "lazy";
-      media.append(image);
-      content.append(media);
+    if (page.image && page.imagePosition === "after-copy") {
+      content.classList.add("page-content--image-after");
+    }
+
+    if (page.image && page.imagePosition !== "after-copy") {
+      content.append(renderMedia(page));
     }
 
     const copy = makeElement("div", "page-copy");
@@ -185,6 +254,10 @@
       copy.append(body);
     }
 
+    if (page.table) {
+      copy.append(renderTable(page.table));
+    }
+
     if (page.bullets.length) {
       const list = makeElement("ul", "page-list");
       page.bullets.forEach((bullet) => {
@@ -194,6 +267,10 @@
     }
 
     content.append(copy);
+
+    if (page.image && page.imagePosition === "after-copy") {
+      content.append(renderMedia(page));
+    }
 
     if (page.caption) footer.append(makeElement("p", "page-caption", page.caption));
     footer.append(makeElement("span", "page-number", String(index + 1)));

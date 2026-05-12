@@ -94,16 +94,12 @@ const translations = {
     finishReset: "Restart",
     stopLabel: "Stop",
     badgeQuestion: "Question",
-    badgeBonus: "Bonus",
     badgeHazard: "Restart",
-    bonusLabel: "Bonus Question",
     flatTire: "Flat Tire",
     truckIssue: "Flat Tire!",
     hazardText: "Go back 3 spaces.",
     feedbackCorrect: "Correct! Keep moving.",
     feedbackWrong: "Incorrect Answer: Flat Tire! Go back 3 spaces.",
-    feedbackBonusCorrect: "Correct! Bonus complete.",
-    feedbackBonusWrong: "Not quite, but you still unlocked the finish.",
     startTileAlt: "Farmer at the farm",
     finishTileAlt: "Customer team",
     farmPath: "Farm Path",
@@ -151,16 +147,12 @@ const translations = {
     finishReset: "Reiniciar",
     stopLabel: "Parada",
     badgeQuestion: "Pregunta",
-    badgeBonus: "Bonus",
     badgeHazard: "Reinicio",
-    bonusLabel: "Pregunta bonus",
     flatTire: "Llanta pinchada",
     truckIssue: "Llanta pinchada",
     hazardText: "Retrocede 3 espacios.",
     feedbackCorrect: "¡Correcto! Sigue avanzando.",
     feedbackWrong: "Respuesta incorrecta: llanta pinchada. Retrocede 3 espacios.",
-    feedbackBonusCorrect: "¡Correcto! Bonus completado.",
-    feedbackBonusWrong: "No fue correcta, pero igual desbloqueaste el final.",
     startTileAlt: "Granjero en la granja",
     finishTileAlt: "Equipo de clientes",
     farmPath: "Camino de granja",
@@ -174,12 +166,12 @@ const translations = {
 const spaceDetails = {
   1: { label: { en: "Heritage Farm", es: "Heritage Farm" }, type: "start" },
   6: { label: { en: "Flat Tire", es: "Llanta pinchada" }, type: "hazard" },
-  25: { type: "finish" },
+  25: { label: { en: "Finish", es: "Meta" }, type: "finish" },
 };
 
 const questions = [
   {
-    topic: { en: "Bonus Question", es: "Pregunta bonus" },
+    topic: { en: "Market and Kitchen", es: "Market and Kitchen" },
     prompt: {
       en: "What is the official name of the Farms Collection within Redmond Inc.?",
       es: "¿Cuál es el nombre oficial de la colección de granjas dentro de Redmond Inc.?",
@@ -618,19 +610,6 @@ const questions = [
     },
     answer: 1,
   },
-  {
-    topic: { en: "Bonus Question", es: "Pregunta bonus" },
-    isBonus: true,
-    prompt: {
-      en: "BONUS QUESTION: Where was the location of the first opened Redmond Farm Market and Kitchen?",
-      es: "PREGUNTA BONUS: ¿Dónde estuvo ubicada la primera sucursal que abrió de Redmond Farm Market and Kitchen?",
-    },
-    options: {
-      en: ["Sugarhouse, UT", "Orem, UT", "Heber, UT"],
-      es: ["Sugarhouse, UT", "Orem, UT", "Heber, UT"],
-    },
-    answer: 1,
-  },
 ];
 
 const standardQuestionSpaceOrder = Array.from({ length: 24 }, (_, index) => index + 2).filter(
@@ -644,7 +623,6 @@ const questionIndexBySpace = standardQuestionSpaceOrder.reduce(
   },
   {}
 );
-const bonusQuestionIndex = questions.findIndex((question) => question.isBonus);
 const TRUCK_TOKEN_IMAGE = "assets/Truck 2.png";
 
 const state = {
@@ -658,7 +636,6 @@ const state = {
   activeQuestionIndex: null,
   selectedOptionIndex: null,
   answerLocked: false,
-  bonusAnswered: false,
   facing: "right",
 };
 
@@ -722,7 +699,7 @@ function applyTranslations() {
   if (!questionModal.classList.contains("hidden")) {
     if (state.activeModal === "hazard") {
       renderHazardModal();
-    } else if (state.activeModal === "question" || state.activeModal === "bonus") {
+    } else if (state.activeModal === "question") {
       renderQuestionModal();
     }
   }
@@ -1228,7 +1205,7 @@ function handleLanding() {
   }
 
   if (space.type === "finish") {
-    openBonusModal(space);
+    openFinishModal();
     return;
   }
 
@@ -1260,11 +1237,10 @@ function openHazardModal() {
 function renderQuestionModal() {
   const space = getSpace(state.activeSpaceNumber);
   const question = questions[state.activeQuestionIndex];
-  const isBonus = state.activeModal === "bonus";
 
-  questionStop.textContent = isBonus ? t("bonusLabel") : `${t("stopLabel")} ${space.number}`;
+  questionStop.textContent = `${t("stopLabel")} ${space.number}`;
   questionTitle.textContent = question.topic?.[currentLang] || space.label;
-  questionBadge.textContent = isBonus ? t("badgeBonus") : t("badgeQuestion");
+  questionBadge.textContent = t("badgeQuestion");
   questionText.textContent = question.prompt[currentLang];
   questionOptions.innerHTML = "";
   questionFeedback.textContent = "";
@@ -1293,7 +1269,7 @@ function renderQuestionModal() {
 
       const correct = index === question.answer;
       pendingOutcome = {
-        type: isBonus ? "bonus" : "question",
+        type: "question",
         correct,
         spaceNumber: space.number,
       };
@@ -1306,13 +1282,7 @@ function renderQuestionModal() {
 
   if (state.answerLocked) {
     const correct = state.selectedOptionIndex === question.answer;
-    if (isBonus) {
-      questionFeedback.textContent = correct
-        ? t("feedbackBonusCorrect")
-        : t("feedbackBonusWrong");
-    } else {
-      questionFeedback.textContent = correct ? t("feedbackCorrect") : t("feedbackWrong");
-    }
+    questionFeedback.textContent = correct ? t("feedbackCorrect") : t("feedbackWrong");
   }
 }
 
@@ -1327,23 +1297,6 @@ function openQuestionModal(space) {
   state.activeModal = "question";
   state.activeSpaceNumber = space.number;
   state.activeQuestionIndex = questionIndex;
-  state.selectedOptionIndex = null;
-  state.answerLocked = false;
-  pendingOutcome = null;
-  renderQuestionModal();
-  openModal(questionModal);
-}
-
-function openBonusModal(space) {
-  if (bonusQuestionIndex < 0) {
-    openFinishModal();
-    return;
-  }
-
-  setButtonsDisabled(true);
-  state.activeModal = "bonus";
-  state.activeSpaceNumber = space.number;
-  state.activeQuestionIndex = bonusQuestionIndex;
   state.selectedOptionIndex = null;
   state.answerLocked = false;
   pendingOutcome = null;
@@ -1386,14 +1339,6 @@ async function applyOutcome() {
     return;
   }
 
-  if (type === "bonus") {
-    state.bonusAnswered = true;
-    state.completed.add(spaceNumber);
-    updateBoard();
-    openFinishModal();
-    return;
-  }
-
   if (!correct) {
     state.completed.add(spaceNumber);
     await moveTruckAnimated(-3, { triggerLanding: false });
@@ -1405,12 +1350,7 @@ async function applyOutcome() {
   updateBoard();
   setButtonsDisabled(false);
   if (state.position === 25) {
-    if (bonusQuestionIndex >= 0 && !state.bonusAnswered) {
-      openBonusModal(getSpace(state.position));
-    } else {
-      openFinishModal();
-      setButtonsDisabled(true);
-    }
+    openFinishModal();
   }
 }
 
@@ -1426,7 +1366,6 @@ function resetGame() {
   state.position = 1;
   state.moves = 0;
   state.completed.clear();
-  state.bonusAnswered = false;
   pendingOutcome = null;
   clearActiveModal();
   rollResult.textContent = "-";
