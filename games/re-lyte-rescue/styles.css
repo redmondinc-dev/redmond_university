@@ -31,7 +31,7 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Nunito", "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
   color: var(--ink);
   background:
     linear-gradient(180deg, #f6fbf6 0%, #eef5eb 44%, #fff7eb 100%);
@@ -98,12 +98,13 @@ button {
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.66rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 h1,
 h2 {
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
+  font-weight: 600;
 }
 
 h1 {
@@ -132,7 +133,7 @@ h1 {
   display: block;
   color: var(--muted);
   font-size: 0.62rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
 }
@@ -142,6 +143,7 @@ h1 {
   margin-top: 0.08rem;
   color: var(--green);
   font-size: 0.9rem;
+  font-weight: 600;
   line-height: 1.1;
 }
 
@@ -149,7 +151,7 @@ h1 {
   border: 1px solid rgba(46, 68, 80, 0.16);
   background: linear-gradient(180deg, #ffffff 0%, #f2f7f8 100%);
   color: var(--ink);
-  font-weight: 800;
+  font-weight: 600;
   border-radius: var(--radius);
   padding: 0.56rem 0.85rem;
   font-size: 0.88rem;
@@ -206,15 +208,16 @@ h1 {
 
 .person-profile strong {
   color: var(--navy);
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
   font-size: 1.18rem;
+  font-weight: 600;
   line-height: 1;
 }
 
 .person-profile span {
   color: var(--muted);
   font-size: 0.74rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.15;
 }
 
@@ -233,15 +236,16 @@ h1 {
 .target-strip span {
   color: var(--muted);
   font-size: 0.62rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
 
 .target-strip strong {
   color: var(--orange);
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
   font-size: 1.05rem;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -258,7 +262,7 @@ h1 {
   background: rgba(245, 248, 251, 0.82);
   color: var(--teal);
   font-size: 0.66rem;
-  font-weight: 900;
+  font-weight: 700;
   text-align: center;
   white-space: nowrap;
 }
@@ -282,7 +286,7 @@ h1 {
   display: block;
   color: var(--muted);
   font-size: 0.6rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
 }
@@ -291,8 +295,9 @@ h1 {
   display: block;
   margin-top: 0.22rem;
   color: var(--teal);
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
   font-size: 1.12rem;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -307,7 +312,7 @@ h1 {
 
 .meter-header span,
 .section-heading span {
-  font-weight: 800;
+  font-weight: 600;
   color: var(--muted);
   font-size: 0.78rem;
 }
@@ -382,7 +387,7 @@ h1 {
   background: rgba(245, 248, 251, 0.9);
   color: var(--muted);
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 600;
   transition: transform 0.18s ease, background 0.18s ease, color 0.18s ease;
 }
 
@@ -404,7 +409,7 @@ h1 {
 .check-mg {
   color: var(--teal);
   font-size: 0.68rem;
-  font-weight: 900;
+  font-weight: 700;
   white-space: nowrap;
 }
 
@@ -468,7 +473,7 @@ h1 {
   background: rgba(245, 248, 251, 0.75);
   color: var(--muted);
   font-size: 0.64rem;
-  font-weight: 800;
+  font-weight: 600;
   line-height: 1.05;
   text-align: center;
   transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
@@ -604,7 +609,7 @@ h1 {
   display: block;
   color: var(--muted);
   font-size: 0.58rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
 }
@@ -614,6 +619,7 @@ h1 {
   margin-top: 0.1rem;
   color: var(--teal);
   font-size: 0.88rem;
+  font-weight: 600;
 }
 
 .speech-bubble {
@@ -626,7 +632,7 @@ h1 {
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.94);
   box-shadow: 0 16px 28px rgba(37, 68, 84, 0.1);
-  font-weight: 800;
+  font-weight: 600;
   font-size: 0.9rem;
 }
 
@@ -747,7 +753,7 @@ h1 {
   display: block;
   margin-top: 0.24rem;
   font-size: 0.66rem;
-  font-weight: 800;
+  font-weight: 600;
   text-align: center;
   color: var(--navy);
 }
@@ -858,9 +864,9 @@ h1 {
   height: 32px;
   margin: 0 auto;
   border-radius: var(--radius);
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
   font-size: 0.82rem;
-  font-weight: 800;
+  font-weight: 700;
   color: #ffffff;
 }
 
@@ -930,9 +936,9 @@ h1 {
 }
 
 .jar-copy {
-  font-family: "Baloo 2", sans-serif;
+  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
   font-size: 0.78rem;
-  font-weight: 800;
+  font-weight: 700;
   line-height: 0.9;
   color: #fff8ed;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.08);
@@ -1642,7 +1648,7 @@ h1 {
   background: rgba(21, 47, 56, 0.92);
   color: #fffaf1;
   font-size: 0.86rem;
-  font-weight: 900;
+  font-weight: 700;
   text-align: center;
   opacity: 0;
   pointer-events: none;
@@ -1693,7 +1699,7 @@ h1 {
   margin: 0 0 0.3rem;
   color: var(--green);
   font-size: 0.66rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
@@ -1724,15 +1730,16 @@ h1 {
 .victory-score span {
   color: var(--muted);
   font-size: 0.72rem;
-  font-weight: 900;
+  font-weight: 700;
   letter-spacing: 0.11em;
   text-transform: uppercase;
 }
 
 .victory-score strong {
   color: var(--green);
-  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
   font-size: 1.8rem;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -1938,8 +1945,8 @@ h1 {
   border-radius: var(--radius);
   display: grid;
   place-items: center;
-  font-family: "Baloo 2", sans-serif;
-  font-weight: 800;
+  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
+  font-weight: 700;
   font-size: 0.78rem;
   color: #fff;
   pointer-events: none;

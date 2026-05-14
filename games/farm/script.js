@@ -56,9 +56,9 @@ boardRows.forEach((row, rowIndex) => {
 
 const translations = {
   en: {
-    pageTitle: "Farm to Table Game",
+    pageTitle: "Take the Food to the Customer!",
     heroEyebrow: "Board game concept",
-    heroTitle: "Farm to Table Game",
+    heroTitle: "Take the Food to the Customer!",
     heroSubhead:
       "Spin the wheel to follow the freight truck's route from the farm to the customer.",
     statusStop: "Current stop",
