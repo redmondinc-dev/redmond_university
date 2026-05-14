@@ -114,8 +114,18 @@
       }
 
       .finish-copy {
-        width: min(100%, 1080px);
+        width: min(100%, 1180px);
         margin: 0 auto;
+      }
+
+      .finish-image {
+        display: block;
+        width: auto;
+        max-width: 100%;
+        max-height: min(72vh, 640px);
+        height: auto;
+        margin: 0 auto;
+        object-fit: contain;
       }
 
       .celebration-card::before {
@@ -407,16 +417,13 @@
           <div class="celebration-card">
             <div class="celebration-copy">
               <div class="finish-copy">
-                <h1>Congratulations, you finished the course!</h1>
-                <p class="celebration-message">
-                  Now, share your amazing new knowledge with customers and coworkers
-                  (or anyone who will listen)! We'll see you in the next course :)
-                </p>
-                <p class="celebration-note">
-                  (P.S. Did you know that Redmond Farms coordinates regular farm and mine
-                  tours for associates? Keep an ear out for the next one happening and/or
-                  ask your team lead for more details.)
-                </p>
+                <img
+                  class="finish-image"
+                  src="./RF_Congratulations%20closing.jpg"
+                  width="4000"
+                  height="1976"
+                  alt="Congratulations, you finished the course! Now, share your amazing new knowledge with customers and coworkers, or anyone who will listen. We'll see you in the next course. P.S. Did you know that Redmond Farms coordinates regular farm and mine tours for associates? Keep an ear out for the next one happening and/or ask your team lead for more details."
+                />
               </div>
             </div>
 
