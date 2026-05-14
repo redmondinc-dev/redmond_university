@@ -179,9 +179,9 @@ h1 {
 }
 
 .status-panel {
-  padding: 0.65rem;
+  padding: 0.54rem;
   display: grid;
-  gap: 0.5rem;
+  gap: 0.42rem;
   position: sticky;
   top: 0.55rem;
 }
@@ -190,11 +190,77 @@ h1 {
 .retention-card,
 .checklist-card,
 .rescue-card,
+.person-card,
 .mission-card {
   background: rgba(255, 255, 255, 0.68);
   border-radius: var(--radius);
-  padding: 0.62rem;
+  padding: 0.52rem;
   border: 1px solid rgba(46, 68, 80, 0.08);
+}
+
+.person-profile {
+  display: grid;
+  gap: 0.06rem;
+  margin-top: 0.3rem;
+}
+
+.person-profile strong {
+  color: var(--navy);
+  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-size: 1.18rem;
+  line-height: 1;
+}
+
+.person-profile span {
+  color: var(--muted);
+  font-size: 0.74rem;
+  font-weight: 800;
+  line-height: 1.15;
+}
+
+.target-strip {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.36rem;
+  padding: 0.32rem 0.44rem;
+  border-radius: var(--radius);
+  background: linear-gradient(180deg, rgba(255, 248, 232, 0.96), rgba(247, 255, 249, 0.92));
+  border: 1px solid rgba(242, 112, 63, 0.14);
+}
+
+.target-strip span {
+  color: var(--muted);
+  font-size: 0.62rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.target-strip strong {
+  color: var(--orange);
+  font-family: "Baloo 2", "Trebuchet MS", sans-serif;
+  font-size: 1.05rem;
+  line-height: 1;
+}
+
+.target-minerals {
+  display: none;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.28rem;
+  margin-top: 0.42rem;
+}
+
+.target-minerals span {
+  padding: 0.28rem 0.32rem;
+  border-radius: var(--radius);
+  background: rgba(245, 248, 251, 0.82);
+  color: var(--teal);
+  font-size: 0.66rem;
+  font-weight: 900;
+  text-align: center;
+  white-space: nowrap;
 }
 
 .stat-grid {
@@ -311,7 +377,7 @@ h1 {
   display: flex;
   align-items: center;
   gap: 0.48rem;
-  padding: 0.4rem 0.5rem;
+  padding: 0.34rem 0.45rem;
   border-radius: var(--radius);
   background: rgba(245, 248, 251, 0.9);
   color: var(--muted);
@@ -324,6 +390,22 @@ h1 {
   transform: translateX(4px);
   background: rgba(104, 209, 158, 0.16);
   color: var(--ink);
+}
+
+.checklist-item.is-complete {
+  background: rgba(86, 181, 126, 0.18);
+}
+
+.check-copy {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.check-mg {
+  color: var(--teal);
+  font-size: 0.68rem;
+  font-weight: 900;
+  white-space: nowrap;
 }
 
 .check-dot {
@@ -344,6 +426,10 @@ h1 {
   box-shadow: 0 0 0 5px rgba(86, 181, 126, 0.12);
 }
 
+.checklist-item.is-complete .check-mg {
+  color: var(--green);
+}
+
 .scene-card {
   padding: 0.55rem;
 }
@@ -362,30 +448,36 @@ h1 {
 
 .mission-steps {
   list-style: none;
-  margin: 0.52rem 0 0;
+  margin: 0.4rem 0 0;
   padding: 0;
   display: grid;
-  gap: 0.38rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.28rem;
 }
 
 .mission-step {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.48rem;
-  padding: 0.4rem 0.5rem;
+  justify-content: center;
+  gap: 0.18rem;
+  min-height: 52px;
+  padding: 0.3rem 0.24rem;
   border: 1px solid rgba(21, 47, 56, 0.08);
   border-radius: var(--radius);
   background: rgba(245, 248, 251, 0.75);
   color: var(--muted);
-  font-size: 0.82rem;
+  font-size: 0.64rem;
   font-weight: 800;
+  line-height: 1.05;
+  text-align: center;
   transition: background 0.18s ease, color 0.18s ease, transform 0.18s ease;
 }
 
 .mission-step.is-active {
   background: rgba(76, 200, 255, 0.14);
   color: var(--teal);
-  transform: translateX(3px);
+  transform: translateY(-1px);
 }
 
 .mission-step.is-complete {
@@ -396,8 +488,8 @@ h1 {
 .step-number {
   display: grid;
   place-items: center;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #ffffff;
   color: currentColor;
@@ -753,6 +845,10 @@ h1 {
   box-shadow:
     inset 0 0 0 2px rgba(63, 157, 115, 0.24),
     0 14px 24px rgba(37, 68, 84, 0.08);
+}
+
+.electrolyte-btn.is-complete {
+  filter: saturate(0.88);
 }
 
 .electrolyte-icon {

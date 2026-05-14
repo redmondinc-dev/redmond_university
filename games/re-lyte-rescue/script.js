@@ -1,12 +1,30 @@
 const ELECTROLYTES = [
-  { id: "sodium", label: "Sodium" },
-  { id: "potassium", label: "Potassium" },
-  { id: "magnesium", label: "Magnesium" },
-  { id: "calcium", label: "Calcium" },
+  { id: "sodium", label: "Sodium", symbol: "Na", perScoop: 810 },
+  { id: "potassium", label: "Potassium", symbol: "K", perScoop: 400 },
+  { id: "magnesium", label: "Magnesium", symbol: "Mg", perScoop: 50 },
+  { id: "calcium", label: "Calcium", symbol: "Ca", perScoop: 60 },
+];
+const TRAINING_PROFILES = [
+  {
+    name: "Mia",
+    context: "Soccer practice day",
+    scoops: 1,
+    message: "Practice day. I need one scoop.",
+  },
+  {
+    name: "Jordan",
+    context: "Long warehouse shift",
+    scoops: 2,
+    message: "Long shift. Count two scoops today.",
+  },
+  {
+    name: "Sam",
+    context: "Hot trail afternoon",
+    scoops: 3,
+    message: "Big heat day. I need three scoops.",
+  },
 ];
 
-const RETENTION_FACTORS = [0.18, 0.38, 0.58, 0.78, 0.96];
-const LEAK_LEVELS = [1, 0.72, 0.45, 0.2, 0.02];
 const SIP_POWER = [22, 30, 38, 46, 54];
 const CHARACTER_STATES = [
   {
@@ -47,6 +65,16 @@ const refs = {
   instruction: document.getElementById("instruction-text"),
   missionStatus: document.getElementById("mission-status"),
   bubble: document.getElementById("bubble-text"),
+  profileIndex: document.getElementById("profile-index"),
+  profileName: document.getElementById("profile-name"),
+  profileContext: document.getElementById("profile-context"),
+  targetScoops: document.getElementById("target-scoops"),
+  targetMinerals: {
+    sodium: document.getElementById("target-sodium"),
+    potassium: document.getElementById("target-potassium"),
+    magnesium: document.getElementById("target-magnesium"),
+    calcium: document.getElementById("target-calcium"),
+  },
   hydrationLabel: document.getElementById("hydration-label"),
   hydrationFill: document.getElementById("hydration-fill"),
   retentionValue: document.getElementById("retention-value"),
@@ -71,6 +99,7 @@ const refs = {
   waterButtons: Array.from(document.querySelectorAll(".water-control")),
   electrolyteButtons: Array.from(document.querySelectorAll(".electrolyte-btn")),
   checklistItems: Array.from(document.querySelectorAll(".checklist-item")),
+  checklistAmounts: Array.from(document.querySelectorAll(".check-mg")),
   missionSteps: Array.from(document.querySelectorAll(".mission-step")),
 };
 
@@ -82,16 +111,22 @@ let scheduledTimers = [];
 let toastTimer = 0;
 let audioContext = null;
 
-function createInitialState() {
+function createInitialState(profileIndex = 0) {
+  const profile = TRAINING_PROFILES[profileIndex];
   return {
+    profileIndex,
+    scoops: 0,
+    amounts: ELECTROLYTES.reduce((entries, electrolyte) => {
+      entries[electrolyte.id] = 0;
+      return entries;
+    }, {}),
     hydration: 0,
     displayHydration: 0,
-    activeElectrolytes: [],
     puddle: 0,
     isDrinking: false,
     rescued: false,
-    instruction: "Stabilize hydration by pairing water with electrolytes.",
-    message: "I'm so thirsty!",
+    instruction: `Match ${profile.name}'s daily target: ${formatScoops(profile.scoops)} or the equivalent electrolyte mg.`,
+    message: profile.message,
   };
 }
 
@@ -99,8 +134,57 @@ function clamp(value, min, max) {
   return Math.min(max, Math.max(min, value));
 }
 
+function formatScoops(count) {
+  return `${count} ${count === 1 ? "scoop" : "scoops"}`;
+}
+
+function formatMg(value) {
+  return `${value}mg`;
+}
+
+function getCurrentProfile() {
+  return TRAINING_PROFILES[state.profileIndex];
+}
+
+function getTargetAmount(id) {
+  const electrolyte = ELECTROLYTES.find((entry) => entry.id === id);
+  return electrolyte.perScoop * getCurrentProfile().scoops;
+}
+
+function getTotalTarget() {
+  return ELECTROLYTES.reduce((total, electrolyte) => total + getTargetAmount(electrolyte.id), 0);
+}
+
+function getTotalAmount() {
+  return ELECTROLYTES.reduce((total, electrolyte) => total + state.amounts[electrolyte.id], 0);
+}
+
+function getElectrolyteProgress(id) {
+  return clamp(state.amounts[id] / getTargetAmount(id), 0, 1);
+}
+
+function getMixProgressPercent() {
+  const progress =
+    ELECTROLYTES.reduce((total, electrolyte) => total + getElectrolyteProgress(electrolyte.id), 0) /
+    ELECTROLYTES.length;
+  return Math.round(progress * 100);
+}
+
+function getMixAccuracy() {
+  const totalError = ELECTROLYTES.reduce((total, electrolyte) => {
+    const target = getTargetAmount(electrolyte.id);
+    return total + Math.abs(target - state.amounts[electrolyte.id]);
+  }, 0);
+  return clamp(Math.round(100 - (totalError / getTotalTarget()) * 100), 0, 100);
+}
+
+function hasAnyElectrolytes() {
+  return getTotalAmount() > 0;
+}
+
 function getElectrolyteCount() {
-  return state.activeElectrolytes.length;
+  return ELECTROLYTES.filter((electrolyte) => state.amounts[electrolyte.id] >= getTargetAmount(electrolyte.id))
+    .length;
 }
 
 function hasAllElectrolytes() {
@@ -108,37 +192,31 @@ function hasAllElectrolytes() {
 }
 
 function getLeakLevel() {
-  return LEAK_LEVELS[getElectrolyteCount()];
+  const progress = getMixProgressPercent() / 100;
+  return clamp(1 - progress * 0.98, 0.02, 1);
 }
 
 function getRetentionPercent() {
-  return Math.round(RETENTION_FACTORS[getElectrolyteCount()] * 100);
+  return Math.round(18 + (getMixProgressPercent() / 100) * 78);
 }
 
 function getLeakRiskLabel() {
-  const count = getElectrolyteCount();
-  if (count === 0) return "Critical";
-  if (count === 1) return "High";
-  if (count === 2) return "Moderate";
-  if (count === 3) return "Low";
-  return "Sealed";
+  return `${getMixAccuracy()}%`;
 }
 
 function getMissionPhase() {
-  if (state.rescued) return "Rescued";
-  if (hasAllElectrolytes() && state.hydration >= 86) return "Stabilizing";
-  if (hasAllElectrolytes()) return "Final sip";
-  if (getElectrolyteCount() > 0) return "Build mix";
-  if (state.puddle > 0 || state.hydration > 0) return "Add minerals";
-  return "Stabilize";
+  if (state.rescued) return "Hydrated";
+  if (hasAllElectrolytes()) return "Serve water";
+  if (hasAnyElectrolytes()) return "Measure mix";
+  return "Study target";
 }
 
 function getRescueScore() {
-  const hydrationScore = Math.round(state.hydration * 6);
-  const electrolyteScore = getElectrolyteCount() * 95;
+  const accuracyScore = getMixAccuracy() * 7;
+  const scoopScore = Math.min(state.scoops, getCurrentProfile().scoops) * 75;
   const leakPenalty = Math.round(state.puddle * 1.8);
   const rescueBonus = state.rescued ? 160 : 0;
-  return Math.max(0, hydrationScore + electrolyteScore + rescueBonus - leakPenalty);
+  return Math.max(0, accuracyScore + scoopScore + rescueBonus - leakPenalty);
 }
 
 function ensureAudioContext() {
@@ -185,13 +263,12 @@ function playTone(type) {
 }
 
 function getRetentionCopy() {
-  const count = getElectrolyteCount();
+  const progress = getMixProgressPercent();
 
-  if (count === 0) return "Big leak. Almost everything becomes puddle.";
-  if (count === 1) return "A little better. The leak is still pretty dramatic.";
-  if (count === 2) return "Middle ground. More water is finally sticking around.";
-  if (count === 3) return "Almost sealed up. Just a small leak remains.";
-  return "Tiny or no leak. Water can actually stay put now.";
+  if (progress === 0) return "No mix measured yet.";
+  if (progress < 50) return "Still missing most of the daily target.";
+  if (progress < 100) return "Close. Finish the remaining scoop or mg targets.";
+  return "Daily target matched. Serve water to complete the round.";
 }
 
 function getMood() {
@@ -359,57 +436,81 @@ function updateSceneClasses() {
   }
 }
 
+function renderProfile() {
+  const profile = getCurrentProfile();
+  refs.profileIndex.textContent = `${state.profileIndex + 1} / ${TRAINING_PROFILES.length}`;
+  refs.profileName.textContent = profile.name;
+  refs.profileContext.textContent = profile.context;
+  refs.targetScoops.textContent = formatScoops(profile.scoops);
+
+  ELECTROLYTES.forEach((electrolyte) => {
+    refs.targetMinerals[electrolyte.id].textContent =
+      `${electrolyte.symbol} ${formatMg(getTargetAmount(electrolyte.id))}`;
+  });
+}
+
 function renderChecklist() {
   refs.electrolyteButtons.forEach((button) => {
-    const active = state.activeElectrolytes.includes(button.dataset.electrolyte);
+    const id = button.dataset.electrolyte;
+    const active = state.amounts[id] > 0;
+    const complete = state.amounts[id] >= getTargetAmount(id);
     button.classList.toggle("is-active", active);
-    button.disabled = active;
+    button.classList.toggle("is-complete", complete);
+    button.disabled = state.rescued || complete;
     button.setAttribute("aria-pressed", String(active));
   });
 
   refs.checklistItems.forEach((item) => {
-    const active = state.activeElectrolytes.includes(item.dataset.check);
+    const id = item.dataset.check;
+    const active = state.amounts[id] > 0;
+    const complete = state.amounts[id] >= getTargetAmount(id);
     item.classList.toggle("is-active", active);
+    item.classList.toggle("is-complete", complete);
   });
 
-  refs.electrolyteCount.textContent = `${getElectrolyteCount()} / ${ELECTROLYTES.length}`;
+  refs.checklistAmounts.forEach((item) => {
+    const id = item.dataset.mg;
+    item.textContent = `${formatMg(state.amounts[id])} / ${formatMg(getTargetAmount(id))}`;
+  });
+
+  refs.electrolyteCount.textContent = `${getElectrolyteCount()} / ${ELECTROLYTES.length} met`;
 }
 
 function renderMissionState() {
   const score = getRescueScore();
   const phase = getMissionPhase();
-  const retention = `${getRetentionPercent()}%`;
+  const profile = getCurrentProfile();
 
   refs.missionStatus.textContent = phase;
-  refs.retentionValue.textContent = retention;
+  refs.retentionValue.textContent = `${state.scoops} / ${profile.scoops}`;
   refs.leakValue.textContent = getLeakRiskLabel();
   refs.rescueScore.textContent = `${score} pts`;
   refs.arenaPhase.textContent = phase;
-  refs.arenaRetention.textContent = retention;
+  refs.arenaRetention.textContent = formatScoops(profile.scoops);
 
   refs.missionSteps.forEach((step) => {
     const stepName = step.dataset.step;
-    const waterComplete = state.puddle > 0 || state.hydration > 0 || getElectrolyteCount() > 0;
+    const targetRead = hasAnyElectrolytes() || state.hydration > 0 || state.rescued;
     const electrolytesComplete = hasAllElectrolytes();
     const rescueComplete = state.rescued;
 
     step.classList.toggle(
       "is-complete",
-      (stepName === "water" && waterComplete) ||
+      (stepName === "water" && targetRead) ||
         (stepName === "electrolytes" && electrolytesComplete) ||
         (stepName === "rescue" && rescueComplete)
     );
     step.classList.toggle(
       "is-active",
-      (stepName === "water" && !waterComplete) ||
-        (stepName === "electrolytes" && waterComplete && !electrolytesComplete) ||
+      (stepName === "water" && !targetRead) ||
+        (stepName === "electrolytes" && targetRead && !electrolytesComplete) ||
         (stepName === "rescue" && electrolytesComplete && !rescueComplete)
     );
   });
 }
 
 function renderHydrationVisuals() {
-  const shownHydration = clamp(state.displayHydration, 0, 100);
+  const shownHydration = clamp(Math.max(state.displayHydration, getMixProgressPercent()), 0, 100);
   const puddleScaleX = 0.18 + state.puddle / 70;
   const puddleScaleY = 0.14 + state.puddle / 160;
 
@@ -423,8 +524,9 @@ function renderHydrationVisuals() {
 function render() {
   refs.instruction.textContent = state.instruction;
   refs.bubble.textContent = state.message;
-  refs.shortcutBtn.disabled = state.rescued;
+  refs.shortcutBtn.disabled = state.rescued || hasAllElectrolytes();
 
+  renderProfile();
   updateSceneClasses();
   renderMissionState();
   renderChecklist();
@@ -433,14 +535,15 @@ function render() {
 
 function settleAtFullHydration() {
   if (state.rescued) return;
+  const profile = getCurrentProfile();
   state.hydration = 100;
   state.rescued = true;
-  state.instruction = "Rescue complete. Hydration is stabilized.";
-  state.message = "Rescue complete!";
+  state.instruction = `${profile.name}'s daily target is matched: ${formatScoops(profile.scoops)} and the right mg totals.`;
+  state.message = "Daily target matched!";
   animateHydration(100, 500);
   burstSparkles(18);
   pulseCharacter("is-celebrating", 900);
-  showToast("Rescue complete: hydration stabilized.");
+  showToast("Daily target matched. Hydration rescue complete.");
   playTone("victory");
   render();
   queue(showVictoryOverlay, 1040);
@@ -456,11 +559,14 @@ function finishDrink() {
   }
 
   if (hasAllElectrolytes()) {
-    state.instruction = "All four electrolytes are active. One more sip will finish it.";
-    state.message = "Almost there!";
-  } else if (getElectrolyteCount() > 0) {
-    state.instruction = "Try water again or add the next electrolyte.";
-    state.message = "That sip stayed a little better.";
+    state.instruction = "The daily target is measured. Serve one more cup to finish.";
+    state.message = "Target ready. Water please!";
+  } else if (hasAnyElectrolytes()) {
+    state.instruction = "Keep matching the scoop or mg targets before serving water.";
+    state.message = `${getMixProgressPercent()}% of the target is measured.`;
+  } else {
+    state.instruction = `Start with ${formatScoops(getCurrentProfile().scoops)} or the matching electrolyte mg.`;
+    state.message = getCurrentProfile().message;
   }
 
   render();
@@ -468,39 +574,37 @@ function finishDrink() {
 
 // Each sip first spikes the bar, then settles back to the retained amount to
 // visualize the water leaking out before the body hangs on to what it can.
-function drinkWater(options = {}) {
+function drinkWater() {
   if (state.isDrinking || state.rescued) return;
 
-  const count = options.forceCount ?? getElectrolyteCount();
-  const leakLevel = LEAK_LEVELS[count];
-  const retention = RETENTION_FACTORS[count];
-  const sipPower = options.shortcut ? 120 : SIP_POWER[count];
-  const netGain = Math.round(sipPower * (options.shortcut ? 1 : retention));
+  const count = getElectrolyteCount();
+  const leakLevel = getLeakLevel();
+  const retention = getRetentionPercent() / 100;
+  const sipPower = hasAllElectrolytes() ? 120 : SIP_POWER[count];
+  const netGain = Math.round(sipPower * retention);
   const previewLoss = Math.round(leakLevel * 18) + 4;
   const previewHydration = clamp(state.hydration + netGain + previewLoss, 0, 100);
-  const retainedHydration = clamp(state.hydration + netGain, 0, 100);
-  const puddleDelta = options.shortcut ? -12 : Math.round(leakLevel * 26);
+  const retainedHydration = hasAllElectrolytes()
+    ? 100
+    : clamp(state.hydration + netGain, 0, 100);
+  const puddleDelta = hasAllElectrolytes() ? -12 : Math.round(leakLevel * 26);
 
   state.isDrinking = true;
   refs.scene.classList.add("is-drinking");
-  playTone(options.shortcut ? "shortcut" : "water");
+  playTone("water");
 
-  if (options.shortcut) {
-    refs.scene.classList.add("is-shortcut");
-    state.instruction = "Re-Lyte shortcut activated. All four electrolytes hit at once.";
-    state.message = "All the key electrolytes, all at once.";
-  } else if (count === 0) {
-    state.instruction = "Water alone is slipping right through. Add electrolytes one by one.";
-    state.message = "Water alone goes right through me!";
-    showToast("Water added. Retention is low without electrolytes.");
-  } else if (count === ELECTROLYTES.length) {
-    state.instruction = "Now the leak is tiny. Watch that hydration climb.";
-    state.message = "This is way better!";
-    showToast("Full electrolyte mix active. Water retention boosted.");
+  if (count === 0) {
+    state.instruction = "Water helps, but the daily electrolyte target is still empty.";
+    state.message = "I still need the mix.";
+    showToast("Measure the Re-Lyte scoop or mg target first.");
+  } else if (hasAllElectrolytes()) {
+    state.instruction = "Target matched. Water completes the hydration rescue.";
+    state.message = "That is the right mix!";
+    showToast("Daily mix matched. Serving water.");
   } else {
-    state.instruction = "Leak reduced. Add more electrolytes or try another sip.";
-    state.message = "Okay, that stayed in a little longer.";
-    showToast(`${getRetentionPercent()}% retention active.`);
+    state.instruction = "Partial mix measured. Finish the remaining mg targets.";
+    state.message = `${getMixProgressPercent()}% measured so far.`;
+    showToast(`${getMixProgressPercent()}% of the daily target measured.`);
   }
 
   animateHydration(previewHydration, 520);
@@ -516,7 +620,10 @@ function drinkWater(options = {}) {
   queue(finishDrink, 1450);
 }
 
-const ELECTROLYTE_SYMBOLS = { sodium: "Na", potassium: "K", magnesium: "Mg", calcium: "Ca" };
+const ELECTROLYTE_SYMBOLS = ELECTROLYTES.reduce((symbols, electrolyte) => {
+  symbols[electrolyte.id] = electrolyte.symbol;
+  return symbols;
+}, {});
 
 function launchElectrolyte(id, button) {
   const buttonRect = button.getBoundingClientRect();
@@ -548,57 +655,67 @@ function launchElectrolyte(id, button) {
 }
 
 function addElectrolyte(id, button) {
-  if (state.isDrinking || state.rescued || state.activeElectrolytes.includes(id)) return;
+  if (state.isDrinking || state.rescued) return;
 
   const electrolyte = ELECTROLYTES.find((entry) => entry.id === id);
-  state.activeElectrolytes = [...state.activeElectrolytes, id];
+  const target = getTargetAmount(id);
+  if (state.amounts[id] >= target) return;
+
+  state.amounts[id] = Math.min(target, state.amounts[id] + electrolyte.perScoop);
   if (button) launchElectrolyte(id, button);
   pulseCharacter("is-popping", 420);
   playTone("mineral");
 
   if (hasAllElectrolytes()) {
-    state.instruction = "All four electrolytes are active. Give him another drink.";
-    state.message = "Ready for a real hydration win!";
+    state.instruction = "Daily scoop and mg target matched. Serve water to complete the rescue.";
+    state.message = "The mix is right!";
     burstSparkles(12);
-    showToast("Complete electrolyte profile unlocked.");
+    showToast("All electrolyte mg targets matched.");
   } else {
-    state.instruction = `${electrolyte.label} added. The leak will shrink on the next sip.`;
-    state.message = `${electrolyte.label} is helping.`;
+    state.instruction = `${electrolyte.label} is now ${formatMg(state.amounts[id])} of ${formatMg(target)}.`;
+    state.message = `${electrolyte.symbol} counted. Keep matching the target.`;
     burstSparkles(7);
-    showToast(`${electrolyte.label} added. Leak risk reduced.`);
+    showToast(`${electrolyte.label} +${formatMg(electrolyte.perScoop)}.`);
   }
 
   render();
 }
 
-// Re-Lyte is the shortcut: activate everything immediately, then trigger a
-// strong drink so the player sees the final state without clicking four items.
-function useShortcut() {
-  if (state.isDrinking) return;
+function addScoop() {
+  if (state.isDrinking || hasAllElectrolytes()) return;
 
   if (state.rescued) {
-    state.instruction = "Already fully hydrated. Hit replay to run it again.";
-    state.message = "Fully hydrated!";
+    state.instruction = "This person's daily target is already matched.";
+    state.message = "Target complete!";
     burstSparkles(10);
     render();
     return;
   }
 
-  state.activeElectrolytes = ELECTROLYTES.map(({ id }) => id);
-  state.instruction = "Re-Lyte shortcut activated. All four electrolytes hit at once.";
-  state.message = "All the key electrolytes, all at once.";
+  state.scoops = Math.min(getCurrentProfile().scoops, state.scoops + 1);
+  ELECTROLYTES.forEach((electrolyte) => {
+    state.amounts[electrolyte.id] = Math.min(
+      getTargetAmount(electrolyte.id),
+      state.amounts[electrolyte.id] + electrolyte.perScoop
+    );
+  });
+
+  state.instruction = `${formatScoops(state.scoops)} measured. Target is ${formatScoops(getCurrentProfile().scoops)}.`;
+  state.message = hasAllElectrolytes()
+    ? "Scoop target matched. Water please!"
+    : `${formatScoops(getCurrentProfile().scoops - state.scoops)} to go.`;
   refs.shortcutBtn.classList.add("is-firing");
-  showToast("Re-Lyte shortcut: all electrolytes activated.");
+  showToast(`Re-Lyte +1 scoop: ${ELECTROLYTES.map((entry) => `${entry.symbol} ${formatMg(entry.perScoop)}`).join(", ")}.`);
   playTone("shortcut");
-  burstSparkles(22);
+  burstSparkles(hasAllElectrolytes() ? 18 : 10);
   pulseCharacter("is-popping", 420);
   render();
 
   queue(() => refs.shortcutBtn.classList.remove("is-firing"), 900);
-  queue(() => drinkWater({ shortcut: true, forceCount: ELECTROLYTES.length }), 170);
 }
 
 function resetGame() {
+  const profileIndex = state.profileIndex;
   clearQueuedWork();
   refs.scene.querySelectorAll(".electrolyte-pill").forEach((el) => el.remove());
   refs.scene.classList.remove("is-drinking", "is-shortcut");
@@ -606,17 +723,30 @@ function resetGame() {
   refs.shortcutBtn.classList.remove("is-firing");
   refs.sparkleLayer.innerHTML = "";
   hideVictoryOverlay();
-  state = createInitialState();
+  state = createInitialState(profileIndex);
+  render();
+}
+
+function advanceProfile() {
+  const nextProfileIndex = (state.profileIndex + 1) % TRAINING_PROFILES.length;
+  clearQueuedWork();
+  refs.scene.querySelectorAll(".electrolyte-pill").forEach((el) => el.remove());
+  refs.scene.classList.remove("is-drinking", "is-shortcut");
+  refs.character.classList.remove("is-popping", "is-celebrating", "is-rescued");
+  refs.shortcutBtn.classList.remove("is-firing");
+  refs.sparkleLayer.innerHTML = "";
+  hideVictoryOverlay();
+  state = createInitialState(nextProfileIndex);
   render();
 }
 
 function showVictoryOverlay() {
   if (!refs.victoryOverlay) return;
+  const profile = getCurrentProfile();
   refs.victoryScore.textContent = `${getRescueScore()} pts`;
-  refs.victoryCopy.textContent =
-    state.puddle > 45
-      ? "You recovered the rescue after a leaky start. Re-Lyte delivered the key electrolytes and stabilized hydration."
-      : "Clean rescue. The full electrolyte mix helped water stay where it belongs.";
+  refs.victoryCopy.textContent = `${profile.name}'s target was ${formatScoops(profile.scoops)}: Na ${formatMg(getTargetAmount("sodium"))}, K ${formatMg(getTargetAmount("potassium"))}, Mg ${formatMg(getTargetAmount("magnesium"))}, Ca ${formatMg(getTargetAmount("calcium"))}.`;
+  refs.overlayReplayBtn.textContent =
+    state.profileIndex === TRAINING_PROFILES.length - 1 ? "Start over" : "Next person";
   refs.victoryOverlay.classList.add("is-visible");
   refs.victoryOverlay.setAttribute("aria-hidden", "false");
 }
@@ -635,9 +765,9 @@ refs.electrolyteButtons.forEach((button) => {
   button.addEventListener("click", () => addElectrolyte(button.dataset.electrolyte, button));
 });
 
-refs.shortcutBtn.addEventListener("click", useShortcut);
+refs.shortcutBtn.addEventListener("click", addScoop);
 refs.resetBtn.addEventListener("click", resetGame);
-refs.overlayReplayBtn.addEventListener("click", resetGame);
+refs.overlayReplayBtn.addEventListener("click", advanceProfile);
 
 if (reducedMotionQuery.addEventListener) {
   reducedMotionQuery.addEventListener("change", () => {

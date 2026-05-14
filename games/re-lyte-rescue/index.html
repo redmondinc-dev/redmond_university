@@ -27,7 +27,7 @@
           <p class="eyebrow">Training Arcade</p>
           <h1>Re-Lyte Rescue</h1>
           <p id="instruction-text" class="instruction" role="status" aria-live="polite">
-            Stabilize hydration by pairing water with electrolytes.
+            Help hydrate different people by matching their Re-Lyte scoops or electrolyte mg target.
           </p>
         </div>
 
@@ -42,26 +42,47 @@
 
       <main class="layout">
         <aside class="card status-panel" aria-label="Hydration status">
+          <section class="person-card">
+            <div class="section-heading">
+              <h2>Today's person</h2>
+              <span id="profile-index">1 / 3</span>
+            </div>
+            <div class="person-profile">
+              <strong id="profile-name">Mia</strong>
+              <span id="profile-context">Soccer practice day</span>
+            </div>
+            <div class="target-strip">
+              <span>Daily target</span>
+              <strong id="target-scoops">1 scoop</strong>
+            </div>
+            <div class="target-minerals" aria-label="Daily electrolyte targets">
+              <span id="target-sodium">Na 810mg</span>
+              <span id="target-potassium">K 400mg</span>
+              <span id="target-magnesium">Mg 50mg</span>
+              <span id="target-calcium">Ca 60mg</span>
+            </div>
+          </section>
+
           <section class="rescue-card">
             <div class="section-heading">
-              <h2>Rescue telemetry</h2>
+              <h2>Mix telemetry</h2>
               <span id="rescue-score">0 pts</span>
             </div>
             <div class="stat-grid" aria-label="Rescue metrics">
               <div class="stat-tile">
-                <span>Retention</span>
-                <strong id="retention-value">18%</strong>
+                <span>Scoops used</span>
+                <strong id="retention-value">0 / 1</strong>
               </div>
               <div class="stat-tile">
-                <span>Leak risk</span>
-                <strong id="leak-value">Critical</strong>
+                <span>Accuracy</span>
+                <strong id="leak-value">0%</strong>
               </div>
             </div>
           </section>
 
           <section class="meter-card">
             <div class="meter-header">
-              <span>Hydration</span>
+              <span>Daily mix</span>
               <strong id="hydration-label">0%</strong>
             </div>
             <div class="hydration-track" aria-hidden="true">
@@ -74,41 +95,45 @@
             <ol class="mission-steps" aria-label="Mission progress">
               <li class="mission-step is-active" data-step="water">
                 <span class="step-number">1</span>
-                <span>Test water retention</span>
+                <span>Read daily target</span>
               </li>
               <li class="mission-step" data-step="electrolytes">
                 <span class="step-number">2</span>
-                <span>Add key electrolytes</span>
+                <span>Measure scoops or mg</span>
               </li>
               <li class="mission-step" data-step="rescue">
                 <span class="step-number">3</span>
-                <span>Complete the rescue</span>
+                <span>Serve water</span>
               </li>
             </ol>
           </section>
 
           <section class="checklist-card">
             <div class="section-heading">
-              <h2>Electrolyte checklist</h2>
-              <span id="electrolyte-count">0 / 4</span>
+              <h2>Electrolyte targets</h2>
+              <span id="electrolyte-count">0 / 4 met</span>
             </div>
 
             <ul class="checklist" aria-label="Electrolytes">
               <li class="checklist-item" data-check="sodium">
                 <span class="check-dot" aria-hidden="true"></span>
                 <span class="check-copy">Sodium</span>
+                <span class="check-mg" data-mg="sodium">0 / 810mg</span>
               </li>
               <li class="checklist-item" data-check="potassium">
                 <span class="check-dot" aria-hidden="true"></span>
                 <span class="check-copy">Potassium</span>
+                <span class="check-mg" data-mg="potassium">0 / 400mg</span>
               </li>
               <li class="checklist-item" data-check="magnesium">
                 <span class="check-dot" aria-hidden="true"></span>
                 <span class="check-copy">Magnesium</span>
+                <span class="check-mg" data-mg="magnesium">0 / 50mg</span>
               </li>
               <li class="checklist-item" data-check="calcium">
                 <span class="check-dot" aria-hidden="true"></span>
                 <span class="check-copy">Calcium</span>
+                <span class="check-mg" data-mg="calcium">0 / 60mg</span>
               </li>
             </ul>
           </section>
@@ -131,8 +156,8 @@
                 <strong id="arena-phase">Dehydrated</strong>
               </div>
               <div>
-                <span class="arena-label">Body retention</span>
-                <strong id="arena-retention">18%</strong>
+                <span class="arena-label">Daily goal</span>
+                <strong id="arena-retention">1 scoop</strong>
               </div>
             </div>
 
@@ -172,35 +197,35 @@
 
                 <button class="table-item electrolyte-btn sodium" data-electrolyte="sodium" type="button">
                   <span class="electrolyte-icon" aria-hidden="true">Na</span>
-                  <span class="item-label">Sodium</span>
+                  <span class="item-label">+810mg</span>
                 </button>
 
                 <button class="table-item electrolyte-btn potassium" data-electrolyte="potassium" type="button">
                   <span class="electrolyte-icon" aria-hidden="true">K</span>
-                  <span class="item-label">Potassium</span>
+                  <span class="item-label">+400mg</span>
                 </button>
 
                 <button class="table-item electrolyte-btn magnesium" data-electrolyte="magnesium" type="button">
                   <span class="electrolyte-icon" aria-hidden="true">Mg</span>
-                  <span class="item-label">Magnesium</span>
+                  <span class="item-label">+50mg</span>
                 </button>
 
                 <button class="table-item electrolyte-btn calcium" data-electrolyte="calcium" type="button">
                   <span class="electrolyte-icon" aria-hidden="true">Ca</span>
-                  <span class="item-label">Calcium</span>
+                  <span class="item-label">+60mg</span>
                 </button>
 
                 <button
                   id="shortcut-btn"
                   class="table-item relyte-btn"
                   type="button"
-                  aria-label="Use Re-Lyte to add all electrolytes at once"
+                  aria-label="Add one scoop of Re-Lyte"
                 >
                   <span class="jar-cap" aria-hidden="true"></span>
                   <span class="jar-body">
                     <span class="jar-copy">Re-Lyte</span>
                   </span>
-                  <span class="item-label">Shortcut</span>
+                  <span class="item-label">+1 scoop</span>
                 </button>
               </div>
             </div>
@@ -251,16 +276,16 @@
             >
               <div class="victory-card">
                 <p class="victory-kicker">Rescue complete</p>
-                <h2>Hydration stabilized</h2>
+                <h2>Daily target matched</h2>
                 <p id="victory-copy">
-                  Re-Lyte delivered the key electrolytes and helped water stay where it belongs.
+                  Re-Lyte delivered the target scoops and electrolyte mg for this training round.
                 </p>
                 <div class="victory-score">
                   <span>Final score</span>
                   <strong id="victory-score">0 pts</strong>
                 </div>
                 <button id="overlay-replay-btn" class="reset-btn victory-replay" type="button">
-                  Play again
+                  Next person
                 </button>
               </div>
             </div>
