@@ -8,6 +8,40 @@ const ELECTROLYTES = [
 const RETENTION_FACTORS = [0.18, 0.38, 0.58, 0.78, 0.96];
 const LEAK_LEVELS = [1, 0.72, 0.45, 0.2, 0.02];
 const SIP_POWER = [22, 30, 38, 46, 54];
+const CHARACTER_STATES = [
+  {
+    id: "dehydrated",
+    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-01-dehydrated.png",
+    alt: "Dehydrated boy looking tired",
+  },
+  {
+    id: "thirsty",
+    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-02-thirsty.png",
+    alt: "Thirsty boy asking for water",
+  },
+  {
+    id: "recovering",
+    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-03-recovering.png",
+    alt: "Boy beginning to recover hydration",
+  },
+  {
+    id: "retaining",
+    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-04-retaining.png",
+    alt: "Boy retaining hydration and smiling",
+  },
+  {
+    id: "hydrated",
+    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-05-hydrated.png",
+    alt: "Fully hydrated boy celebrating",
+  },
+];
+const HYDRATED_CELEBRATION_FRAMES = Array.from({ length: 12 }, (_, index) => {
+  const frame = String(index + 1).padStart(2, "0");
+  return `../../assets/imgs/png/re-lyte-rescue/hydration-boy-hydrated-celebrate-${frame}.png`;
+});
+const reducedMotionQuery = window.matchMedia
+  ? window.matchMedia("(prefers-reduced-motion: reduce)")
+  : { matches: false };
 
 const refs = {
   instruction: document.getElementById("instruction-text"),
@@ -25,6 +59,7 @@ const refs = {
   puddle: document.getElementById("puddle"),
   scene: document.getElementById("scene"),
   character: document.getElementById("character"),
+  characterSprite: document.getElementById("character-sprite"),
   sparkleLayer: document.getElementById("sparkle-layer"),
   actionToast: document.getElementById("action-toast"),
   victoryOverlay: document.getElementById("victory-overlay"),
@@ -41,6 +76,8 @@ const refs = {
 
 let state = createInitialState();
 let hydrationFrame = 0;
+let celebrationTimer = 0;
+let celebrationFrame = 0;
 let scheduledTimers = [];
 let toastTimer = 0;
 let audioContext = null;
@@ -164,6 +201,17 @@ function getMood() {
   return "sad";
 }
 
+function getCharacterState() {
+  const count = getElectrolyteCount();
+  const hydration = state.displayHydration;
+
+  if (state.rescued || (hydration >= 95 && hasAllElectrolytes())) return CHARACTER_STATES[4];
+  if (count >= 3 || hydration >= 62) return CHARACTER_STATES[3];
+  if (count >= 2 || hydration >= 34) return CHARACTER_STATES[2];
+  if (count >= 1 || hydration > 0 || state.puddle > 0) return CHARACTER_STATES[1];
+  return CHARACTER_STATES[0];
+}
+
 function animateHydration(target, duration = 700) {
   cancelAnimationFrame(hydrationFrame);
 
@@ -203,6 +251,7 @@ function clearQueuedWork() {
   scheduledTimers.forEach((timerId) => clearTimeout(timerId));
   scheduledTimers = [];
   cancelAnimationFrame(hydrationFrame);
+  stopHydratedCelebration();
   if (toastTimer) {
     clearTimeout(toastTimer);
     toastTimer = 0;
@@ -244,14 +293,70 @@ function pulseCharacter(className, duration) {
   queue(() => refs.character.classList.remove(className), duration);
 }
 
+function setCharacterSpriteSource(src, alt, stateId) {
+  if (!refs.characterSprite) return;
+  if (refs.characterSprite.getAttribute("src") !== src) {
+    refs.characterSprite.setAttribute("src", src);
+  }
+  refs.characterSprite.alt = alt;
+  refs.characterSprite.dataset.state = stateId;
+}
+
+function stopHydratedCelebration() {
+  if (!celebrationTimer) return;
+  clearInterval(celebrationTimer);
+  celebrationTimer = 0;
+  celebrationFrame = 0;
+}
+
+function startHydratedCelebration(characterState) {
+  if (!refs.characterSprite) return;
+
+  refs.characterSprite.alt = characterState.alt;
+  refs.characterSprite.dataset.state = characterState.id;
+
+  if (reducedMotionQuery.matches) {
+    stopHydratedCelebration();
+    setCharacterSpriteSource(characterState.src, characterState.alt, characterState.id);
+    return;
+  }
+
+  if (celebrationTimer) return;
+
+  celebrationFrame = 0;
+  setCharacterSpriteSource(
+    HYDRATED_CELEBRATION_FRAMES[celebrationFrame],
+    characterState.alt,
+    characterState.id
+  );
+
+  celebrationTimer = window.setInterval(() => {
+    celebrationFrame = (celebrationFrame + 1) % HYDRATED_CELEBRATION_FRAMES.length;
+    refs.characterSprite.setAttribute("src", HYDRATED_CELEBRATION_FRAMES[celebrationFrame]);
+  }, 82);
+}
+
 function updateSceneClasses() {
   const leakLevel = getLeakLevel();
+  const characterState = getCharacterState();
 
   refs.character.dataset.mood = getMood();
+  refs.character.dataset.state = characterState.id;
+  refs.character.classList.toggle("is-rescued", state.rescued);
   refs.character.classList.toggle("is-energized", hasAllElectrolytes());
   refs.character.style.setProperty("--leak-opacity", String(0.22 + leakLevel * 0.78));
   refs.character.style.setProperty("--leak-scale", String(0.22 + leakLevel * 0.78));
   refs.character.style.setProperty("--leak-height", `${12 + leakLevel * 72}px`);
+
+  if (state.rescued && characterState.id === "hydrated") {
+    startHydratedCelebration(characterState);
+    return;
+  }
+
+  stopHydratedCelebration();
+  if (refs.characterSprite && refs.characterSprite.dataset.state !== characterState.id) {
+    setCharacterSpriteSource(characterState.src, characterState.alt, characterState.id);
+  }
 }
 
 function renderChecklist() {
@@ -310,7 +415,7 @@ function renderHydrationVisuals() {
 
   refs.hydrationFill.style.width = `${shownHydration}%`;
   refs.hydrationLabel.textContent = `${Math.round(shownHydration)}%`;
-  refs.bellyFill.style.height = `${shownHydration}%`;
+  if (refs.bellyFill) refs.bellyFill.style.height = `${shownHydration}%`;
   refs.puddle.style.opacity = String(0.12 + state.puddle / 120);
   refs.puddle.style.transform = `translateX(-50%) scale(${puddleScaleX}, ${puddleScaleY})`;
 }
@@ -338,7 +443,7 @@ function settleAtFullHydration() {
   showToast("Rescue complete: hydration stabilized.");
   playTone("victory");
   render();
-  queue(showVictoryOverlay, 520);
+  queue(showVictoryOverlay, 1040);
 }
 
 function finishDrink() {
@@ -497,7 +602,7 @@ function resetGame() {
   clearQueuedWork();
   refs.scene.querySelectorAll(".electrolyte-pill").forEach((el) => el.remove());
   refs.scene.classList.remove("is-drinking", "is-shortcut");
-  refs.character.classList.remove("is-popping", "is-celebrating");
+  refs.character.classList.remove("is-popping", "is-celebrating", "is-rescued");
   refs.shortcutBtn.classList.remove("is-firing");
   refs.sparkleLayer.innerHTML = "";
   hideVictoryOverlay();
@@ -533,5 +638,22 @@ refs.electrolyteButtons.forEach((button) => {
 refs.shortcutBtn.addEventListener("click", useShortcut);
 refs.resetBtn.addEventListener("click", resetGame);
 refs.overlayReplayBtn.addEventListener("click", resetGame);
+
+if (reducedMotionQuery.addEventListener) {
+  reducedMotionQuery.addEventListener("change", () => {
+    stopHydratedCelebration();
+    render();
+  });
+} else if (reducedMotionQuery.addListener) {
+  reducedMotionQuery.addListener(() => {
+    stopHydratedCelebration();
+    render();
+  });
+}
+
+[...CHARACTER_STATES.map(({ src }) => src), ...HYDRATED_CELEBRATION_FRAMES].forEach((src) => {
+  const image = new Image();
+  image.src = src;
+});
 
 render();
