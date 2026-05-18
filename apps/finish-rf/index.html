@@ -319,6 +319,36 @@
         transition-delay: 0s;
       }
 
+      .test-celebrate-button {
+        position: fixed;
+        right: 16px;
+        bottom: 16px;
+        z-index: 30;
+        padding: 10px 14px;
+        border: 1px solid rgba(39, 64, 48, 0.24);
+        border-radius: 8px;
+        background: #fff6ed;
+        color: #274030;
+        box-shadow: 0 10px 24px rgba(39, 64, 48, 0.16);
+        cursor: pointer;
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 0.78rem;
+        font-weight: 800;
+        letter-spacing: 0;
+      }
+
+      .test-celebrate-button:hover,
+      .test-celebrate-button:focus-visible {
+        background: #ffffff;
+        outline: 2px solid rgba(199, 136, 83, 0.42);
+        outline-offset: 2px;
+      }
+
+      .test-celebrate-button:disabled {
+        cursor: not-allowed;
+        opacity: 0.58;
+      }
+
       @keyframes buttonPulse {
         0%,
         100% {
@@ -444,10 +474,17 @@
       </section>
     </main>
 
+    <!-- TODO: Remove this temporary test trigger before publishing. -->
+    <button class="test-celebrate-button" id="test-celebrate-button" type="button">
+      Test celebration
+    </button>
+
     <script>
       (() => {
         const celebration = document.getElementById("celebration");
         const celebrateButton = document.getElementById("celebrate-button");
+        const testCelebrateButton = document.getElementById("test-celebrate-button");
+        const celebrationButtons = [celebrateButton, testCelebrateButton].filter(Boolean);
         const celebrationActions = document.querySelector(".celebration-actions");
         const celebrateExplode = document.getElementById("celebrate-explode");
         const confettiCanvas = document.getElementById("confetti-canvas");
@@ -455,6 +492,8 @@
         const clapsAudio = document.getElementById("claps-audio");
         const finishAudio = document.getElementById("finish-audio");
         const celebrationDurationMs = 10000;
+        const clapsVolume = 1;
+        const finishVolume = 1;
         let confettiParticles = [];
         let confettiFrame = 0;
         let confettiUntil = 0;
@@ -593,9 +632,10 @@
             if (!audio) return;
             audio.pause();
             audio.currentTime = 0;
-            audio.volume = 1;
             audio.loop = false;
           });
+          if (clapsAudio) clapsAudio.volume = clapsVolume;
+          if (finishAudio) finishAudio.volume = finishVolume;
         }
 
         function stopCelebrationVisual() {
@@ -603,7 +643,9 @@
             window.clearTimeout(celebrationUiTimer);
             celebrationUiTimer = 0;
           }
-          celebrateButton.disabled = false;
+          celebrationButtons.forEach((button) => {
+            button.disabled = false;
+          });
           celebration.classList.remove("is-playing");
           celebrationActions.classList.remove("is-playing");
 
@@ -619,7 +661,9 @@
             window.clearTimeout(celebrationUiTimer);
             celebrationUiTimer = 0;
           }
-          celebrateButton.disabled = true;
+          celebrationButtons.forEach((button) => {
+            button.disabled = true;
+          });
           celebration.classList.add("is-playing");
           celebrationActions.classList.add("is-playing");
 
@@ -641,8 +685,8 @@
 
           if (!clapsAudio || !finishAudio) return;
 
-          const clapsStartVolume = 0.95;
-          const finishStartVolume = 0.8;
+          const clapsStartVolume = clapsVolume;
+          const finishStartVolume = finishVolume;
           const fadeDurationMs = Math.min(2200, Math.max(1400, Math.floor(durationMs * 0.3)));
           const fadeStartMs = Math.max(0, durationMs - fadeDurationMs);
 
@@ -677,15 +721,18 @@
           }, durationMs);
         }
 
-        if (celebrateButton) {
-          celebrateButton.addEventListener("click", () => {
-            if (celebrateButton.disabled) return;
-
-            startCelebrationVisual(celebrationDurationMs);
-            startConfetti(celebrationDurationMs);
-            startApplause(celebrationDurationMs).catch(() => {});
-          });
+        function triggerCelebration() {
+          startCelebrationVisual(celebrationDurationMs);
+          startConfetti(celebrationDurationMs);
+          startApplause(celebrationDurationMs).catch(() => {});
         }
+
+        celebrationButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            if (button.disabled) return;
+            triggerCelebration();
+          });
+        });
 
         window.addEventListener("resize", resizeConfettiCanvas, { passive: true });
         window.addEventListener("pagehide", () => {
