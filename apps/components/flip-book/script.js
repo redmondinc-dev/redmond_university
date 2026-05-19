@@ -22,6 +22,10 @@
   const compactViewport = window.matchMedia("(max-width: 760px)");
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const urlParams = new URLSearchParams(window.location.search);
+  const bookSources = {
+    "401k": "content.json",
+    "consolidate-your-retirement": "content-consolidate-retirement.json",
+  };
   const fallbackBook = {
     title: "Redmond Farm Guide",
     eyebrow: "Farm Systems",
@@ -92,6 +96,24 @@
     };
   }
 
+  function normalizeSections(value) {
+    if (!Array.isArray(value)) return [];
+
+    return value
+      .map((rawSection) => {
+        const section = rawSection && typeof rawSection === "object" ? rawSection : {};
+        return {
+          title: toText(section.title),
+          description: toText(section.description),
+          body: toTextArray(section.body),
+          bullets: toTextArray(section.bullets),
+        };
+      })
+      .filter((section) => {
+        return section.title || section.description || section.body.length || section.bullets.length;
+      });
+  }
+
   function normalizePage(rawPage, index) {
     const page = rawPage && typeof rawPage === "object" ? rawPage : {};
     const body = toTextArray(page.body);
@@ -104,6 +126,9 @@
     const imageFit = toText(page.imageFit);
     const allowedImageFits = new Set(["cover", "contain"]);
     const table = normalizeTable(page.table);
+    const callout = toText(page.callout);
+    const finePrint = toTextArray(page.finePrint);
+    const sections = normalizeSections(page.sections);
 
     return {
       title: toText(page.title) || `Page ${index + 1}`,
@@ -112,6 +137,9 @@
       body,
       bullets,
       table,
+      callout,
+      finePrint,
+      sections,
       image,
       imageAlt: toText(page.imageAlt) || toText(page.title) || `Page ${index + 1} image`,
       imageFit: allowedImageFits.has(imageFit) ? imageFit : "cover",
@@ -236,6 +264,10 @@
       content.classList.add("page-content--image-after");
     }
 
+    if (!page.image) {
+      content.classList.add("page-content--copy-only");
+    }
+
     if (page.image && page.imagePosition !== "after-copy") {
       content.append(renderMedia(page));
     }
@@ -264,6 +296,48 @@
         list.append(makeElement("li", "", bullet));
       });
       copy.append(list);
+    }
+
+    if (page.sections.length) {
+      const sections = makeElement("div", "page-sections");
+      page.sections.forEach((section) => {
+        const sectionElement = makeElement("section", "page-section");
+
+        if (section.title) {
+          sectionElement.append(makeElement("h3", "page-section-title", section.title));
+        }
+
+        if (section.description) {
+          sectionElement.append(makeElement("p", "page-section-description", section.description));
+        }
+
+        section.body.forEach((paragraph) => {
+          sectionElement.append(makeElement("p", "page-section-copy", paragraph));
+        });
+
+        if (section.bullets.length) {
+          const list = makeElement("ul", "page-list");
+          section.bullets.forEach((bullet) => {
+            list.append(makeElement("li", "", bullet));
+          });
+          sectionElement.append(list);
+        }
+
+        sections.append(sectionElement);
+      });
+      copy.append(sections);
+    }
+
+    if (page.callout) {
+      copy.append(makeElement("p", "page-callout", page.callout));
+    }
+
+    if (page.finePrint.length) {
+      const finePrint = makeElement("div", "page-fineprint");
+      page.finePrint.forEach((paragraph) => {
+        finePrint.append(makeElement("p", "", paragraph));
+      });
+      copy.append(finePrint);
     }
 
     content.append(copy);
@@ -458,7 +532,8 @@
     root.classList.add("is-loading");
     renderStatus("Loading content.");
 
-    const source = urlParams.get("data") || root.dataset.source || "content.json";
+    const bookKey = urlParams.get("book") || root.dataset.book || "401k";
+    const source = bookSources[bookKey] || bookSources["401k"];
 
     try {
       const response = await fetch(source, { cache: "no-store" });

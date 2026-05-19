@@ -1,0 +1,63 @@
+{
+  "title": "Consolidate your retirement accounts",
+  "eyebrow": "Empower",
+  "subtitle": "",
+  "accent": "#0a2f68",
+  "settings": {
+    "startPage": 0
+  },
+  "pages": [
+    {
+      "title": "Consolidate your retirement accounts",
+      "body": [
+        "Do you still have a retirement plan account balance from a past employer? If so, it may require more work to keep track of how you’re doing. Take advantage of the simplicity of one by considering the benefits of rolling your retirement accounts from previous employers into your Empower plan."
+      ],
+      "image": "assets/consolidate-retirement-hero.png",
+      "imageAlt": "Empower retirement planning photo from the original flyer",
+      "imageFit": "contain",
+      "imagePosition": "before-copy",
+      "accent": "#0a2f68"
+    },
+    {
+      "title": "Simplify account management",
+      "description": "Instead of dealing with multiple statements, websites, and service centers, simplify with:",
+      "bullets": [
+        "One statement to reduce clutter.",
+        "One website username and password to remember.",
+        "One Customer Care Center to call."
+      ],
+      "sections": [
+        {
+          "title": "Get a clear retirement forecast",
+          "body": [
+            "The retirement income projection tool, available on the Empower website, allows you to quickly view your projected monthly income at retirement and see if your future is on track."
+          ]
+        }
+      ],
+      "accent": "#8548c8"
+    },
+    {
+      "title": "We’ll make it easy",
+      "body": [
+        "If a rollover makes sense for you, we’re here to help. Our dedicated retirement consultants will help guide you through every step of the process and answer any questions you may have. Our white glove experience saves you time and helps to ensure a seamless transfer of your retirement savings.",
+        "You also have other options available to you. You may be able to keep your money in your previous employer’s plan, move your money to your new employer’s plan, or take a taxable distribution (keeping in mind that you may be subject to substantial tax and possible early withdrawal penalties).",
+        "Consider all your options and their features and fees before moving money between accounts."
+      ],
+      "callout": "Call a retirement consultant today to learn more. You can reach us at 888-737-4480.",
+      "accent": "#8548c8"
+    },
+    {
+      "title": "Important information",
+      "finePrint": [
+        "Governmental 457 funds rolled into another type of plan may become subject to the 10% early withdrawal penalty if taken before age 59½.",
+        "Securities, when presented, are offered and/or distributed by Empower Financial Services, Inc., Member FINRA/SIPC. EFSI is an affiliate of Empower Retirement, LLC; Empower Funds, Inc.; and registered investment adviser Empower Advisory Group, LLC. This material is for informational purposes only and is not intended to provide investment, legal, or tax recommendations or advice.",
+        "IMPORTANT: The projections or other information generated on the website by the investment analysis tool regarding the likelihood of various investment outcomes are hypothetical in nature, do not reflect actual investment results, and are not guarantees of future results. The results may vary with each use and over time.",
+        "“EMPOWER” and all associated logos and product names are trademarks of Empower Annuity Insurance Company of America.",
+        "©2024 Empower Annuity Insurance Company of America. All rights reserved. EPW-FLY-WF-671370-1224(3715654) RO3970715-1124",
+        "Unless otherwise noted: Not a Deposit | Not FDIC Insured | Not Bank Guaranteed | Funds May Lose Value | Not Insured by Any Federal Government Agency"
+      ],
+      "layout": "default",
+      "accent": "#8548c8"
+    }
+  ]
+}

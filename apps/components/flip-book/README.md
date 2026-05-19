@@ -26,6 +26,14 @@ Standalone static component for showing structured content as a book-style flip 
       "description": "Primary page copy.",
       "body": ["Paragraph one.", "Paragraph two."],
       "bullets": ["Optional item"],
+      "sections": [
+        {
+          "title": "Optional internal section",
+          "body": ["Section paragraph."]
+        }
+      ],
+      "callout": "Optional highlighted sentence.",
+      "finePrint": ["Optional legal or disclaimer text."],
       "table": {
         "headers": ["Column one", "Column two"],
         "rows": [["A", "B"]]
@@ -46,10 +54,16 @@ Supported `layout` values are `default`, `text-only`, and `image-full`.
 Supported `imageFit` values are `cover` and `contain`.
 Supported `imagePosition` values are `before-copy` and `after-copy`.
 
-By default, the component loads `content.json`. A different JSON file can be passed with:
+By default, the component loads the `401k` book. Select a book with the `book` parameter:
 
 ```text
-index.html?data=custom-content.json
+index.html?book=401k
+index.html?book=consolidate-your-retirement
 ```
+
+Current book values:
+
+- `401k`: 401(k) Info Guide (`content.json`).
+- `consolidate-your-retirement`: Consolidate your retirement accounts (`content-consolidate-retirement.json`).
 
 Because the component fetches JSON, use it through a local/static server or a hosted site.
