@@ -182,6 +182,18 @@
         transform: rotate(225deg);
       }
 
+      .bubble-down-start .brand__bubble {
+        left: 0;
+        top: calc(100% + 22px);
+        transform: translate(0, -12px) scale(0.97);
+      }
+
+      .bubble-down-start .brand__bubble::after {
+        left: 34px;
+        top: -9px;
+        transform: rotate(225deg);
+      }
+
       .bubble-left .brand__bubble {
         right: calc(100% + 22px);
         top: 50%;
@@ -222,6 +234,12 @@
       .bubble-down:focus-visible .brand__bubble,
       .bubble-down.is-active .brand__bubble {
         transform: translate(-50%, 0) scale(1);
+      }
+
+      .bubble-down-start:hover .brand__bubble,
+      .bubble-down-start:focus-visible .brand__bubble,
+      .bubble-down-start.is-active .brand__bubble {
+        transform: translate(0, 0) scale(1);
       }
 
       .bubble-left:hover .brand__bubble,
@@ -292,7 +310,7 @@
           label: "Meat Packing Facility Salina",
           copy:
             "This is where Redmond meat is harvested and processed, then labeled and sent to be sold in our markets and kitchens.",
-          direction: "bubble-right",
+          direction: "bubble-down-start",
           x: "12.05%",
           y: "6.70%",
           w: "11.70%",
