@@ -241,7 +241,7 @@
       }
 
       .buying-note-star {
-        width: clamp(34px, 4vw, 28px);
+        width: 34px;
         height: auto;
         display: block;
         margin: 0 auto 18px;
@@ -303,7 +303,12 @@
       <ul class="philosophy-list" id="philosophy-list"></ul>
     </section>
     <section class="buying-note" aria-label="A note from our buying team">
-      <img class="buying-note-star" src="../imgs/png/estrella%201.png" alt="" aria-hidden="true" />
+      <img
+        class="buying-note-star"
+        src="../../assets/imgs/png/estrella%201.png"
+        alt=""
+        aria-hidden="true"
+      />
       <h2 class="buying-note-kicker">A Note From Our Buying Team</h2>
       <h3 class="buying-note-title">On Product Sourcing</h3>
       <p class="buying-note-copy">
@@ -435,7 +440,7 @@
             title: typeof raw.title === "string" ? raw.title : "",
             text: typeof raw.text === "string" ? raw.text : "",
             collapsible: isCollapsible,
-            open: isCollapsible ? Boolean(raw.open) : true,
+            open: !isCollapsible,
             children: childrenRaw.map(normalizeEntry),
           };
         }
