@@ -319,36 +319,6 @@
         transition-delay: 0s;
       }
 
-      .test-celebrate-button {
-        position: fixed;
-        right: 16px;
-        bottom: 16px;
-        z-index: 30;
-        padding: 10px 14px;
-        border: 1px solid rgba(39, 64, 48, 0.24);
-        border-radius: 8px;
-        background: #fff6ed;
-        color: #274030;
-        box-shadow: 0 10px 24px rgba(39, 64, 48, 0.16);
-        cursor: pointer;
-        font-family: "Montserrat", "Avenir Next", sans-serif;
-        font-size: 0.78rem;
-        font-weight: 800;
-        letter-spacing: 0;
-      }
-
-      .test-celebrate-button:hover,
-      .test-celebrate-button:focus-visible {
-        background: #ffffff;
-        outline: 2px solid rgba(199, 136, 83, 0.42);
-        outline-offset: 2px;
-      }
-
-      .test-celebrate-button:disabled {
-        cursor: not-allowed;
-        opacity: 0.58;
-      }
-
       @keyframes buttonPulse {
         0%,
         100% {
@@ -464,7 +434,7 @@
               <img
                 class="celebrate-explode"
                 id="celebrate-explode"
-                data-src="./Shaker-Explode.gif"
+                data-src="./Johnny-in-Tube.gif"
                 alt=""
                 aria-hidden="true"
               />
@@ -474,17 +444,11 @@
       </section>
     </main>
 
-    <!-- TODO: Remove this temporary test trigger before publishing. -->
-    <button class="test-celebrate-button" id="test-celebrate-button" type="button">
-      Test celebration
-    </button>
-
     <script>
       (() => {
         const celebration = document.getElementById("celebration");
         const celebrateButton = document.getElementById("celebrate-button");
-        const testCelebrateButton = document.getElementById("test-celebrate-button");
-        const celebrationButtons = [celebrateButton, testCelebrateButton].filter(Boolean);
+        const celebrationButtons = [celebrateButton].filter(Boolean);
         const celebrationActions = document.querySelector(".celebration-actions");
         const celebrateExplode = document.getElementById("celebrate-explode");
         const confettiCanvas = document.getElementById("confetti-canvas");
@@ -492,11 +456,13 @@
         const clapsAudio = document.getElementById("claps-audio");
         const finishAudio = document.getElementById("finish-audio");
         const celebrationDurationMs = 10000;
+        const confettiDurationMs = 2000;
         const clapsVolume = 1;
         const finishVolume = 1;
         let confettiParticles = [];
         let confettiFrame = 0;
         let confettiUntil = 0;
+        let confettiStopTimer = 0;
         let lastConfettiSpawn = 0;
         let celebrationAudioTimer = 0;
         let celebrationFadeStartTimer = 0;
@@ -556,6 +522,10 @@
             cancelAnimationFrame(confettiFrame);
             confettiFrame = 0;
           }
+          if (confettiStopTimer) {
+            window.clearTimeout(confettiStopTimer);
+            confettiStopTimer = 0;
+          }
           confettiUntil = 0;
           confettiParticles = [];
           if (confettiCtx) {
@@ -612,6 +582,7 @@
           lastConfettiSpawn = 0;
           spawnConfettiBatch(Math.max(90, Math.floor(window.innerWidth / 8)));
           confettiFrame = requestAnimationFrame(animateConfetti);
+          confettiStopTimer = window.setTimeout(stopConfetti, durationMs);
         }
 
         function stopApplause() {
@@ -723,7 +694,7 @@
 
         function triggerCelebration() {
           startCelebrationVisual(celebrationDurationMs);
-          startConfetti(celebrationDurationMs);
+          startConfetti(confettiDurationMs);
           startApplause(celebrationDurationMs).catch(() => {});
         }
 
