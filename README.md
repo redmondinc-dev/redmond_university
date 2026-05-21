@@ -31,6 +31,7 @@ The login page lives at the root, and its shared files are stored in `assets/log
 - Main login: `index.html`
 - Menu hub: `menu/index.html`
 - Cards: `apps/cards/index.html`
+- Hydration cards: `apps/cards/hydration-cards.html`
 - Video: `apps/video/index.html`
 - Reusable CTA: `components/cta/index.html`
 - Games:

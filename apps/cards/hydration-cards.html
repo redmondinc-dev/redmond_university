@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hydration Clickable Cards</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap");
+
+      :root {
+        --card-width: 220px;
+        --card-height: 320px;
+        --card-radius: 18px;
+        --card-gap: 18px;
+        --ink: #2f2a25;
+        --accent: #ef4a3a;
+        --border: rgba(47, 42, 37, 0.2);
+        --paper: #ffffff;
+        --back: #f8fbfb;
+        --shadow: 0 16px 34px rgba(22, 33, 38, 0.14);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 30px 20px;
+        color: var(--ink);
+        background: transparent;
+        font-family: "Avenir", "Avenir Next", "Segoe UI", sans-serif;
+      }
+
+      .cards-grid {
+        width: min(1220px, 100%);
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--card-gap);
+      }
+
+      .hydration-card {
+        width: var(--card-width);
+        height: var(--card-height);
+        border: 0;
+        padding: 0;
+        background: transparent;
+        border-radius: var(--card-radius);
+        cursor: pointer;
+        perspective: 1000px;
+        filter: drop-shadow(var(--shadow));
+      }
+
+      .hydration-card:hover .card-inner,
+      .hydration-card:focus-visible .card-inner {
+        transform: translateY(-3px);
+      }
+
+      .hydration-card.is-flipped .card-inner {
+        transform: rotateY(180deg);
+      }
+
+      .hydration-card.is-flipped:hover .card-inner,
+      .hydration-card.is-flipped:focus-visible .card-inner {
+        transform: rotateY(180deg) translateY(-2px);
+      }
+
+      .hydration-card:focus-visible {
+        outline: 3px solid rgba(239, 74, 58, 0.42);
+        outline-offset: 5px;
+      }
+
+      .card-inner {
+        display: block;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transform-style: preserve-3d;
+        transition: transform 0.58s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .card-face {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid var(--border);
+        border-radius: var(--card-radius);
+        background: var(--paper);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        overflow: hidden;
+      }
+
+      .card-front {
+        padding: 18px 16px;
+      }
+
+      .card-front img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+        -webkit-user-drag: none;
+      }
+
+      .card-back {
+        transform: rotateY(180deg);
+        flex-direction: column;
+        gap: 14px;
+        padding: 24px 20px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.62)),
+          var(--back);
+        text-align: center;
+      }
+
+      .card-title {
+        margin: 0;
+        color: var(--accent);
+        font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
+        font-size: 1.7rem;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .card-copy {
+        margin: 0;
+        font-size: 0.92rem;
+        line-height: 1.42;
+      }
+
+      @media (max-width: 620px) {
+        :root {
+          --card-width: clamp(140px, 44vw, 180px);
+          --card-height: clamp(235px, 72vw, 265px);
+          --card-gap: 14px;
+        }
+
+        body {
+          padding: 20px 12px;
+        }
+
+        .card-back {
+          padding: 18px 14px;
+          gap: 10px;
+        }
+
+        .card-title {
+          font-size: 1.25rem;
+        }
+
+        .card-copy {
+          font-size: 0.82rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .card-inner {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="cards" class="cards-grid" aria-label="Hydration clickable cards"></main>
+
+    <script>
+      (function () {
+        const cardsData = [
+          {
+            title: "Ca",
+            image: "../../assets/imgs/hydration-cards/Ca.png",
+            alt: "Ca hydration card",
+            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
+          },
+          {
+            title: "Cl",
+            image: "../../assets/imgs/hydration-cards/Cl.png",
+            alt: "Cl hydration card",
+            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
+          },
+          {
+            title: "Mg",
+            image: "../../assets/imgs/hydration-cards/Mg.png",
+            alt: "Mg hydration card",
+            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
+          },
+          {
+            title: "Na",
+            image: "../../assets/imgs/hydration-cards/Na.png",
+            alt: "Na hydration card",
+            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
+          },
+          {
+            title: "Pa",
+            image: "../../assets/imgs/hydration-cards/Pa.png",
+            alt: "Pa hydration card",
+            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
+          },
+        ];
+
+        const cards = cardsData.map((card, index) => {
+          const button = document.createElement("button");
+          button.type = "button";
+          button.className = "hydration-card";
+          button.setAttribute("aria-pressed", "false");
+          button.setAttribute("aria-label", `${card.title}. Click to reveal copy.`);
+
+          const inner = document.createElement("span");
+          inner.className = "card-inner";
+
+          const front = document.createElement("span");
+          front.className = "card-face card-front";
+
+          const image = document.createElement("img");
+          image.src = card.image;
+          image.alt = card.alt;
+          image.decoding = "async";
+          image.loading = index === 0 ? "eager" : "lazy";
+          front.appendChild(image);
+
+          const back = document.createElement("span");
+          back.className = "card-face card-back";
+
+          const title = document.createElement("span");
+          title.className = "card-title";
+          title.textContent = card.title;
+
+          const copy = document.createElement("span");
+          copy.className = "card-copy";
+          copy.textContent = card.copy;
+
+          back.append(title, copy);
+          inner.append(front, back);
+          button.appendChild(inner);
+
+          button.addEventListener("click", () => {
+            const isFlipped = button.classList.toggle("is-flipped");
+            button.setAttribute("aria-pressed", String(isFlipped));
+          });
+
+          return button;
+        });
+
+        document.getElementById("cards").replaceChildren(...cards);
+      })();
+    </script>
+  </body>
+</html>
