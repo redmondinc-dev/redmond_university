@@ -64,11 +64,6 @@
         padding: 8px 0 10px;
       }
 
-      .carousel-wrap.is-dragging .resource-card {
-        transition: none;
-        cursor: grabbing;
-      }
-
       .carousel {
         position: relative;
         height: calc(var(--card-height) + 86px);
@@ -84,7 +79,7 @@
         top: 0;
         width: var(--card-width);
         height: var(--card-height);
-        cursor: grab;
+        cursor: default;
         user-select: none;
         border-radius: 18px;
         overflow: hidden;
@@ -108,6 +103,7 @@
       }
 
       .resource-card.is-active {
+        cursor: pointer;
         box-shadow: 0 16px 38px rgba(15, 23, 42, 0.26);
       }
 
@@ -295,16 +291,6 @@
 
         const cards = Array.from(document.querySelectorAll(".resource-card"));
         let activeIndex = 0;
-        let suppressClickUntil = 0;
-        let pointerDown = false;
-        let activePointerId = null;
-        let pointerStartX = 0;
-        let dragOffsetX = 0;
-        let draggedInGesture = false;
-
-        function mod(value, total) {
-          return ((value % total) + total) % total;
-        }
 
         function getStepX() {
           const stepX = parseFloat(
@@ -320,7 +306,7 @@
           return offset;
         }
 
-        function render(extraOffsetX = 0) {
+        function render() {
           const total = cards.length;
           const stepX = getStepX();
 
@@ -329,7 +315,7 @@
             const abs = Math.abs(offset);
             const hidden = abs > 3;
 
-            const translateX = offset * stepX + extraOffsetX;
+            const translateX = offset * stepX;
             const translateY = abs * 18;
             const scale = 1 - abs * 0.12;
             const opacity = 1 - abs * 0.22;
@@ -345,7 +331,7 @@
             card.style.opacity = hidden ? "0" : String(Math.max(opacity, 0.12));
             card.style.filter = "saturate(" + (1 - abs * 0.08) + ")";
             card.style.zIndex = String(100 - abs);
-            card.style.pointerEvents = hidden ? "none" : "auto";
+            card.style.pointerEvents = hidden || index !== activeIndex ? "none" : "auto";
             card.classList.toggle("is-active", index === activeIndex);
           });
         }
@@ -362,141 +348,13 @@
 
         cards.forEach((card, index) => {
           card.addEventListener("click", () => {
-            if (Date.now() < suppressClickUntil) return;
-            if (index === activeIndex) {
-              next();
-            } else {
-              activeIndex = index;
-              render();
-            }
+            if (index !== activeIndex) return;
+            next();
           });
         });
 
-        function beginDrag(clientX, pointerId) {
-          if (pointerDown) return;
-          pointerDown = true;
-          activePointerId = pointerId;
-          pointerStartX = clientX;
-          dragOffsetX = 0;
-          draggedInGesture = false;
-          carouselWrap.classList.add("is-dragging");
-        }
-
-        function updateDrag(clientX, pointerId) {
-          if (!pointerDown) return;
-          if (activePointerId !== null && pointerId !== activePointerId) return;
-          const rawDeltaX = clientX - pointerStartX;
-          const maxPreview = getStepX() * 1.25;
-          dragOffsetX = Math.max(-maxPreview, Math.min(maxPreview, rawDeltaX));
-          if (Math.abs(dragOffsetX) > 4) draggedInGesture = true;
-          render(dragOffsetX);
-        }
-
-        function finishDrag(pointerId) {
-          if (!pointerDown) return;
-          if (activePointerId !== null && pointerId !== activePointerId) return;
-          pointerDown = false;
-          activePointerId = null;
-          carouselWrap.classList.remove("is-dragging");
-
-          const stepX = getStepX();
-          const movedSteps = Math.round(-dragOffsetX / stepX);
-          const minMoveThreshold = stepX * 0.18;
-
-          if (Math.abs(dragOffsetX) >= minMoveThreshold && movedSteps !== 0) {
-            activeIndex = mod(activeIndex + movedSteps, cards.length);
-          }
-          if (draggedInGesture) {
-            suppressClickUntil = Date.now() + 300;
-          }
-          dragOffsetX = 0;
-          draggedInGesture = false;
-          render();
-        }
-
-        function cancelDrag() {
-          if (!pointerDown) return;
-          pointerDown = false;
-          activePointerId = null;
-          dragOffsetX = 0;
-          draggedInGesture = false;
-          carouselWrap.classList.remove("is-dragging");
-          render();
-        }
-
         carouselWrap.addEventListener("dragstart", (event) => {
           event.preventDefault();
-        });
-
-        carouselWrap.addEventListener("pointerdown", (event) => {
-          if (event.button !== undefined && event.button !== 0) return;
-          beginDrag(event.clientX, "p-" + event.pointerId);
-          if (carouselWrap.setPointerCapture) {
-            try {
-              carouselWrap.setPointerCapture(event.pointerId);
-            } catch {}
-          }
-        });
-
-        carouselWrap.addEventListener("pointermove", (event) => {
-          updateDrag(event.clientX, "p-" + event.pointerId);
-        });
-
-        carouselWrap.addEventListener("pointerup", (event) => {
-          finishDrag("p-" + event.pointerId);
-
-          if (carouselWrap.releasePointerCapture) {
-            try {
-              carouselWrap.releasePointerCapture(event.pointerId);
-            } catch {}
-          }
-        });
-
-        carouselWrap.addEventListener("pointercancel", () => {
-          cancelDrag();
-        });
-
-        carouselWrap.addEventListener("mousedown", (event) => {
-          if (event.button !== 0) return;
-          beginDrag(event.clientX, "mouse");
-        });
-
-        window.addEventListener("mousemove", (event) => {
-          updateDrag(event.clientX, "mouse");
-        });
-
-        window.addEventListener("mouseup", () => {
-          finishDrag("mouse");
-        });
-
-        carouselWrap.addEventListener(
-          "touchstart",
-          (event) => {
-            const touch = event.touches[0];
-            if (!touch) return;
-            beginDrag(touch.clientX, "touch");
-            event.preventDefault();
-          },
-          { passive: false },
-        );
-
-        carouselWrap.addEventListener(
-          "touchmove",
-          (event) => {
-            const touch = event.touches[0];
-            if (!touch) return;
-            updateDrag(touch.clientX, "touch");
-            event.preventDefault();
-          },
-          { passive: false },
-        );
-
-        window.addEventListener("touchend", () => {
-          finishDrag("touch");
-        });
-
-        window.addEventListener("touchcancel", () => {
-          cancelDrag();
         });
 
         window.addEventListener("keydown", (event) => {

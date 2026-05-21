@@ -332,7 +332,6 @@
           },
           {
             "title": "Nutrient Rich",
-            "open": true,
             "text": "We focus on practices that protect nutritional density and maximize bioavailability, so you get the most out of every bite.",
             "children": [
               {
@@ -394,7 +393,6 @@
             },
             {
               title: "Nutrient Rich",
-              open: true,
               text: "We focus on practices that protect nutritional density and maximize bioavailability, so you get the most out of every bite.",
               children: [
                 {
@@ -551,43 +549,10 @@
           const panel = item.querySelector(":scope > .collapse-panel");
           if (!trigger || !panel) return;
 
-          function closeItem(targetItem) {
-            const targetTrigger = targetItem.querySelector(":scope > .collapse-trigger");
-            const targetPanel = targetItem.querySelector(":scope > .collapse-panel");
-            if (!targetTrigger || !targetPanel) return;
-            if (!targetItem.classList.contains("is-open")) return;
-
-            if (reduceMotion) {
-              targetItem.classList.remove("is-open");
-              targetTrigger.setAttribute("aria-expanded", "false");
-              targetPanel.style.height = "0px";
-              return;
-            }
-
-            targetPanel.style.height = `${targetPanel.scrollHeight}px`;
-            requestAnimationFrame(() => {
-              targetItem.classList.remove("is-open");
-              targetTrigger.setAttribute("aria-expanded", "false");
-              targetPanel.style.height = "0px";
-              requestHeightSync();
-            });
-          }
-
-          function closeSiblingItems() {
-            if (!item.parentElement) return;
-            Array.from(item.parentElement.children).forEach((sibling) => {
-              if (!(sibling instanceof HTMLElement)) return;
-              if (sibling === item) return;
-              if (!sibling.classList.contains("collapse-item")) return;
-              closeItem(sibling);
-            });
-          }
-
           trigger.addEventListener("click", () => {
             const isOpen = item.classList.contains("is-open");
 
             if (reduceMotion) {
-              if (!isOpen) closeSiblingItems();
               item.classList.toggle("is-open", !isOpen);
               trigger.setAttribute("aria-expanded", String(!isOpen));
               panel.style.height = !isOpen ? "auto" : "0px";
@@ -606,7 +571,6 @@
               return;
             }
 
-            closeSiblingItems();
             item.classList.add("is-open");
             trigger.setAttribute("aria-expanded", "true");
             panel.style.height = "0px";
