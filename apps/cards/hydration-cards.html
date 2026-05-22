@@ -102,6 +102,12 @@
         padding: 18px 16px;
       }
 
+      .card-front.is-combo {
+        flex-direction: column;
+        gap: 10px;
+        padding: 14px 16px;
+      }
+
       .card-front img {
         display: block;
         width: 100%;
@@ -109,6 +115,10 @@
         object-fit: contain;
         pointer-events: none;
         -webkit-user-drag: none;
+      }
+
+      .card-front.is-combo img {
+        height: calc((100% - 10px) / 2);
       }
 
       .card-back {
@@ -137,6 +147,17 @@
         margin: 0;
         font-size: 0.92rem;
         line-height: 1.42;
+        white-space: pre-line;
+      }
+
+      .hydration-card.is-copy-functions .card-back {
+        gap: 10px;
+        padding: 20px 16px;
+      }
+
+      .hydration-card.is-copy-functions .card-copy {
+        font-size: 0.84rem;
+        line-height: 1.34;
       }
 
       @media (max-width: 620px) {
@@ -162,6 +183,15 @@
         .card-copy {
           font-size: 0.82rem;
         }
+
+        .hydration-card.is-copy-functions .card-back {
+          padding: 16px 12px;
+        }
+
+        .hydration-card.is-copy-functions .card-copy {
+          font-size: 0.74rem;
+          line-height: 1.28;
+        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -176,36 +206,91 @@
 
     <script>
       (function () {
+        function normalizeParamString(raw) {
+          return String(raw || "")
+            .replace(/^\?/, "")
+            .replace(/^#/, "")
+            .replace(/&amp;/gi, "&")
+            .replace(/;/g, "&");
+        }
+
+        const normalizedSearch = normalizeParamString(window.location.search);
+        const normalizedHash = normalizeParamString(window.location.hash);
+        const combinedParams = [normalizedSearch, normalizedHash].filter(Boolean).join("&");
+        const rawParams = new URLSearchParams(combinedParams);
+        const params = new URLSearchParams();
+
+        for (const [key, value] of rawParams.entries()) {
+          let normalizedKey = String(key);
+          while (normalizedKey.toLowerCase().startsWith("amp;")) {
+            normalizedKey = normalizedKey.slice(4);
+          }
+          if (!params.has(normalizedKey)) params.set(normalizedKey, value);
+        }
+
+        function getCopyVariant() {
+          const rawVariant = (
+            params.get("copy") ||
+            params.get("variant") ||
+            params.get("version") ||
+            ""
+          )
+            .trim()
+            .toLowerCase();
+
+          if (["functions", "function", "benefits", "roles"].includes(rawVariant)) {
+            return "functions";
+          }
+          return "foods";
+        }
+
+        const copyVariant = getCopyVariant();
         const cardsData = [
           {
             title: "Ca",
             image: "../../assets/imgs/hydration-cards/Ca.png",
             alt: "Ca hydration card",
-            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
-          },
-          {
-            title: "Cl",
-            image: "../../assets/imgs/hydration-cards/Cl.png",
-            alt: "Cl hydration card",
-            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
+            copies: {
+              foods: "Calcium: dairy, sardines, sesame seeds",
+              functions: "Calcium - supports muscle movement, nerve signaling, and bone health",
+            },
           },
           {
             title: "Mg",
             image: "../../assets/imgs/hydration-cards/Mg.png",
             alt: "Mg hydration card",
-            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
+            copies: {
+              foods: "Magnesium: leafy greens, avocados, nuts",
+              functions: "Magnesium - supports energy production, relaxation, and cellular processes",
+            },
           },
           {
-            title: "Na",
-            image: "../../assets/imgs/hydration-cards/Na.png",
-            alt: "Na hydration card",
-            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
+            title: "Na + Cl",
+            images: [
+              {
+                src: "../../assets/imgs/hydration-cards/Na.png",
+                alt: "Na hydration card",
+              },
+              {
+                src: "../../assets/imgs/hydration-cards/Cl.png",
+                alt: "Cl hydration card",
+              },
+            ],
+            copies: {
+              foods: "Sodium & Chloride: mineral-rich salts like Redmond Real Salt",
+              functions:
+                "Sodium - helps maintain fluid balance and supports nerve and muscle function\nChloride - works with sodium to support hydration and digestion",
+            },
           },
           {
             title: "Pa",
             image: "../../assets/imgs/hydration-cards/Pa.png",
             alt: "Pa hydration card",
-            copy: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer vitae libero vitae justo efficitur posuere.",
+            copies: {
+              foods: "Potassium: bananas, oranges, potatoes",
+              functions:
+                "Potassium - helps balance fluids and supports muscle and heart function",
+            },
           },
         ];
 
@@ -213,6 +298,9 @@
           const button = document.createElement("button");
           button.type = "button";
           button.className = "hydration-card";
+          if (copyVariant === "functions") {
+            button.classList.add("is-copy-functions");
+          }
           button.setAttribute("aria-pressed", "false");
           button.setAttribute("aria-label", `${card.title}. Click to reveal copy.`);
 
@@ -222,12 +310,22 @@
           const front = document.createElement("span");
           front.className = "card-face card-front";
 
-          const image = document.createElement("img");
-          image.src = card.image;
-          image.alt = card.alt;
-          image.decoding = "async";
-          image.loading = index === 0 ? "eager" : "lazy";
-          front.appendChild(image);
+          const images = Array.isArray(card.images)
+            ? card.images
+            : [{ src: card.image, alt: card.alt }];
+
+          if (images.length > 1) {
+            front.classList.add("is-combo");
+          }
+
+          images.forEach((imageData) => {
+            const image = document.createElement("img");
+            image.src = imageData.src;
+            image.alt = imageData.alt || "";
+            image.decoding = "async";
+            image.loading = index === 0 ? "eager" : "lazy";
+            front.appendChild(image);
+          });
 
           const back = document.createElement("span");
           back.className = "card-face card-back";
@@ -238,7 +336,7 @@
 
           const copy = document.createElement("span");
           copy.className = "card-copy";
-          copy.textContent = card.copy;
+          copy.textContent = card.copies[copyVariant] || card.copies.foods;
 
           back.append(title, copy);
           inner.append(front, back);
