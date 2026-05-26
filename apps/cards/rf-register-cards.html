@@ -132,7 +132,8 @@
         inset: 0;
         width: 100%;
         height: 100%;
-        padding: 12px 18px 86px;
+        padding: clamp(36px, 4.6vw, 56px) clamp(62px, 7.4vw, 96px)
+          clamp(120px, 10.8vw, 144px);
         object-fit: contain;
         object-position: center;
         -webkit-user-drag: none;
@@ -151,7 +152,7 @@
       .front-title {
         position: relative;
         z-index: 1;
-        align-self: flex-end;
+        align-self: center;
         width: 100%;
         margin: 0;
         padding: 22px clamp(18px, 3vw, 28px);
@@ -159,12 +160,13 @@
         font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
         display: flex;
         flex-direction: column;
+        align-items: center;
         gap: 4px;
         font-size: clamp(1.08rem, 2.1vw, 1.75rem);
         font-weight: 800;
         letter-spacing: 0;
         line-height: 1.08;
-        text-align: left;
+        text-align: center;
         text-shadow: 0 2px 14px rgba(18, 31, 38, 0.46);
         overflow-wrap: anywhere;
         text-wrap: balance;
@@ -173,6 +175,8 @@
       .front-main,
       .front-subtitle {
         display: block;
+        width: 100%;
+        text-align: center;
       }
 
       .front-subtitle {
@@ -236,7 +240,7 @@
         color: var(--muted);
       }
 
-      .card-resource-link {
+      .card-resource-note {
         position: absolute;
         right: clamp(16px, 2.8vw, 28px);
         bottom: clamp(15px, 2.4vw, 24px);
@@ -246,24 +250,34 @@
         padding: 8px 10px;
         border-radius: 6px;
         background: rgba(255, 255, 255, 0.92);
-        color: var(--accent);
+        color: var(--ink);
         font-size: clamp(0.88rem, 1.04vw, 0.98rem);
         font-weight: 700;
         line-height: 1.25;
         opacity: 0;
         pointer-events: none;
-        cursor: pointer;
-        text-decoration: underline;
-        text-underline-offset: 2px;
+        cursor: default;
         transition: opacity 0.18s ease;
       }
 
-      .card-slot.has-resource.is-open .card-resource-link {
+      .card-resource-note a {
+        color: var(--accent);
+        cursor: pointer;
+        text-decoration: underline;
+        text-decoration-thickness: 2px;
+        text-underline-offset: 3px;
+      }
+
+      .card-resource-note a:hover {
+        background: rgba(46, 61, 44, 0.1);
+      }
+
+      .card-slot.has-resource.is-open .card-resource-note {
         opacity: 1;
         pointer-events: auto;
       }
 
-      .card-resource-link:focus-visible {
+      .card-resource-note a:focus-visible {
         outline: 2px solid rgba(46, 61, 44, 0.42);
         outline-offset: 2px;
       }
@@ -307,6 +321,10 @@
           font-size: clamp(1rem, 7vw, 1.35rem);
         }
 
+        .card-image {
+          padding: 42px 66px 128px;
+        }
+
         .front-subtitle {
           font-size: 0.86rem;
         }
@@ -320,7 +338,7 @@
           line-height: 1.38;
         }
 
-        .card-resource-link {
+        .card-resource-note {
           right: 14px;
           bottom: 14px;
           left: 14px;
@@ -373,7 +391,8 @@
             "A huge part of our dress code requirements exists to produce the safest possible environment for our associates. Non-slip shoes, long pants, and aprons reduce the risk of an unwanted hospital visit."
           ],
           "resource": {
-            "text": "For further details on our entire dress code requirements, click here!",
+            "prefix": "For further details on our entire dress code requirements, ",
+            "linkText": "click here!",
             "href": "https://redmondincorporated-my.sharepoint.com/:w:/g/personal/daycieh_redmondfarms_com/IQC8B0AyH8D3SKYsf9tyuqJxAf3kMqR1MsQqeY5FWhaUpXQ?e=WtQaPK"
           }
         },
@@ -505,23 +524,32 @@
           button.appendChild(inner);
           slot.appendChild(button);
 
+          let resourceNote = null;
           let resourceLink = null;
           if (card.resource && card.resource.href) {
+            resourceNote = document.createElement("span");
+            resourceNote.className = "card-resource-note";
+
+            const resourceEmphasis = document.createElement("em");
+            resourceEmphasis.append(document.createTextNode(card.resource.prefix || ""));
+
             resourceLink = document.createElement("a");
-            resourceLink.className = "card-resource-link";
             resourceLink.href = card.resource.href;
             resourceLink.target = "_blank";
             resourceLink.rel = "noopener noreferrer";
-            resourceLink.textContent = card.resource.text || "click here";
+            resourceLink.textContent = card.resource.linkText || "click here";
             resourceLink.tabIndex = -1;
-            resourceLink.setAttribute("aria-hidden", "true");
             resourceLink.addEventListener("click", (event) => {
               event.stopPropagation();
             });
             resourceLink.addEventListener("keydown", (event) => {
               event.stopPropagation();
             });
-            slot.appendChild(resourceLink);
+
+            resourceEmphasis.appendChild(resourceLink);
+            resourceNote.appendChild(resourceEmphasis);
+            resourceNote.setAttribute("aria-hidden", "true");
+            slot.appendChild(resourceNote);
           }
 
           function toggleCard() {
@@ -530,7 +558,9 @@
             button.setAttribute("aria-pressed", String(isOpen));
             if (resourceLink) {
               resourceLink.tabIndex = isOpen ? 0 : -1;
-              resourceLink.setAttribute("aria-hidden", String(!isOpen));
+            }
+            if (resourceNote) {
+              resourceNote.setAttribute("aria-hidden", String(!isOpen));
             }
           }
 
