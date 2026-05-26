@@ -25,6 +25,8 @@
   const bookSources = {
     "401k": "content.json",
     "consolidate-your-retirement": "content-consolidate-retirement.json",
+    "empower-mobile-app": "content-empower-mobile-app.json",
+    "empower-mobile": "content-empower-mobile-app.json",
   };
   const fallbackBook = {
     title: "Redmond Farm Guide",
@@ -120,7 +122,7 @@
     const bullets = toTextArray(page.bullets);
     const image = toText(page.image);
     const layout = toText(page.layout);
-    const allowedLayouts = new Set(["default", "text-only", "image-full"]);
+    const allowedLayouts = new Set(["default", "text-only", "image-full", "document-full"]);
     const imagePosition = toText(page.imagePosition);
     const allowedImagePositions = new Set(["before-copy", "after-copy"]);
     const imageFit = toText(page.imageFit);

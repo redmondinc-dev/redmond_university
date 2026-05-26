@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RF Register Cards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --accent: #2e3d2c;
+        --ink: #263541;
+        --muted: #596a75;
+        --paper: #ffffff;
+        --panel: #f7faf8;
+        --line: rgba(38, 53, 65, 0.16);
+        --shadow: 0 16px 34px rgba(27, 42, 48, 0.16);
+        --radius: 8px;
+        --gap: clamp(14px, 2vw, 22px);
+        --card-height: clamp(330px, 30vw, 410px);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100vh;
+      }
+
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: clamp(18px, 3vw, 34px);
+        background: transparent;
+        color: var(--ink);
+        font-family: "Avenir", "Avenir Next", "Helvetica Neue", "Segoe UI", sans-serif;
+      }
+
+      .cards-grid {
+        width: min(1180px, 100%);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: var(--gap);
+      }
+
+      .card-slot {
+        position: relative;
+        width: 100%;
+        height: var(--card-height);
+      }
+
+      .register-card {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        border: 0;
+        padding: 0;
+        border-radius: var(--radius);
+        background: transparent;
+        cursor: pointer;
+        perspective: 1200px;
+        animation: riseIn 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+        animation-delay: var(--delay, 0s);
+      }
+
+      .register-card:hover .card-inner,
+      .register-card:focus-visible .card-inner {
+        box-shadow: 0 20px 40px rgba(27, 42, 48, 0.22);
+        transform: translateY(-3px);
+      }
+
+      .register-card.is-open .card-inner {
+        transform: rotateY(180deg);
+      }
+
+      .register-card.is-open:hover .card-inner,
+      .register-card.is-open:focus-visible .card-inner {
+        transform: rotateY(180deg) translateY(-2px);
+      }
+
+      .register-card:focus-visible {
+        outline: 3px solid rgba(46, 61, 44, 0.38);
+        outline-offset: 5px;
+      }
+
+      .card-slot.has-resource.is-open .card-back {
+        padding-bottom: clamp(64px, 6vw, 78px);
+      }
+
+      .card-inner {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        transform-style: preserve-3d;
+        transition:
+          transform 0.62s cubic-bezier(0.22, 1, 0.36, 1),
+          box-shadow 0.24s ease;
+      }
+
+      .card-face {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--paper);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+
+      .card-front {
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: flex-end;
+        background: #eef2ef;
+      }
+
+      .card-image {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        padding: 12px 18px 86px;
+        object-fit: contain;
+        object-position: center;
+        -webkit-user-drag: none;
+        pointer-events: none;
+      }
+
+      .card-front::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background:
+          linear-gradient(180deg, rgba(18, 31, 38, 0) 45%, rgba(18, 31, 38, 0.74) 100%),
+          linear-gradient(90deg, rgba(18, 31, 38, 0.12), rgba(18, 31, 38, 0.02));
+      }
+
+      .front-title {
+        position: relative;
+        z-index: 1;
+        align-self: flex-end;
+        width: 100%;
+        margin: 0;
+        padding: 22px clamp(18px, 3vw, 28px);
+        color: #ffffff;
+        font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        font-size: clamp(1.08rem, 2.1vw, 1.75rem);
+        font-weight: 800;
+        letter-spacing: 0;
+        line-height: 1.08;
+        text-align: left;
+        text-shadow: 0 2px 14px rgba(18, 31, 38, 0.46);
+        overflow-wrap: anywhere;
+        text-wrap: balance;
+      }
+
+      .front-main,
+      .front-subtitle {
+        display: block;
+      }
+
+      .front-subtitle {
+        font-size: clamp(0.76rem, 1.25vw, 1rem);
+        font-weight: 700;
+        line-height: 1.16;
+      }
+
+      .card-back {
+        transform: rotateY(180deg);
+        flex-direction: column;
+        gap: 14px;
+        padding: clamp(20px, 2.8vw, 30px);
+        background:
+          linear-gradient(135deg, rgba(255, 255, 255, 0.92), rgba(247, 250, 248, 0.92)),
+          var(--panel);
+        text-align: left;
+      }
+
+      .back-title {
+        margin: 0;
+        color: var(--accent);
+        font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
+        font-size: clamp(1rem, 1.55vw, 1.32rem);
+        font-weight: 800;
+        letter-spacing: 0;
+        line-height: 1.14;
+      }
+
+      .back-copy {
+        margin: 0;
+        padding-right: 4px;
+        overflow-y: auto;
+        color: var(--ink);
+        font-size: clamp(0.9rem, 1.12vw, 1.03rem);
+        line-height: 1.42;
+        scrollbar-width: thin;
+        scrollbar-color: rgba(38, 53, 65, 0.3) transparent;
+      }
+
+      .back-copy::-webkit-scrollbar {
+        width: 7px;
+      }
+
+      .back-copy::-webkit-scrollbar-thumb {
+        border-radius: 999px;
+        background: rgba(38, 53, 65, 0.26);
+      }
+
+      .copy-line {
+        display: block;
+        margin: 0 0 0.72rem;
+      }
+
+      .copy-line:last-child {
+        margin-bottom: 0;
+      }
+
+      .back-copy strong,
+      .back-copy em {
+        color: var(--muted);
+      }
+
+      .card-resource-link {
+        position: absolute;
+        right: clamp(16px, 2.8vw, 28px);
+        bottom: clamp(15px, 2.4vw, 24px);
+        left: clamp(16px, 2.8vw, 28px);
+        z-index: 5;
+        display: block;
+        padding: 8px 10px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, 0.92);
+        color: var(--accent);
+        font-size: clamp(0.88rem, 1.04vw, 0.98rem);
+        font-weight: 700;
+        line-height: 1.25;
+        opacity: 0;
+        pointer-events: none;
+        cursor: pointer;
+        text-decoration: underline;
+        text-underline-offset: 2px;
+        transition: opacity 0.18s ease;
+      }
+
+      .card-slot.has-resource.is-open .card-resource-link {
+        opacity: 1;
+        pointer-events: auto;
+      }
+
+      .card-resource-link:focus-visible {
+        outline: 2px solid rgba(46, 61, 44, 0.42);
+        outline-offset: 2px;
+      }
+
+      @keyframes riseIn {
+        0% {
+          opacity: 0;
+          transform: translateY(18px) scale(0.98);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @media (max-width: 820px) {
+        :root {
+          --card-height: clamp(310px, 70vw, 380px);
+        }
+
+        body {
+          align-items: flex-start;
+        }
+
+        .cards-grid {
+          grid-template-columns: minmax(0, 1fr);
+        }
+      }
+
+      @media (max-width: 520px) {
+        :root {
+          --card-height: 360px;
+        }
+
+        body {
+          padding: 14px;
+        }
+
+        .front-title {
+          padding: 18px 16px;
+          font-size: clamp(1rem, 7vw, 1.35rem);
+        }
+
+        .front-subtitle {
+          font-size: 0.86rem;
+        }
+
+        .card-back {
+          padding: 18px 16px;
+        }
+
+        .back-copy {
+          font-size: 0.88rem;
+          line-height: 1.38;
+        }
+
+        .card-resource-link {
+          right: 14px;
+          bottom: 14px;
+          left: 14px;
+          font-size: 0.84rem;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .register-card,
+        .card-inner {
+          animation: none;
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main id="cards" class="cards-grid" aria-label="Redmond Farms register cards"></main>
+
+    <script id="rf-register-cards-data" type="application/json">
+      [
+        {
+          "title": "Process Improvement",
+          "subtitle": "Known at Redmond as \"Kaizone\"",
+          "image": "assets/img/Process Improvement.png",
+          "alt": "Process Improvement illustration",
+          "paragraphs": [
+            "Redmond believes kitchen processes should blend Kaizen (continuous improvement) with a flow state (being in the zone). By optimizing our processes in this way, we remove distractions and create space for deep, engaging work.",
+            "In the kitchen, you'll often hear terms like \"2 second lean\" and \"Kaizone\" when a process is being improved. A great way to contribute to the team is by getting curious and bringing your fresh perspective to these process improvements. We don't have a traditional management structure, so everyone collaborates to ensure smooth operations in the kitchen!"
+          ]
+        },
+        {
+          "title": "Collaboration and Meetings",
+          "image": "assets/img/Collaboration and Meetings.png",
+          "alt": "Collaboration and Meetings illustration",
+          "paragraphs": [
+            "Collaboration at Redmond isn't just working together; it's about multiplying impact. Instead of just cooperating, we actively build on each other's strengths to create something greater than the sum of individual contributions. This happens primarily through collaborative meeting spaces like our weekly Kaizone meeting.",
+            "Simply put, if you want change and growth to happen, prioritize consistently sharing your perspective at team meetings!"
+          ]
+        },
+        {
+          "title": "Dress Code Review",
+          "image": "assets/img/Dress Code Review.png",
+          "alt": "Dress Code Review illustration",
+          "paragraphs": [
+            "We do our best to make the kitchen dress code requirements a \"win-win\" for both associates and Redmond. In doing so, we strive to prioritize two things:",
+            "<strong>Customer Experience</strong>",
+            "We want to be identifiable to our customers when they need help or have questions. This is a big part of cultivating a welcoming, safe environment. This is why we choose to wear identifiable aprons in any customer-facing role in our Markets and Kitchens.",
+            "<strong>Safety</strong>",
+            "A huge part of our dress code requirements exists to produce the safest possible environment for our associates. Non-slip shoes, long pants, and aprons reduce the risk of an unwanted hospital visit."
+          ],
+          "resource": {
+            "text": "For further details on our entire dress code requirements, click here!",
+            "href": "https://redmondincorporated-my.sharepoint.com/:w:/g/personal/daycieh_redmondfarms_com/IQC8B0AyH8D3SKYsf9tyuqJxAf3kMqR1MsQqeY5FWhaUpXQ?e=WtQaPK"
+          }
+        },
+        {
+          "title": "Working in an Open Kitchen",
+          "image": "assets/img/Working in an Open Kitchen.png",
+          "alt": "Working in an Open Kitchen illustration",
+          "paragraphs": [
+            "At Redmond, we work in kitchens that are easily accessible to customers both visibly and audibly. This means that as associates, we need to be aware of how we speak and act towards customers, because customers can see us and hear whatever we say.",
+            "If at any moment you need a minute or time to process a tough customer interaction, do so in the back room, away from the customer area."
+          ]
+        }
+      ]
+    </script>
+
+    <script>
+      (function () {
+        const dataNode = document.getElementById("rf-register-cards-data");
+        const cardsNode = document.getElementById("cards");
+        let cards = [];
+
+        try {
+          cards = JSON.parse(dataNode.textContent || "[]");
+        } catch {
+          cards = [];
+        }
+
+        function createParagraph(content) {
+          const paragraph = document.createElement("span");
+          paragraph.className = "copy-line";
+
+          if (content && typeof content === "object") {
+            const wrapper = content.emphasis
+              ? document.createElement("em")
+              : document.createDocumentFragment();
+            wrapper.append(document.createTextNode(content.prefix || ""));
+
+            if (content.href && content.linkText) {
+              const link = document.createElement("a");
+              link.href = content.href;
+              link.target = "_blank";
+              link.rel = "noopener noreferrer";
+              link.textContent = content.linkText;
+              link.addEventListener("click", (event) => {
+                event.stopPropagation();
+              });
+              wrapper.appendChild(link);
+            }
+
+            wrapper.append(document.createTextNode(content.suffix || ""));
+            paragraph.appendChild(wrapper);
+            return paragraph;
+          }
+
+          const raw = String(content || "");
+          const richTextMatch = raw.match(/^<(strong|em)>(.*)<\/\1>$/);
+          if (richTextMatch) {
+            const [, tagName, text] = richTextMatch;
+            const richText = document.createElement(tagName);
+            richText.textContent = text;
+            paragraph.appendChild(richText);
+          } else {
+            paragraph.textContent = raw;
+          }
+          return paragraph;
+        }
+
+        function getFullTitle(card) {
+          if (card.subtitle) return `${card.title} (${card.subtitle})`;
+          return card.title || "";
+        }
+
+        const cardElements = cards.map((card, index) => {
+          const slot = document.createElement("div");
+          slot.className = "card-slot";
+          slot.style.setProperty("--delay", `${index * 0.07}s`);
+
+          const button = document.createElement("div");
+          const title = getFullTitle(card);
+          button.className = "register-card";
+          if (card.resource && card.resource.href) {
+            slot.classList.add("has-resource");
+          }
+          button.tabIndex = 0;
+          button.setAttribute("role", "button");
+          button.setAttribute("aria-pressed", "false");
+          button.setAttribute("aria-label", `${title}. Click to reveal description.`);
+
+          const inner = document.createElement("span");
+          inner.className = "card-inner";
+
+          const front = document.createElement("span");
+          front.className = "card-face card-front";
+
+          const img = document.createElement("img");
+          img.className = "card-image";
+          img.src = card.image;
+          img.alt = card.alt || "";
+
+          const frontTitle = document.createElement("span");
+          frontTitle.className = "front-title";
+          const frontMain = document.createElement("span");
+          frontMain.className = "front-main";
+          frontMain.textContent = card.title || "";
+          frontTitle.appendChild(frontMain);
+          if (card.subtitle) {
+            const frontSubtitle = document.createElement("span");
+            frontSubtitle.className = "front-subtitle";
+            frontSubtitle.textContent = card.subtitle;
+            frontTitle.appendChild(frontSubtitle);
+          }
+
+          const back = document.createElement("span");
+          back.className = "card-face card-back";
+
+          const backTitle = document.createElement("span");
+          backTitle.className = "back-title";
+          backTitle.textContent = title;
+
+          const backCopy = document.createElement("span");
+          backCopy.className = "back-copy";
+          (Array.isArray(card.paragraphs) ? card.paragraphs : []).forEach((paragraph) => {
+            backCopy.appendChild(createParagraph(paragraph));
+          });
+
+          front.append(img, frontTitle);
+          back.append(backTitle, backCopy);
+          inner.append(front, back);
+          button.appendChild(inner);
+          slot.appendChild(button);
+
+          let resourceLink = null;
+          if (card.resource && card.resource.href) {
+            resourceLink = document.createElement("a");
+            resourceLink.className = "card-resource-link";
+            resourceLink.href = card.resource.href;
+            resourceLink.target = "_blank";
+            resourceLink.rel = "noopener noreferrer";
+            resourceLink.textContent = card.resource.text || "click here";
+            resourceLink.tabIndex = -1;
+            resourceLink.setAttribute("aria-hidden", "true");
+            resourceLink.addEventListener("click", (event) => {
+              event.stopPropagation();
+            });
+            resourceLink.addEventListener("keydown", (event) => {
+              event.stopPropagation();
+            });
+            slot.appendChild(resourceLink);
+          }
+
+          function toggleCard() {
+            const isOpen = button.classList.toggle("is-open");
+            slot.classList.toggle("is-open", isOpen);
+            button.setAttribute("aria-pressed", String(isOpen));
+            if (resourceLink) {
+              resourceLink.tabIndex = isOpen ? 0 : -1;
+              resourceLink.setAttribute("aria-hidden", String(!isOpen));
+            }
+          }
+
+          button.addEventListener("click", (event) => {
+            if (event.target instanceof Element && event.target.closest("a")) return;
+            toggleCard();
+          });
+
+          button.addEventListener("keydown", (event) => {
+            if (event.target instanceof Element && event.target.closest("a")) return;
+            if (event.key !== "Enter" && event.key !== " ") return;
+            event.preventDefault();
+            toggleCard();
+          });
+
+          return slot;
+        });
+
+        cardsNode.replaceChildren(...cardElements);
+      })();
+    </script>
+  </body>
+</html>

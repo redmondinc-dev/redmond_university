@@ -59,11 +59,13 @@ By default, the component loads the `401k` book. Select a book with the `book` p
 ```text
 index.html?book=401k
 index.html?book=consolidate-your-retirement
+index.html?book=empower-mobile-app
 ```
 
 Current book values:
 
 - `401k`: 401(k) Info Guide (`content.json`).
 - `consolidate-your-retirement`: Consolidate your retirement accounts (`content-consolidate-retirement.json`).
+- `empower-mobile-app`: Empower Mobile App (`content-empower-mobile-app.json`).
 
 Because the component fetches JSON, use it through a local/static server or a hosted site.
