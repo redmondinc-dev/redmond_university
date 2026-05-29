@@ -118,8 +118,19 @@ body::before {
 
 .hero h1,
 .panel h2,
+.composition__header h3,
+.panel--chart h3,
+.panel--table h3,
+.section-label,
+.mode-select label,
+.field label,
+.metric__label,
 .metric__value,
-.result-pill strong {
+.result-pill span,
+.result-pill strong,
+.formula-tooltip__title,
+thead th,
+.button {
   font-family: var(--font-display);
 }
 
@@ -339,6 +350,7 @@ body::before {
   border-radius: 14px;
   padding: 0 16px;
   font: inherit;
+  font-family: var(--font-display);
   font-size: 0.88rem;
   font-weight: 700;
   color: #f8f4ee;
@@ -700,6 +712,7 @@ body::before {
   display: block;
   width: 100%;
   height: auto;
+  font-family: var(--font-body);
 }
 
 .chart-legend {
