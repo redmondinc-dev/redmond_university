@@ -549,6 +549,72 @@
           return item;
         }
 
+        function forceCloseDescendants(item) {
+          item
+            .querySelectorAll(":scope .collapse-item.is-open:not(.is-static)")
+            .forEach((descendant) => {
+              const descendantTrigger = descendant.querySelector(":scope > .collapse-trigger");
+              const descendantPanel = descendant.querySelector(":scope > .collapse-panel");
+
+              descendant.classList.remove("is-open");
+              if (descendantTrigger) {
+                descendantTrigger.setAttribute("aria-expanded", "false");
+              }
+              if (descendantPanel) {
+                descendantPanel.style.height = "0px";
+              }
+            });
+        }
+
+        function setCollapseState(item, isOpen) {
+          const trigger = item.querySelector(":scope > .collapse-trigger");
+          const panel = item.querySelector(":scope > .collapse-panel");
+          if (!trigger || !panel || item.classList.contains("is-static")) return;
+
+          const wasOpen = item.classList.contains("is-open");
+          if (wasOpen === isOpen) return;
+
+          if (reduceMotion) {
+            if (!isOpen) forceCloseDescendants(item);
+            item.classList.toggle("is-open", isOpen);
+            trigger.setAttribute("aria-expanded", String(isOpen));
+            panel.style.height = isOpen ? "auto" : "0px";
+            requestHeightSync();
+            return;
+          }
+
+          if (!isOpen) {
+            panel.style.height = `${panel.scrollHeight}px`;
+            forceCloseDescendants(item);
+            requestAnimationFrame(() => {
+              item.classList.remove("is-open");
+              trigger.setAttribute("aria-expanded", "false");
+              panel.style.height = "0px";
+              requestHeightSync();
+            });
+            return;
+          }
+
+          item.classList.add("is-open");
+          trigger.setAttribute("aria-expanded", "true");
+          panel.style.height = "0px";
+          requestAnimationFrame(() => {
+            panel.style.height = `${panel.scrollHeight}px`;
+            requestHeightSync();
+          });
+        }
+
+        function closeSiblingItems(item) {
+          const parent = item.parentElement;
+          if (!parent) return;
+
+          parent
+            .querySelectorAll(":scope > .collapse-item.is-open:not(.is-static)")
+            .forEach((sibling) => {
+              if (sibling !== item) setCollapseState(sibling, false);
+            });
+        }
+
         function bindCollapse(item) {
           const trigger = item.querySelector(":scope > .collapse-trigger");
           const panel = item.querySelector(":scope > .collapse-panel");
@@ -557,32 +623,13 @@
           trigger.addEventListener("click", () => {
             const isOpen = item.classList.contains("is-open");
 
-            if (reduceMotion) {
-              item.classList.toggle("is-open", !isOpen);
-              trigger.setAttribute("aria-expanded", String(!isOpen));
-              panel.style.height = !isOpen ? "auto" : "0px";
-              requestHeightSync();
-              return;
-            }
-
             if (isOpen) {
-              panel.style.height = `${panel.scrollHeight}px`;
-              requestAnimationFrame(() => {
-                item.classList.remove("is-open");
-                trigger.setAttribute("aria-expanded", "false");
-                panel.style.height = "0px";
-                requestHeightSync();
-              });
+              setCollapseState(item, false);
               return;
             }
 
-            item.classList.add("is-open");
-            trigger.setAttribute("aria-expanded", "true");
-            panel.style.height = "0px";
-            requestAnimationFrame(() => {
-              panel.style.height = `${panel.scrollHeight}px`;
-              requestHeightSync();
-            });
+            closeSiblingItems(item);
+            setCollapseState(item, true);
           });
 
           panel.addEventListener("transitionend", (event) => {
