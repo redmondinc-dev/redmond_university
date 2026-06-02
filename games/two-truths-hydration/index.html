@@ -1,0 +1,179 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Two Truths and a Lie: Hydration Edition</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="screen-text" id="live-region" aria-live="polite" aria-atomic="true"></div>
+    <div class="app-shell">
+      <header class="game-header">
+        <a class="brand-mark" href="../../menu/index.html" aria-label="Back to Redmond University menu">
+          <img src="../../assets/imgs/png/LOGO_REDMOND_REGISTER.png" alt="Redmond" />
+        </a>
+
+        <div class="title-stack">
+          <p class="kicker" data-ui="kicker">Re-Lyte Micro Game</p>
+          <h1 data-ui="title">Two Truths and a Lie: Hydration Edition</h1>
+          <p class="intro" data-ui="intro">
+            Find the hydration myth. Every round adds to your Re-Lyte bottle.
+          </p>
+        </div>
+
+        <div class="header-actions" aria-label="Game controls">
+          <div class="language-switch" role="group" aria-label="Language">
+            <button class="language-btn" type="button" data-lang="en">EN</button>
+            <button class="language-btn" type="button" data-lang="es">ES</button>
+          </div>
+          <button class="icon-btn" id="sound-toggle" type="button" aria-pressed="false">
+            <span data-ui="soundOff">Sound off</span>
+          </button>
+          <button class="secondary-btn" id="reset-btn" type="button" data-ui="replay">Replay</button>
+        </div>
+      </header>
+
+      <main class="game-layout">
+        <section class="play-panel" aria-labelledby="round-title">
+          <div class="round-bar" aria-label="Round progress">
+            <div>
+              <span class="round-label" id="round-label">Round 1 of 8</span>
+              <h2 id="round-title">Electrolytes matter</h2>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <span id="round-progress"></span>
+            </div>
+          </div>
+
+          <p class="round-prompt" id="round-prompt">
+            Which statement is the lie?
+          </p>
+
+          <div class="cards-grid" id="cards-grid" aria-label="Answer choices"></div>
+
+          <section class="feedback-panel" id="feedback-panel" tabindex="-1" aria-live="polite" hidden>
+            <div class="feedback-copy">
+              <span class="feedback-chip" id="feedback-chip">Correct</span>
+              <h2 id="feedback-title">That is the lie.</h2>
+              <p id="feedback-text"></p>
+            </div>
+            <button class="primary-btn" id="next-btn" type="button">Next round</button>
+          </section>
+
+          <div class="burst-layer" id="burst-layer" aria-hidden="true"></div>
+        </section>
+
+        <aside class="status-panel" aria-label="Game status">
+          <section class="bottle-card" aria-labelledby="bottle-title">
+            <div class="panel-heading">
+              <div>
+                <span class="small-label" data-ui="progressLabel">Bottle progress</span>
+                <h2 id="bottle-title" data-ui="bottleTitle">Re-Lyte fill</h2>
+              </div>
+              <strong id="bottle-percent">0%</strong>
+            </div>
+
+            <div
+              class="bottle-meter"
+              id="bottle-meter"
+              role="progressbar"
+              aria-label="Re-Lyte bottle fill"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <div class="bottle-cap" aria-hidden="true"></div>
+              <div class="bottle-neck" aria-hidden="true"></div>
+              <div class="bottle-body" aria-hidden="true">
+                <div class="bottle-liquid" id="bottle-liquid"></div>
+                <div class="bottle-glass"></div>
+                <div class="bottle-label">
+                  <span>Re-Lyte</span>
+                  <small data-ui="hydrationMix">Hydration Mix</small>
+                </div>
+                <div class="bottle-ticks"></div>
+              </div>
+            </div>
+
+            <div class="mineral-strip" aria-hidden="true">
+              <img src="../../assets/imgs/hydration-cards/Na.png" alt="" />
+              <img src="../../assets/imgs/hydration-cards/Mg.png" alt="" />
+              <img src="../../assets/imgs/hydration-cards/Ca.png" alt="" />
+              <img src="../../assets/imgs/hydration-cards/Cl.png" alt="" />
+            </div>
+          </section>
+
+          <section class="stats-card" aria-label="Score">
+            <div class="stat-row">
+              <span data-ui="scoreLabel">Score</span>
+              <strong id="score-value">0 / 8</strong>
+            </div>
+            <div class="stat-row">
+              <span data-ui="streakLabel">Streak</span>
+              <strong id="streak-value">0</strong>
+            </div>
+            <div class="stat-row">
+              <span data-ui="knowledgeLabel">Knowledge</span>
+              <strong id="knowledge-value">0 cards</strong>
+            </div>
+          </section>
+
+          <section class="recap-card" aria-label="Hydration recap help">
+            <button class="help-card-btn" id="recap-help-btn" type="button" aria-haspopup="dialog">
+              <span class="help-icon" aria-hidden="true">?</span>
+              <span class="help-copy">
+                <span class="small-label" data-ui="recapLabel">Unlocked recap</span>
+                <strong data-ui="recapTitle">Hydration takeaways</strong>
+                <small id="recap-count">0 / 8</small>
+              </span>
+            </button>
+          </section>
+        </aside>
+
+        <div
+          class="modal-overlay completion-screen"
+          id="completion-screen"
+          tabindex="-1"
+          role="dialog"
+          aria-labelledby="completion-title"
+          hidden
+        >
+          <div class="modal-card completion-content">
+            <span class="completion-chip" data-ui="completeChip">Bottle full</span>
+            <h2 id="completion-title">Hydration IQ complete</h2>
+            <p id="completion-copy"></p>
+            <div class="completion-score" id="completion-score">0 / 8</div>
+            <div class="completion-actions">
+              <button class="primary-btn" id="play-again-btn" type="button" data-ui="playAgain">Play again</button>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <div
+      class="modal-overlay recap-modal"
+      id="recap-modal"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="recap-title"
+      hidden
+    >
+      <div class="modal-card recap-content">
+        <div class="modal-heading">
+          <div>
+            <span class="small-label" data-ui="recapLabel">Unlocked recap</span>
+            <h2 id="recap-title" data-ui="recapTitle">Hydration takeaways</h2>
+          </div>
+          <button class="modal-close" id="recap-close-btn" type="button" aria-label="Close recap">x</button>
+        </div>
+        <ol class="takeaway-list" id="takeaway-list"></ol>
+      </div>
+    </div>
+
+    <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

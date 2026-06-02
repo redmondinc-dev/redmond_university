@@ -109,13 +109,6 @@ body::before {
   gap: 14px;
 }
 
-.hero__actions {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  flex: 0 0 auto;
-}
-
 .hero h1,
 .panel h2,
 .composition__header h3,
@@ -141,15 +134,6 @@ thead th,
   font-weight: 800;
   line-height: 1;
   letter-spacing: 0;
-}
-
-.hero__logo {
-  display: block;
-  width: clamp(220px, 34vw, 360px);
-  max-width: 100%;
-  height: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 4px 10px rgba(24, 34, 29, 0.08));
 }
 
 .result-pill {
@@ -889,10 +873,6 @@ tbody td:first-child {
   .results-header {
     grid-template-columns: 1fr;
     display: grid;
-  }
-
-  .hero__actions {
-    justify-content: space-between;
   }
 
   .form-grid {

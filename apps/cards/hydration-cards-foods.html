@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Hydration Clickable Cards</title>
+    <title>Hydration Food Cards</title>
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap");
 
@@ -98,16 +98,6 @@
         overflow: hidden;
       }
 
-      .card-front {
-        padding: 18px 16px;
-      }
-
-      .card-front.is-combo {
-        flex-direction: column;
-        gap: 10px;
-        padding: 14px 16px;
-      }
-
       .card-front img {
         display: block;
         width: 100%;
@@ -117,8 +107,13 @@
         -webkit-user-drag: none;
       }
 
-      .card-front.is-combo img {
-        height: calc((100% - 10px) / 2);
+      .card-front::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        box-shadow: inset 0 0 28px 14px #ffffff;
+        pointer-events: none;
       }
 
       .card-back {
@@ -147,17 +142,6 @@
         margin: 0;
         font-size: 0.92rem;
         line-height: 1.42;
-        white-space: pre-line;
-      }
-
-      .hydration-card.is-copy-functions .card-back {
-        gap: 10px;
-        padding: 20px 16px;
-      }
-
-      .hydration-card.is-copy-functions .card-copy {
-        font-size: 0.84rem;
-        line-height: 1.34;
       }
 
       @media (max-width: 620px) {
@@ -183,15 +167,6 @@
         .card-copy {
           font-size: 0.82rem;
         }
-
-        .hydration-card.is-copy-functions .card-back {
-          padding: 16px 12px;
-        }
-
-        .hydration-card.is-copy-functions .card-copy {
-          font-size: 0.74rem;
-          line-height: 1.28;
-        }
       }
 
       @media (prefers-reduced-motion: reduce) {
@@ -202,94 +177,34 @@
     </style>
   </head>
   <body>
-    <main id="cards" class="cards-grid" aria-label="Hydration clickable cards"></main>
+    <main id="cards" class="cards-grid" aria-label="Hydration food cards"></main>
 
     <script>
       (function () {
-        function normalizeParamString(raw) {
-          return String(raw || "")
-            .replace(/^\?/, "")
-            .replace(/^#/, "")
-            .replace(/&amp;/gi, "&")
-            .replace(/;/g, "&");
-        }
-
-        const normalizedSearch = normalizeParamString(window.location.search);
-        const normalizedHash = normalizeParamString(window.location.hash);
-        const combinedParams = [normalizedSearch, normalizedHash].filter(Boolean).join("&");
-        const rawParams = new URLSearchParams(combinedParams);
-        const params = new URLSearchParams();
-
-        for (const [key, value] of rawParams.entries()) {
-          let normalizedKey = String(key);
-          while (normalizedKey.toLowerCase().startsWith("amp;")) {
-            normalizedKey = normalizedKey.slice(4);
-          }
-          if (!params.has(normalizedKey)) params.set(normalizedKey, value);
-        }
-
-        function getCopyVariant() {
-          const rawVariant = (
-            params.get("copy") ||
-            params.get("variant") ||
-            params.get("version") ||
-            ""
-          )
-            .trim()
-            .toLowerCase();
-
-          if (["functions", "function", "benefits", "roles"].includes(rawVariant)) {
-            return "functions";
-          }
-          return "foods";
-        }
-
-        const copyVariant = getCopyVariant();
         const cardsData = [
           {
-            title: "Na",
-            image: "../../assets/imgs/hydration-cards/Na.png",
-            alt: "Na hydration card",
-            copies: {
-              foods: "Sodium – helps maintain fluid balance and supports nerve and muscle function",
-              functions: "Sodium – helps maintain fluid balance and supports nerve and muscle function",
-            },
+            title: "Potassium",
+            image: "../../assets/imgs/hydration-cards/potassium.png",
+            alt: "Bananas, oranges, and potatoes",
+            copy: "Potassium: bananas, oranges, potatoes",
           },
           {
-            title: "Cl",
-            image: "../../assets/imgs/hydration-cards/Cl.png",
-            alt: "Cl hydration card",
-            copies: {
-              foods: "Chloride – works with sodium to support hydration and digestion",
-              functions: "Chloride – works with sodium to support hydration and digestion",
-            },
+            title: "Magnesium",
+            image: "../../assets/imgs/hydration-cards/magnesium.png",
+            alt: "Leafy greens, avocados, and nuts",
+            copy: "Magnesium: leafy greens, avocados, nuts",
           },
           {
-            title: "Pa",
-            image: "../../assets/imgs/hydration-cards/Pa.png",
-            alt: "Pa hydration card",
-            copies: {
-              foods: "Potassium – helps balance fluids and supports muscle and heart function",
-              functions: "Potassium – helps balance fluids and supports muscle and heart function",
-            },
+            title: "Calcium",
+            image: "../../assets/imgs/hydration-cards/calcium.png",
+            alt: "Dairy, sardines, and sesame seeds",
+            copy: "Calcium: dairy, sardines, sesame seeds",
           },
           {
-            title: "Mg",
-            image: "../../assets/imgs/hydration-cards/Mg.png",
-            alt: "Mg hydration card",
-            copies: {
-              foods: "Magnesium – supports energy production, relaxation, and cellular processes",
-              functions: "Magnesium – supports energy production, relaxation, and cellular processes",
-            },
-          },
-          {
-            title: "Ca",
-            image: "../../assets/imgs/hydration-cards/Ca.png",
-            alt: "Ca hydration card",
-            copies: {
-              foods: "Calcium – supports muscle movement, nerve signaling, and bone health",
-              functions: "Calcium – supports muscle movement, nerve signaling, and bone health",
-            },
+            title: "Na + Cl",
+            image: "../../assets/imgs/hydration-cards/sodiumandchloride.png",
+            alt: "Mineral-rich salts",
+            copy: "Sodium & Chloride: mineral-rich salts like Redmond Real Salt",
           },
         ];
 
@@ -297,9 +212,6 @@
           const button = document.createElement("button");
           button.type = "button";
           button.className = "hydration-card";
-          if (copyVariant === "functions") {
-            button.classList.add("is-copy-functions");
-          }
           button.setAttribute("aria-pressed", "false");
           button.setAttribute("aria-label", `${card.title}. Click to reveal copy.`);
 
@@ -309,22 +221,12 @@
           const front = document.createElement("span");
           front.className = "card-face card-front";
 
-          const images = Array.isArray(card.images)
-            ? card.images
-            : [{ src: card.image, alt: card.alt }];
-
-          if (images.length > 1) {
-            front.classList.add("is-combo");
-          }
-
-          images.forEach((imageData) => {
-            const image = document.createElement("img");
-            image.src = imageData.src;
-            image.alt = imageData.alt || "";
-            image.decoding = "async";
-            image.loading = index === 0 ? "eager" : "lazy";
-            front.appendChild(image);
-          });
+          const img = document.createElement("img");
+          img.src = card.image;
+          img.alt = card.alt;
+          img.decoding = "async";
+          img.loading = index === 0 ? "eager" : "lazy";
+          front.appendChild(img);
 
           const back = document.createElement("span");
           back.className = "card-face card-back";
@@ -335,7 +237,7 @@
 
           const copy = document.createElement("span");
           copy.className = "card-copy";
-          copy.textContent = card.copies[copyVariant] || card.copies.foods;
+          copy.textContent = card.copy;
 
           back.append(title, copy);
           inner.append(front, back);
