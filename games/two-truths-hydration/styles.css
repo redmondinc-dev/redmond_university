@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap");
 
 :root {
   color-scheme: light;
@@ -75,16 +75,16 @@ img {
 .app-shell {
   width: min(1180px, calc(100% - 1rem));
   margin: 0 auto;
-  padding: 0.7rem 0 1rem;
+  padding: 0.45rem 0 0.7rem;
 }
 
 .game-header {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.8rem;
+  gap: 0.65rem;
   min-width: 0;
-  padding: 0.7rem;
+  padding: 0.55rem 0.65rem;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.88);
@@ -101,8 +101,8 @@ img {
   display: block;
   margin: 0;
   color: var(--orange);
-  font-size: 0.72rem;
-  font-weight: 800;
+  font-size: 0.68rem;
+  font-weight: 700;
   line-height: 1.2;
   text-transform: uppercase;
   letter-spacing: 0;
@@ -119,23 +119,23 @@ h1,
 h2 {
   margin: 0;
   font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0;
 }
 
 h1 {
   margin-top: 0.14rem;
-  font-size: 1.9rem;
+  font-size: 1.58rem;
   line-height: 1.02;
   color: var(--teal-dark);
 }
 
 .intro {
   max-width: 60ch;
-  margin: 0.35rem 0 0;
+  margin: 0.22rem 0 0;
   color: var(--muted);
-  font-size: 0.96rem;
-  line-height: 1.35;
+  font-size: 0.88rem;
+  line-height: 1.28;
 }
 
 .header-actions {
@@ -149,10 +149,10 @@ h1 {
 
 .secondary-btn,
 .primary-btn {
-  min-height: 42px;
+  min-height: 36px;
   border-radius: var(--radius);
   border: 1px solid var(--line);
-  font-weight: 800;
+  font-weight: 700;
   transition:
     transform 0.18s ease,
     box-shadow 0.18s ease,
@@ -161,14 +161,14 @@ h1 {
 }
 
 .secondary-btn {
-  padding: 0.55rem 0.8rem;
+  padding: 0.45rem 0.7rem;
   color: var(--ink);
   background: linear-gradient(180deg, #ffffff 0%, #f1f6f6 100%);
   box-shadow: 0 8px 16px rgba(21, 50, 58, 0.08);
 }
 
 .primary-btn {
-  padding: 0.68rem 1rem;
+  padding: 0.56rem 0.86rem;
   color: #ffffff;
   border-color: var(--teal-dark);
   background: linear-gradient(180deg, #0095a1 0%, #07525d 100%);
@@ -194,9 +194,9 @@ h1 {
   position: relative;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(270px, 330px);
-  gap: 0.8rem;
+  gap: 0.65rem;
   align-items: start;
-  margin-top: 0.8rem;
+  margin-top: 0.55rem;
 }
 
 .play-panel,
@@ -210,8 +210,8 @@ h1 {
 .play-panel {
   position: relative;
   min-width: 0;
-  min-height: 640px;
-  padding: 0.85rem;
+  min-height: 470px;
+  padding: 0.68rem;
   overflow: hidden;
 }
 
@@ -236,21 +236,21 @@ h1 {
 .round-bar {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(160px, 240px);
-  gap: 1rem;
+  gap: 0.8rem;
   align-items: end;
-  padding-bottom: 0.75rem;
+  padding-bottom: 0.52rem;
   border-bottom: 1px solid var(--line);
 }
 
 .round-bar h2 {
   margin-top: 0.18rem;
   color: var(--teal-dark);
-  font-size: 1.45rem;
+  font-size: 1.28rem;
   line-height: 1.08;
 }
 
 .progress-track {
-  height: 12px;
+  height: 10px;
   overflow: hidden;
   border: 1px solid rgba(0, 124, 137, 0.2);
   border-radius: 999px;
@@ -267,30 +267,30 @@ h1 {
 }
 
 .round-prompt {
-  margin: 0.75rem 0 0;
+  margin: 0.58rem 0 0;
   color: #263f47;
-  font-size: 1.18rem;
-  font-weight: 800;
-  line-height: 1.32;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.28;
 }
 
 .cards-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 0.7rem;
+  gap: 0.6rem;
   min-width: 0;
-  margin-top: 0.85rem;
+  margin-top: 0.65rem;
 }
 
 .claim-card {
   position: relative;
   display: grid;
-  grid-template-rows: auto minmax(130px, 1fr) auto;
-  gap: 0.85rem;
-  min-height: 290px;
+  grid-template-rows: auto minmax(90px, 1fr) auto;
+  gap: 0.62rem;
+  min-height: 215px;
   min-width: 0;
   width: 100%;
-  padding: 0.85rem;
+  padding: 0.68rem;
   overflow: hidden;
   text-align: left;
   color: var(--ink);
@@ -348,23 +348,23 @@ h1 {
 .card-number {
   display: inline-flex;
   align-items: center;
-  min-height: 30px;
+  min-height: 26px;
   border-radius: var(--radius);
-  font-size: 0.78rem;
-  font-weight: 800;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .topic-token {
   min-width: 0;
   max-width: 100%;
-  padding: 0.28rem 0.5rem;
+  padding: 0.22rem 0.42rem;
   color: var(--teal-dark);
   background: rgba(0, 124, 137, 0.1);
 }
 
 .card-number {
   justify-content: center;
-  width: 34px;
+  width: 30px;
   color: var(--orange);
   border: 1px solid rgba(230, 106, 55, 0.22);
   background: rgba(230, 106, 55, 0.08);
@@ -377,9 +377,9 @@ h1 {
   align-self: center;
   margin: 0;
   color: #14323b;
-  font-size: 1.12rem;
-  font-weight: 800;
-  line-height: 1.28;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.26;
   overflow-wrap: anywhere;
 }
 
@@ -387,14 +387,14 @@ h1 {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 82px;
-  min-height: 36px;
-  padding: 0.35rem 0.62rem;
+  min-width: 74px;
+  min-height: 32px;
+  padding: 0.3rem 0.54rem;
   border-radius: var(--radius);
   color: #ffffff;
   background: #677982;
-  font-size: 0.82rem;
-  font-weight: 900;
+  font-size: 0.76rem;
+  font-weight: 700;
   opacity: 0;
   transform: translateY(6px);
 }
@@ -405,8 +405,8 @@ h1 {
   display: block;
   margin: 0;
   color: var(--muted);
-  font-size: 0.9rem;
-  font-weight: 650;
+  font-size: 0.82rem;
+  font-weight: 600;
   line-height: 1.34;
   overflow-wrap: anywhere;
   opacity: 0;
@@ -458,9 +458,9 @@ h1 {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
-  gap: 0.8rem;
-  margin-top: 0.85rem;
-  padding: 0.82rem;
+  gap: 0.65rem;
+  margin-top: 0.65rem;
+  padding: 0.65rem;
   border: 1px solid rgba(0, 124, 137, 0.18);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.9);
@@ -474,13 +474,13 @@ h1 {
 .completion-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 28px;
-  padding: 0.26rem 0.52rem;
+  min-height: 25px;
+  padding: 0.22rem 0.46rem;
   border-radius: var(--radius);
   color: #ffffff;
   background: var(--green);
-  font-size: 0.78rem;
-  font-weight: 900;
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .feedback-panel.is-miss .feedback-chip {
@@ -490,27 +490,27 @@ h1 {
 .feedback-copy h2 {
   margin: 0.35rem 0 0;
   color: var(--teal-dark);
-  font-size: 1.12rem;
+  font-size: 1rem;
   line-height: 1.15;
 }
 
 .feedback-copy p {
   margin: 0.24rem 0 0;
   color: var(--muted);
-  font-size: 0.98rem;
-  font-weight: 650;
-  line-height: 1.38;
+  font-size: 0.88rem;
+  font-weight: 600;
+  line-height: 1.32;
 }
 
 .status-panel {
   display: grid;
-  gap: 0.65rem;
+  gap: 0.5rem;
   position: sticky;
-  top: 0.65rem;
+  top: 0.5rem;
 }
 
 .status-panel > section {
-  padding: 0.72rem;
+  padding: 0.58rem;
 }
 
 .panel-heading {
@@ -527,13 +527,13 @@ h1 {
 .panel-heading h2 {
   margin-top: 0.12rem;
   color: var(--teal-dark);
-  font-size: 1.05rem;
+  font-size: 0.98rem;
   line-height: 1.1;
 }
 
 .panel-heading strong {
   color: var(--teal-dark);
-  font-size: 1.35rem;
+  font-size: 1.2rem;
   line-height: 1;
 }
 
@@ -541,13 +541,13 @@ h1 {
   --fill-level: 0%;
   display: grid;
   justify-items: center;
-  width: min(100%, 230px);
-  margin: 0.45rem auto 0;
+  width: min(100%, 190px);
+  margin: 0.3rem auto 0;
 }
 
 .bottle-cap {
-  width: 58px;
-  height: 20px;
+  width: 48px;
+  height: 16px;
   border-radius: 7px 7px 3px 3px;
   border: 1px solid rgba(21, 50, 58, 0.2);
   background: linear-gradient(180deg, #f2a04f, #d75d31);
@@ -555,8 +555,8 @@ h1 {
 }
 
 .bottle-neck {
-  width: 48px;
-  height: 28px;
+  width: 40px;
+  height: 22px;
   margin-top: -1px;
   border: 1px solid rgba(21, 50, 58, 0.18);
   border-bottom: 0;
@@ -566,11 +566,11 @@ h1 {
 
 .bottle-body {
   position: relative;
-  width: 168px;
-  height: 300px;
+  width: 138px;
+  height: 228px;
   overflow: hidden;
   border: 2px solid rgba(21, 50, 58, 0.26);
-  border-radius: 28px 28px 18px 18px;
+  border-radius: 24px 24px 16px 16px;
   background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.2) 24%, rgba(255, 255, 255, 0.76) 100%),
     rgba(255, 255, 255, 0.46);
@@ -627,14 +627,14 @@ h1 {
 
 .bottle-label {
   position: absolute;
-  left: 18px;
-  right: 18px;
-  top: 112px;
+  left: 14px;
+  right: 14px;
+  top: 82px;
   display: grid;
   gap: 0.1rem;
   place-items: center;
-  min-height: 74px;
-  padding: 0.5rem;
+  min-height: 58px;
+  padding: 0.4rem;
   border: 1px solid rgba(21, 50, 58, 0.16);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.84);
@@ -644,24 +644,24 @@ h1 {
 .bottle-label span {
   color: var(--teal-dark);
   font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
-  font-size: 1.18rem;
-  font-weight: 900;
+  font-size: 1rem;
+  font-weight: 700;
   line-height: 1;
 }
 
 .bottle-label small {
   color: var(--orange);
-  font-size: 0.72rem;
-  font-weight: 900;
+  font-size: 0.66rem;
+  font-weight: 700;
   line-height: 1.1;
 }
 
 .bottle-ticks {
   --tick: rgba(21, 50, 58, 0.18);
   position: absolute;
-  top: 34px;
+  top: 28px;
   right: 12px;
-  bottom: 34px;
+  bottom: 28px;
   width: 18px;
   background:
     linear-gradient(var(--tick), var(--tick)) right 0 / 18px 2px no-repeat,
@@ -673,8 +673,8 @@ h1 {
 .mineral-strip {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 0.4rem;
-  margin-top: 0.65rem;
+  gap: 0.32rem;
+  margin-top: 0.48rem;
 }
 
 .mineral-strip img {
@@ -689,7 +689,7 @@ h1 {
 
 .stats-card {
   display: grid;
-  gap: 0.45rem;
+  gap: 0.35rem;
 }
 
 .stat-row {
@@ -697,8 +697,8 @@ h1 {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem;
-  min-height: 42px;
-  padding: 0.46rem 0.55rem;
+  min-height: 34px;
+  padding: 0.34rem 0.46rem;
   border: 1px solid rgba(21, 50, 58, 0.1);
   border-radius: var(--radius);
   background: rgba(247, 251, 248, 0.82);
@@ -706,23 +706,23 @@ h1 {
 
 .stat-row span {
   color: var(--muted);
-  font-size: 0.86rem;
-  font-weight: 800;
+  font-size: 0.8rem;
+  font-weight: 700;
 }
 
 .stat-row strong {
   color: var(--teal-dark);
-  font-size: 1rem;
+  font-size: 0.92rem;
 }
 
 .help-card-btn {
   display: grid;
-  grid-template-columns: 44px minmax(0, 1fr);
-  gap: 0.55rem;
+  grid-template-columns: 38px minmax(0, 1fr);
+  gap: 0.45rem;
   align-items: center;
   width: 100%;
-  min-height: 68px;
-  padding: 0.35rem;
+  min-height: 56px;
+  padding: 0.28rem;
   text-align: left;
   color: var(--ink);
   border: 0;
@@ -738,14 +738,14 @@ h1 {
 .help-icon {
   display: inline-grid;
   place-items: center;
-  width: 44px;
-  height: 44px;
+  width: 38px;
+  height: 38px;
   color: #ffffff;
   border-radius: 50%;
   background: linear-gradient(180deg, var(--teal), var(--teal-dark));
   font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
-  font-size: 1.28rem;
-  font-weight: 900;
+  font-size: 1.1rem;
+  font-weight: 700;
   box-shadow: 0 10px 18px rgba(0, 124, 137, 0.18);
 }
 
@@ -758,14 +758,14 @@ h1 {
 .help-copy strong {
   color: var(--teal-dark);
   font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
-  font-size: 1rem;
+  font-size: 0.92rem;
   line-height: 1.1;
 }
 
 .help-copy small {
   color: var(--muted);
-  font-size: 0.84rem;
-  font-weight: 800;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .takeaway-list {
@@ -781,14 +781,14 @@ h1 {
   grid-template-columns: 28px minmax(0, 1fr);
   gap: 0.45rem;
   align-items: center;
-  min-height: 42px;
-  padding: 0.4rem;
+  min-height: 36px;
+  padding: 0.34rem;
   border: 1px solid rgba(21, 50, 58, 0.1);
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.64);
   color: var(--muted);
-  font-size: 0.86rem;
-  font-weight: 700;
+  font-size: 0.8rem;
+  font-weight: 600;
   line-height: 1.28;
 }
 
@@ -802,7 +802,7 @@ h1 {
   color: #ffffff;
   background: var(--teal);
   font-size: 0.78rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .takeaway-list li.is-locked {
@@ -843,14 +843,14 @@ h1 {
 .completion-content {
   display: grid;
   justify-items: center;
-  padding: 1.2rem;
+  padding: 1rem;
   text-align: center;
 }
 
 .completion-content h2 {
   margin-top: 0.5rem;
   color: var(--teal-dark);
-  font-size: 2rem;
+  font-size: 1.65rem;
   line-height: 1.05;
 }
 
@@ -858,8 +858,8 @@ h1 {
   max-width: 52ch;
   margin: 0.5rem 0 0;
   color: var(--muted);
-  font-size: 1.04rem;
-  font-weight: 700;
+  font-size: 0.96rem;
+  font-weight: 600;
   line-height: 1.4;
 }
 
@@ -869,8 +869,8 @@ h1 {
   border-radius: var(--radius);
   color: var(--teal-dark);
   background: var(--mint);
-  font-size: 1.45rem;
-  font-weight: 900;
+  font-size: 1.22rem;
+  font-weight: 700;
 }
 
 .completion-actions {
@@ -894,7 +894,7 @@ h1 {
 .modal-heading h2 {
   margin-top: 0.16rem;
   color: var(--teal-dark);
-  font-size: 1.35rem;
+  font-size: 1.16rem;
   line-height: 1.08;
 }
 
@@ -909,11 +909,11 @@ h1 {
   border-radius: var(--radius);
   background: #ffffff;
   font-size: 1rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .recap-content {
-  padding: 0.85rem;
+  padding: 0.7rem;
 }
 
 .burst-layer,
@@ -1071,7 +1071,7 @@ h1 {
   .game-header,
   .play-panel,
   .status-panel > section {
-    padding: 0.6rem;
+    padding: 0.52rem;
   }
 
   .header-actions {
@@ -1086,7 +1086,7 @@ h1 {
   }
 
   h1 {
-    font-size: 1.55rem;
+    font-size: 1.42rem;
   }
 
   .cards-grid {
@@ -1095,7 +1095,7 @@ h1 {
 
   .claim-card {
     grid-template-rows: auto auto auto;
-    min-height: 210px;
+    min-height: 180px;
   }
 
   .round-bar,
@@ -1104,12 +1104,12 @@ h1 {
   }
 
   .round-prompt {
-    font-size: 1rem;
+    font-size: 0.94rem;
   }
 
   .claim-text {
-    font-size: 1rem;
-    line-height: 1.32;
+    font-size: 0.94rem;
+    line-height: 1.28;
   }
 
   .feedback-panel .primary-btn {
@@ -1121,18 +1121,18 @@ h1 {
   }
 
   .bottle-meter {
-    width: 190px;
+    width: 170px;
   }
 
   .bottle-body {
-    width: 146px;
-    height: 254px;
+    width: 126px;
+    height: 210px;
   }
 
   .bottle-label {
-    left: 15px;
-    right: 15px;
-    top: 92px;
+    left: 12px;
+    right: 12px;
+    top: 74px;
   }
 
   .completion-content h2 {
