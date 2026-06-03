@@ -80,7 +80,7 @@ img {
 
 .game-header {
   display: grid;
-  grid-template-columns: minmax(160px, 230px) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.8rem;
   min-width: 0;
@@ -89,18 +89,6 @@ img {
   border-radius: var(--radius);
   background: rgba(255, 255, 255, 0.88);
   box-shadow: var(--shadow-soft);
-}
-
-.brand-mark {
-  display: inline-flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.brand-mark img {
-  width: min(100%, 218px);
-  max-height: 38px;
-  object-fit: contain;
 }
 
 .title-stack {
@@ -159,19 +147,6 @@ h1 {
   min-width: 0;
 }
 
-.language-switch {
-  display: inline-grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.2rem;
-  min-width: 0;
-  padding: 0.2rem;
-  border: 1px solid var(--line);
-  border-radius: var(--radius);
-  background: #edf6f3;
-}
-
-.language-btn,
-.icon-btn,
 .secondary-btn,
 .primary-btn {
   min-height: 42px;
@@ -185,31 +160,11 @@ h1 {
     background 0.18s ease;
 }
 
-.language-btn {
-  min-width: 42px;
-  padding: 0.45rem 0.58rem;
-  color: var(--muted);
-  background: transparent;
-}
-
-.language-btn.is-active {
-  color: #ffffff;
-  background: var(--teal-dark);
-  border-color: var(--teal-dark);
-}
-
-.icon-btn,
 .secondary-btn {
   padding: 0.55rem 0.8rem;
   color: var(--ink);
   background: linear-gradient(180deg, #ffffff 0%, #f1f6f6 100%);
   box-shadow: 0 8px 16px rgba(21, 50, 58, 0.08);
-}
-
-.icon-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.35rem;
 }
 
 .primary-btn {
@@ -220,20 +175,15 @@ h1 {
   box-shadow: 0 14px 28px rgba(0, 124, 137, 0.24);
 }
 
-.language-btn:hover,
-.icon-btn:hover,
 .secondary-btn:hover,
 .primary-btn:hover,
 .claim-card:hover {
   transform: translateY(-1px);
 }
 
-.language-btn:focus-visible,
-.icon-btn:focus-visible,
 .secondary-btn:focus-visible,
 .primary-btn:focus-visible,
 .claim-card:focus-visible,
-.brand-mark:focus-visible,
 .help-card-btn:focus-visible,
 .modal-close:focus-visible {
   outline: 3px solid rgba(230, 106, 55, 0.48);
@@ -1130,11 +1080,6 @@ h1 {
     width: 100%;
   }
 
-  .language-switch {
-    width: 100%;
-  }
-
-  .icon-btn,
   .secondary-btn,
   .primary-btn {
     width: 100%;

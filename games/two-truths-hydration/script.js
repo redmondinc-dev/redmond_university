@@ -10,10 +10,8 @@
       ui: {
         kicker: "Re-Lyte Micro Game",
         title: "Two Truths and a Lie: Hydration Edition",
-        intro: "Find the hydration myth. Every round adds to your Re-Lyte bottle.",
-        replay: "Replay",
-        soundOff: "Sound off",
-        soundOn: "Sound on",
+        intro: "Find the hydration myth. Every correct pick adds to your Re-Lyte bottle.",
+        replay: "Play again",
         progressLabel: "Bottle progress",
         bottleTitle: "Re-Lyte fill",
         hydrationMix: "Hydration Mix",
@@ -23,7 +21,7 @@
         recapLabel: "Unlocked recap",
         recapTitle: "Hydration takeaways",
         recapHelp: "Open hydration recap",
-        completeChip: "Bottle full",
+        completeChip: "Game complete",
         playAgain: "Play again",
         roundOf: "Round {current} of {total}",
         chooseLie: "Which statement is the lie?",
@@ -42,10 +40,10 @@
           "Perfect run. You spotted every myth and filled the bottle with the right hydration cues.",
         completeTitle: "Hydration IQ complete",
         completeCopy:
-          "Bottle full. You finished the loop and reviewed the myths that make hydration confusing.",
+          "You finished the loop and reviewed the myths that make hydration confusing.",
         selectCard: "Select card {number} as the lie.",
         liveCorrect: "Correct. The Re-Lyte bottle filled to {percent} percent.",
-        liveIncorrect: "Not it. The correct lie was revealed and the bottle filled to {percent} percent.",
+        liveIncorrect: "Not it. The correct lie was revealed and the bottle stayed at {percent} percent.",
       },
       rounds: [
         {
@@ -250,259 +248,10 @@
         },
       ],
     },
-    es: {
-      pageTitle: "Dos verdades y una mentira: Hidratacion",
-      ui: {
-        kicker: "Microjuego Re-Lyte",
-        title: "Dos verdades y una mentira: Hidratacion",
-        intro: "Encuentra el mito de hidratacion. Cada ronda llena tu botella Re-Lyte.",
-        replay: "Jugar otra vez",
-        soundOff: "Sonido apagado",
-        soundOn: "Sonido activo",
-        progressLabel: "Progreso de botella",
-        bottleTitle: "Carga Re-Lyte",
-        hydrationMix: "Mezcla de Hidratacion",
-        scoreLabel: "Puntaje",
-        streakLabel: "Racha",
-        knowledgeLabel: "Aprendizaje",
-        recapLabel: "Resumen desbloqueado",
-        recapTitle: "Claves de hidratacion",
-        recapHelp: "Abrir resumen de hidratacion",
-        completeChip: "Botella llena",
-        playAgain: "Jugar de nuevo",
-        roundOf: "Ronda {current} de {total}",
-        chooseLie: "Cual afirmacion es la mentira?",
-        truth: "VERDAD",
-        lie: "MENTIRA",
-        correct: "Correcto",
-        incorrect: "No era",
-        correctTitle: "Esa era la mentira.",
-        incorrectTitle: "Cerca. Esta era la mentira.",
-        nextRound: "Siguiente ronda",
-        viewRecap: "Ver resumen",
-        cards: "cartas",
-        lockedTakeaway: "Completa esta ronda para desbloquear la clave.",
-        perfectTitle: "IQ de hidratacion completo",
-        perfectCopy:
-          "Ronda perfecta. Detectaste todos los mitos y llenaste la botella con buenas claves de hidratacion.",
-        completeTitle: "IQ de hidratacion completo",
-        completeCopy:
-          "Botella llena. Terminaste el ciclo y repasaste los mitos que confunden la hidratacion.",
-        selectCard: "Seleccionar carta {number} como la mentira.",
-        liveCorrect: "Correcto. La botella Re-Lyte llego a {percent} por ciento.",
-        liveIncorrect:
-          "No era. La mentira correcta fue revelada y la botella llego a {percent} por ciento.",
-      },
-      rounds: [
-        {
-          topic: "Electrolitos",
-          title: "Los electrolitos importan",
-          prompt: "Hidratarse es mas que perseguir onzas. Encuentra el mito.",
-          claims: [
-            {
-              text: "Los electrolitos ayudan a llevar senales electricas que apoyan musculos y nervios.",
-              truth: true,
-              note: "Sodio, potasio, magnesio y calcio apoyan funciones normales del cuerpo.",
-            },
-            {
-              text: "El sodio ayuda al cuerpo a retener liquidos cuando se suda mucho.",
-              truth: true,
-              note: "Por eso el sudor salado puede cambiar lo que el cuerpo necesita.",
-            },
-            {
-              text: "Si tomas suficiente agua sola, los electrolitos nunca importan.",
-              truth: false,
-              note: "El agua importa, pero el sudor fuerte o el calor tambien suben la necesidad de minerales.",
-            },
-          ],
-          explanation:
-            "El agua sola ayuda, pero la hidratacion tambien depende del balance de liquidos. Los electrolitos ayudan al cuerpo a usar y retener fluidos, sobre todo cuando aumenta el sudor.",
-          takeaway: "La hidratacion es agua mas minerales de balance.",
-        },
-        {
-          topic: "Perdida diaria",
-          title: "Perdida diaria de electrolitos",
-          prompt: "No toda perdida de electrolitos parece una sesion de gimnasio.",
-          claims: [
-            {
-              text: "El sudor saca agua y electrolitos del cuerpo.",
-              truth: true,
-              note: "El sodio suele ser el mineral que mas se pierde por sudor.",
-            },
-            {
-              text: "Turnos largos, cuartos calientes y trabajo al aire libre pueden aumentar la perdida.",
-              truth: true,
-              note: "El contexto del dia importa, incluso sin entrenamiento formal.",
-            },
-            {
-              text: "Solo los atletas profesionales deben pensar en electrolitos.",
-              truth: false,
-              note: "Calor, sudor y dias activos tambien afectan a muchas personas.",
-            },
-          ],
-          explanation:
-            "La necesidad de electrolitos depende del contexto. Trabajo, calor, viajes, entrenamientos y dias activos pueden cambiar el apoyo de hidratacion.",
-          takeaway: "La perdida por sudor no es solo de atletas.",
-        },
-        {
-          topic: "Mitos del agua",
-          title: "Senales de hidratacion",
-          prompt: "Algunos consejos populares son demasiado simples.",
-          claims: [
-            {
-              text: "Sed, color de orina, calor y actividad pueden dar pistas de hidratacion.",
-              truth: true,
-              note: "Ninguna senal cuenta toda la historia.",
-            },
-            {
-              text: "Orina muy clara todo el dia no siempre es la meta perfecta.",
-              truth: true,
-              note: "A veces significa que el liquido supera lo que el cuerpo necesita.",
-            },
-            {
-              text: "El mejor plan siempre es tomar tanta agua como sea posible.",
-              truth: false,
-              note: "Mas no siempre es mejor. El balance importa.",
-            },
-          ],
-          explanation:
-            "La hidratacion se trata de balance, no de agua maxima. Demasiada agua sola, sin suficientes minerales, puede ir contra el balance de fluidos.",
-          takeaway: "Mejor hidratacion significa balance, no exceso.",
-        },
-        {
-          topic: "Sal",
-          title: "La confusion sobre la sal",
-          prompt: "A la sal se le culpa de todo. Detecta la exageracion.",
-          claims: [
-            {
-              text: "El sudor puede sacar suficiente sodio como para que algunas personas deban reemplazarlo.",
-              truth: true,
-              note: "La necesidad cambia por sudor, calor, dieta y actividad.",
-            },
-            {
-              text: "Los electrolitos incluyen minerales ademas del sodio, como potasio y magnesio.",
-              truth: true,
-              note: "Una mezcla balanceada apoya mas de un rol mineral.",
-            },
-            {
-              text: "La sal siempre deshidrata a todos en cualquier situacion.",
-              truth: false,
-              note: "La pregunta real es cantidad, contexto y dieta total.",
-            },
-          ],
-          explanation:
-            "El sodio es un electrolito, no un enemigo automatico. En calor o mucho sudor, reemplazar sodio puede apoyar mejor retencion de fluidos.",
-          takeaway: "El sodio puede apoyar hidratacion segun el contexto.",
-        },
-        {
-          topic: "Azucar",
-          title: "Azucar y electrolitos",
-          prompt: "Una bebida de hidratacion no tiene que sentirse como dulce.",
-          claims: [
-            {
-              text: "Una mezcla de electrolitos sin azucar aun puede ayudar a reemplazar minerales.",
-              truth: true,
-              note: "Reemplazar minerales no exige una bebida alta en azucar.",
-            },
-            {
-              text: "El sabor puede ser limpio y salado porque los electrolitos son minerales.",
-              truth: true,
-              note: "Ese sabor mineral es parte de la funcion.",
-            },
-            {
-              text: "Los electrolitos solo funcionan cuando la bebida tiene mucha azucar.",
-              truth: false,
-              note: "El azucar puede servir para rendimiento especifico, pero no siempre se requiere.",
-            },
-          ],
-          explanation:
-            "Los electrolitos son minerales. Algunas personas quieren carbohidratos como energia de resistencia, pero el reemplazo diario de minerales puede hacerse sin bebida azucarada.",
-          takeaway: "Electrolitos no tiene que significar mucha azucar.",
-        },
-        {
-          topic: "Calor",
-          title: "Cuando suben las necesidades",
-          prompt: "Encuentra la frase que ignora condiciones reales.",
-          claims: [
-            {
-              text: "Calor y humedad pueden aumentar el sudor y la necesidad de electrolitos.",
-              truth: true,
-              note: "La misma actividad puede exigir mas en condiciones calientes.",
-            },
-            {
-              text: "Dias de viaje y ambientes secos pueden hacer mas dificil leer la hidratacion.",
-              truth: true,
-              note: "Cambios de rutina tambien cambian habitos de liquido y sed.",
-            },
-            {
-              text: "Los dias en interiores significan que la hidratacion nunca cambia.",
-              truth: false,
-              note: "Turnos largos, aire seco, cafeina y actividad aun pueden importar.",
-            },
-          ],
-          explanation:
-            "Las necesidades de hidratacion se mueven con ambiente y rutina. El calor es obvio, pero un dia largo en interiores tambien puede cambiar el apoyo necesario.",
-          takeaway: "Ambiente y rutina cambian la hidratacion.",
-        },
-        {
-          topic: "Retencion",
-          title: "Usar el agua que tomas",
-          prompt: "Una carta trata consumo de agua e hidratacion como lo mismo.",
-          claims: [
-            {
-              text: "Los electrolitos ayudan a mantener balance de liquidos dentro y fuera de las celulas.",
-              truth: true,
-              note: "Ese balance es parte de por que importan los minerales.",
-            },
-            {
-              text: "En momentos de mucho sudor, los electrolitos pueden ayudar a que los fluidos duren mas.",
-              truth: true,
-              note: "Retencion es la diferencia entre tomar agua y usarla bien.",
-            },
-            {
-              text: "Hidratacion es solo el numero de onzas que tomas.",
-              truth: false,
-              note: "Las onzas cuentan, pero absorcion, retencion y minerales tambien.",
-            },
-          ],
-          explanation:
-            "El agua que tomas es un dato. La hidratacion es el resultado: balance de fluidos, balance mineral y si el cuerpo puede usar lo que bebes.",
-          takeaway: "Hidratacion es resultado, no solo onzas.",
-        },
-        {
-          topic: "Timing",
-          title: "Buen timing de hidratacion",
-          prompt: "Encuentra el consejo que espera demasiado.",
-          claims: [
-            {
-              text: "Empezar hidratado antes de calor o actividad puede hacer el dia mas facil.",
-              truth: true,
-              note: "Ponerse al dia despues de sudar mucho es mas dificil.",
-            },
-            {
-              text: "Despues de sudar, fluidos mas electrolitos pueden apoyar recuperacion.",
-              truth: true,
-              note: "Reemplazar funciona mejor cuando se parece a lo que se perdio.",
-            },
-            {
-              text: "Debes esperar a sentirte agotado antes de pensar en hidratacion.",
-              truth: false,
-              note: "Un plan simple antes, durante y despues funciona mejor.",
-            },
-          ],
-          explanation:
-            "Buena hidratacion es proactiva. Un pequeno plan antes de calor, sudor o dias activos es mas facil que recuperarse despues de sentirse agotado.",
-          takeaway: "Planea hidratacion antes de la parte dificil.",
-        },
-      ],
-    },
   };
 
   const refs = {
     live: document.getElementById("live-region"),
-    brandLink: document.querySelector(".brand-mark"),
-    languageButtons: Array.from(document.querySelectorAll(".language-btn")),
-    soundToggle: document.getElementById("sound-toggle"),
     resetBtn: document.getElementById("reset-btn"),
     roundLabel: document.getElementById("round-label"),
     roundTitle: document.getElementById("round-title"),
@@ -538,22 +287,11 @@
     ? window.matchMedia("(prefers-reduced-motion: reduce)")
     : { matches: false };
 
-  let lang = getInitialLanguage();
+  const lang = "en";
   let state = loadState(lang) || createInitialState(lang);
   let audioContext = null;
   let bottlePulseTimer = 0;
   let isRecapOpen = false;
-
-  function getInitialLanguage() {
-    const params = new URLSearchParams(window.location.search);
-    const requested = params.get("lang");
-    if (requested === "en" || requested === "es") return requested;
-
-    const stored = safeStorageGet(`${STORAGE_PREFIX}:last-lang`);
-    if (stored === "en" || stored === "es") return stored;
-
-    return navigator.language && navigator.language.toLowerCase().startsWith("es") ? "es" : "en";
-  }
 
   function createInitialState(language) {
     return {
@@ -563,7 +301,6 @@
       score: 0,
       streak: 0,
       bestStreak: 0,
-      soundOn: false,
       complete: false,
       roundOrders: content[language].rounds.map(() => shuffle([0, 1, 2])),
     };
@@ -582,7 +319,6 @@
       parsed.score = parsed.answers.filter((answer) => answer && answer.correct).length;
       parsed.streak = Number(parsed.streak) || 0;
       parsed.bestStreak = Number(parsed.bestStreak) || 0;
-      parsed.soundOn = Boolean(parsed.soundOn);
       parsed.complete = Boolean(parsed.complete);
       return parsed;
     } catch (error) {
@@ -592,7 +328,6 @@
 
   function saveState() {
     safeStorageSet(getStorageKey(lang), JSON.stringify(state));
-    safeStorageSet(`${STORAGE_PREFIX}:last-lang`, lang);
   }
 
   function getStorageKey(language) {
@@ -665,8 +400,12 @@
     return state.answers.filter(Boolean).length;
   }
 
-  function getFillPercent() {
+  function getRoundProgressPercent() {
     return Math.round((getCompletedCount() / getRounds().length) * 100);
+  }
+
+  function getBottleFillPercent() {
+    return Math.round((state.score / getRounds().length) * 100);
   }
 
   function updateStaticText() {
@@ -679,17 +418,8 @@
       if (ui[key]) element.textContent = ui[key];
     });
 
-    refs.languageButtons.forEach((button) => {
-      const isActive = button.dataset.lang === lang;
-      button.classList.toggle("is-active", isActive);
-      button.setAttribute("aria-pressed", String(isActive));
-    });
-
-    const next = new URL("../../menu/index.html", window.location.href);
-    next.searchParams.set("lang", lang);
-    refs.brandLink.href = `${next.pathname}${next.search}`;
     refs.recapHelpBtn.setAttribute("aria-label", ui.recapHelp);
-    refs.recapCloseBtn.setAttribute("aria-label", lang === "es" ? "Cerrar resumen" : "Close recap");
+    refs.recapCloseBtn.setAttribute("aria-label", "Close recap");
   }
 
   function render() {
@@ -702,7 +432,6 @@
     renderTakeaways();
     renderRecapModal();
     renderCompletion(false);
-    renderSound();
     saveState();
   }
 
@@ -714,7 +443,7 @@
     refs.roundLabel.textContent = format(ui.roundOf, { current, total });
     refs.roundTitle.textContent = round.title;
     refs.roundPrompt.textContent = round.prompt || ui.chooseLie;
-    refs.roundProgress.style.width = `${getFillPercent()}%`;
+    refs.roundProgress.style.width = `${getRoundProgressPercent()}%`;
   }
 
   function renderCards() {
@@ -799,7 +528,7 @@
   }
 
   function renderBottle() {
-    const percent = getFillPercent();
+    const percent = getBottleFillPercent();
     refs.bottleMeter.style.setProperty("--fill-level", `${percent}%`);
     refs.bottleMeter.setAttribute("aria-valuenow", String(percent));
     refs.bottlePercent.textContent = `${percent}%`;
@@ -862,22 +591,12 @@
     document.body.classList.toggle("is-locked", state.complete || isRecapOpen);
   }
 
-  function renderSound() {
-    const ui = getUi();
-    const label = state.soundOn ? ui.soundOn : ui.soundOff;
-    const labelNode = refs.soundToggle.querySelector("[data-ui]");
-    if (labelNode) labelNode.textContent = label;
-    refs.soundToggle.setAttribute("aria-pressed", String(state.soundOn));
-  }
-
   function handleCardSelect(claimIndex, card) {
     if (getCurrentAnswer() || state.complete) return;
 
     const round = getCurrentRound();
     const selectedClaim = round.claims[claimIndex];
     const correct = selectedClaim.truth === false;
-    const percentAfterAnswer = Math.round(((getCompletedCount() + 1) / getRounds().length) * 100);
-
     state.answers[state.roundIndex] = {
       selectedClaimIndex: claimIndex,
       correct,
@@ -891,8 +610,10 @@
       state.streak = 0;
     }
 
+    const percentAfterAnswer = getBottleFillPercent();
+
     render();
-    pulseBottle();
+    if (correct) pulseBottle();
     createAnswerBurst(card, correct);
     playTone(correct ? "correct" : "miss");
 
@@ -925,28 +646,6 @@
     state = createInitialState(lang);
     render();
     focusFirstCard();
-  }
-
-  function setLanguage(nextLang) {
-    if (nextLang !== "en" && nextLang !== "es") return;
-    isRecapOpen = false;
-    lang = nextLang;
-    state = loadState(lang) || createInitialState(lang);
-    const url = new URL(window.location.href);
-    url.searchParams.set("lang", lang);
-    window.history.replaceState({}, "", `${url.pathname}${url.search}${url.hash}`);
-    render();
-    focusFirstCard();
-  }
-
-  function toggleSound() {
-    state.soundOn = !state.soundOn;
-    if (state.soundOn) {
-      ensureAudioContext();
-      playTone("toggle");
-    }
-    renderSound();
-    saveState();
   }
 
   function openRecap() {
@@ -1025,7 +724,6 @@
   }
 
   function playTone(type) {
-    if (!state.soundOn) return;
     const context = ensureAudioContext();
     if (!context) return;
 
@@ -1033,7 +731,6 @@
       correct: [523, 784, 0.16],
       miss: [260, 196, 0.18],
       complete: [523, 659, 0.34],
-      toggle: [420, 560, 0.12],
     };
     const [start, end, duration] = tones[type] || tones.correct;
     const now = context.currentTime;
@@ -1065,10 +762,6 @@
     });
   }
 
-  refs.languageButtons.forEach((button) => {
-    button.addEventListener("click", () => setLanguage(button.dataset.lang));
-  });
-  refs.soundToggle.addEventListener("click", toggleSound);
   refs.resetBtn.addEventListener("click", resetGame);
   refs.nextBtn.addEventListener("click", goToNextRound);
   refs.recapHelpBtn.addEventListener("click", openRecap);

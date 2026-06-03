@@ -6,7 +6,7 @@ Static vanilla HTML/CSS/JavaScript micro-game for Re-Lyte hydration education.
 
 - `index.html`: semantic shell, game controls, answer region, progress bottle, stats, recap help dialog, completion modal.
 - `styles.css`: responsive visual system, card states, bottle fill, motion, reduced-motion fallback.
-- `script.js`: bilingual content, session state, rendering, scoring, reveal logic, audio, recap, modal completion.
+- `script.js`: English content, session state, rendering, scoring, reveal logic, always-on audio, recap, modal completion.
 - Session progress is stored in `sessionStorage` under `relyte-two-truths-hydration-v1`.
 
 ## 2. UX Flow
@@ -15,13 +15,13 @@ Static vanilla HTML/CSS/JavaScript micro-game for Re-Lyte hydration education.
 2. Player selects the claim they believe is the lie.
 3. All cards lock and reveal `TRUTH` or `LIE`.
 4. Feedback explains the hydration concept in one short paragraph.
-5. Bottle fill advances, score updates, and recap takeaway unlocks.
+5. Correct picks advance the bottle fill, score updates, and recap takeaway unlocks.
 6. Final round keeps the game visible and opens a result modal with score and replay.
 
 ## 3. Wireframe Structure
 
 ```text
-Header: logo | title + intro | language, sound, replay
+Header: title + intro | play again
 Main:
   Play panel:
     round status + progress track
@@ -29,21 +29,21 @@ Main:
     3 claim cards
     feedback + next action
   Status panel:
+    compact recap help button
     Re-Lyte bottle progress
     mineral visuals
     score/streak/knowledge stats
-    compact recap help button
   Recap modal:
     unlocked recap list
   Completion overlay:
-    bottle-full result
+    completion result
     final score
     play again
 ```
 
 ## 4. Component Breakdown
 
-- `game-header`: brand orientation and global controls.
+- `game-header`: game title, intro, and replay control.
 - `claim-card`: button-based answer cards with reveal state and selected state.
 - `feedback-panel`: immediate correctness cue plus educational explanation.
 - `bottle-meter`: animated progress and score anchor.
@@ -59,8 +59,8 @@ Main:
 - Selecting a card disables all cards to prevent accidental double answers.
 - Correct selections add score and streak; incorrect selections reset streak but still reveal the lesson.
 - Next button moves focus to the next card set; final round moves focus to the result screen.
-- Replay clears only this game session.
-- Language toggle swaps EN/ES content and preserves separate session progress per language.
+- Play again clears only this game session.
+- Audio feedback stays enabled; the interface does not expose language or sound controls.
 
 ## 6. Animation Specifications
 
@@ -86,7 +86,7 @@ The markup uses a semantic `header`, `main`, `section`, `aside`, ordered recap l
 
 - Content is stored as data objects, not hardcoded DOM.
 - Rendering functions are split by UI region: round, cards, feedback, bottle, stats, recap, completion.
-- State is the single source of truth: round index, answers, score, streak, sound, completion.
+- State is the single source of truth: round index, answers, score, streak, and completion.
 - Event handlers mutate state, then call `render()`.
 
 ## 10. Functional Implementation
@@ -99,5 +99,5 @@ Open `games/two-truths-hydration/index.html` directly or through `menu/index.htm
 - Retention: each round unlocks one concise takeaway, and the help icon keeps the recap available without crowding the game surface.
 - Usability: large button cards, sticky status on desktop, linear flow on mobile, and clear focus management reduce friction.
 - Education: myths are framed as the lie, making the learner actively correct the misconception instead of passively reading.
-- Brand affinity: the Re-Lyte bottle is the primary score object, making product relevance visual without turning the game into an ad.
+- Brand affinity: the Re-Lyte bottle is the primary score object, filling only with correct picks so the product visual matches the score.
 - Completion: the result appears as a modal over the finished board, preserving context while confetti rewards the finish.
