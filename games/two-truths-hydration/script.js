@@ -1,16 +1,17 @@
 (function () {
   "use strict";
 
-  const STORAGE_PREFIX = "relyte-two-truths-hydration-v1";
+  const STORAGE_PREFIX = "relyte-two-truths-hydration-v2";
   const TOTAL_CARDS_PER_ROUND = 3;
 
   const content = {
     en: {
-      pageTitle: "Two Truths and a Lie: Hydration Edition",
+      pageTitle: "Two Truths and a Lie",
       ui: {
         kicker: "Re-Lyte Micro Game",
-        title: "Two Truths and a Lie: Hydration Edition",
-        intro: "Find the hydration myth. Every correct pick adds to your Re-Lyte bottle.",
+        title: "Two Truths and a Lie",
+        intro:
+          "You’ll see three statements. Two are true, and one is a lie. Select the lie to fill up your Re-Lyte bottle!",
         replay: "Play again",
         progressLabel: "Bottle progress",
         bottleTitle: "Re-Lyte fill",
@@ -47,204 +48,216 @@
       },
       rounds: [
         {
-          topic: "Electrolytes",
-          title: "Electrolytes matter",
-          prompt: "Hydration is more than chasing ounces. Find the myth.",
+          topic: "Hydration",
+          title: "Everyday hydration",
+          prompt: "Select the lie.",
           claims: [
             {
-              text: "Electrolytes help carry electrical signals that support muscles and nerves.",
+              text: "Dehydration contributes to headaches, fatigue, brain fog, etc.",
               truth: true,
-              note: "Sodium, potassium, magnesium, and calcium all help normal body function.",
+              note: "",
             },
             {
-              text: "Sodium helps the body hold onto fluid when sweat loss is high.",
+              text: "Electrolytes facilitate electrical impulses in the body.",
               truth: true,
-              note: "That is why salty sweat can change what your body needs.",
+              note: "",
             },
             {
-              text: "If you drink enough plain water, electrolytes never matter.",
+              text: "Only athletes need electrolyte supplements.",
               truth: false,
-              note: "Water matters, but heavy sweat or heat can also raise mineral needs.",
+              note: "Electrolytes are crucial for optimal everyday functioning. Everyone needs them!",
             },
           ],
           explanation:
-            "Plain water is useful, but hydration also depends on fluid balance. Electrolytes help the body use and retain fluids, especially when sweat loss climbs.",
-          takeaway: "Hydration is water plus fluid-balance minerals.",
+            "Electrolytes are crucial for optimal everyday functioning. Everyone needs them!",
+          takeaway:
+            "Electrolytes are crucial for optimal everyday functioning. Everyone needs them!",
         },
         {
-          topic: "Daily loss",
-          title: "Everyday electrolyte loss",
-          prompt: "Not every electrolyte loss looks like a gym session.",
+          topic: "Activity",
+          title: "Activity support",
+          prompt: "Select the lie.",
           claims: [
             {
-              text: "Sweat carries water and electrolytes out of the body.",
+              text: "You should sip electrolytes every 30-60 minutes during activity.",
               truth: true,
-              note: "Sodium is usually the mineral lost in the largest amount through sweat.",
+              note: "",
             },
             {
-              text: "Long shifts, hot rooms, and outdoor work can increase electrolyte loss.",
+              text: "It’s possible to drink too much water.",
               truth: true,
-              note: "Daily context matters, even without a formal workout.",
+              note: "",
             },
             {
-              text: "Only professional athletes need to think about electrolytes.",
+              text: "I only need to take electrolytes if it’s hot and I’m sweating a lot.",
               truth: false,
-              note: "Heat, sweat, and long active days can affect many people.",
+              note:
+                "We lose electrolytes not just when we sweat, but when we sleep, move around, think, breathe, etc.",
             },
           ],
           explanation:
-            "Electrolyte needs are context driven. Work, heat, travel, workouts, and long active days can all change what normal hydration support looks like.",
-          takeaway: "Sweat loss is not limited to athletes.",
+            "We lose electrolytes not just when we sweat, but when we sleep, move around, think, breathe, etc.",
+          takeaway:
+            "We lose electrolytes not just when we sweat, but when we sleep, move around, think, breathe, etc.",
         },
         {
-          topic: "Water myths",
-          title: "Hydration signals",
-          prompt: "Some popular hydration advice is too simple.",
+          topic: "Climate",
+          title: "Changing conditions",
+          prompt: "Select the lie.",
           claims: [
             {
-              text: "Thirst, urine color, heat, and activity can all give hydration clues.",
+              text: "You need more electrolytes at high altitudes.",
               truth: true,
-              note: "No single signal tells the whole story.",
+              note: "",
             },
             {
-              text: "Very pale urine all day is not automatically the perfect hydration target.",
+              text: "Pregnancy increases electrolyte needs.",
               truth: true,
-              note: "It can sometimes mean fluid intake is outpacing what the body needs.",
+              note: "",
             },
             {
-              text: "The best hydration plan is always to drink as much water as possible.",
+              text: "I don’t need electrolytes in cold weather.",
               truth: false,
-              note: "More is not always better. Balance matters.",
+              note: "You still lose electrolytes as you breathe, even in cold weather.",
             },
           ],
-          explanation:
-            "Hydration is about balance, not maximum water. Too much plain water without enough minerals can work against fluid balance.",
-          takeaway: "Better hydration is balanced, not endless.",
+          explanation: "You still lose electrolytes as you breathe, even in cold weather.",
+          takeaway: "You still lose electrolytes as you breathe, even in cold weather.",
         },
         {
-          topic: "Salt",
-          title: "The salt confusion",
-          prompt: "Salt gets blamed for everything. Spot the overstatement.",
+          topic: "Water",
+          title: "Water balance",
+          prompt: "Select the lie.",
           claims: [
             {
-              text: "Sweat can remove enough sodium that some people need to replace it.",
+              text: "You lose electrolytes just by sitting, moving around, thinking, breathing, etc.",
               truth: true,
-              note: "Needs vary by sweat rate, heat, diet, and activity.",
+              note: "",
             },
             {
-              text: "Electrolytes include minerals beyond sodium, such as potassium and magnesium.",
+              text: "If you wait to drink when you’re thirsty, you’re already a bit dehydrated.",
               truth: true,
-              note: "A balanced mix supports more than one mineral role.",
+              note: "",
             },
             {
-              text: "Salt always dehydrates everyone in every situation.",
+              text: "Plain water is enough to hydrate you.",
               truth: false,
-              note: "The real question is amount, context, and total diet.",
+              note:
+                "Hydration isn’t just about water! Our blood is full of minerals, especially sodium, and because we lose some of those minerals through everyday living, we have to replenish them as well as fluids.",
             },
           ],
           explanation:
-            "Sodium is an electrolyte, not automatically the enemy. In sweaty or hot conditions, replacing sodium can support better fluid retention.",
-          takeaway: "Sodium can support hydration when context calls for it.",
+            "Hydration isn’t just about water! Our blood is full of minerals, especially sodium, and because we lose some of those minerals through everyday living, we have to replenish them as well as fluids.",
+          takeaway:
+            "Hydration isn’t just about water! Our blood is full of minerals, especially sodium, and because we lose some of those minerals through everyday living, we have to replenish them as well as fluids.",
         },
         {
-          topic: "Sugar",
-          title: "Sugar and electrolytes",
-          prompt: "A hydration drink does not need to feel like candy.",
+          topic: "Intake",
+          title: "Daily intake",
+          prompt: "Select the lie.",
           claims: [
             {
-              text: "A sugar-free electrolyte mix can still help replace minerals.",
+              text: "You lose electrolytes while you sleep.",
               truth: true,
-              note: "Mineral replacement does not require a high-sugar drink.",
+              note: "",
             },
             {
-              text: "Taste can be clean and salty because electrolytes are minerals.",
+              text: "You need more electrolytes when you’re fasting.",
               truth: true,
-              note: "That mineral taste is part of the function.",
+              note: "",
             },
             {
-              text: "Electrolytes only work when a drink is loaded with sugar.",
+              text: "The more water you drink, the better!",
               truth: false,
-              note: "Sugar can serve specific performance needs, but it is not always required.",
+              note:
+                `It's not common, but when your fluid intake outpaces your sodium levels, it can disrupt your body's natural balance and leave you feeling "off" rather than hydrated.`,
             },
           ],
           explanation:
-            "Electrolytes are minerals. Some people want carbs for endurance fuel, but everyday electrolyte replacement can be done without a sugary drink.",
-          takeaway: "Electrolytes do not have to mean high sugar.",
+            `It's not common, but when your fluid intake outpaces your sodium levels, it can disrupt your body's natural balance and leave you feeling "off" rather than hydrated.`,
+          takeaway:
+            `It's not common, but when your fluid intake outpaces your sodium levels, it can disrupt your body's natural balance and leave you feeling "off" rather than hydrated.`,
         },
         {
-          topic: "Heat",
-          title: "When needs increase",
-          prompt: "Find the statement that ignores real life conditions.",
+          topic: "Food",
+          title: "Food and supplements",
+          prompt: "Select the lie.",
           claims: [
             {
-              text: "Heat and humidity can raise sweat rate and electrolyte needs.",
+              text: "Low-carb diets increase electrolyte needs.",
               truth: true,
-              note: "The same activity can be more demanding in hotter conditions.",
+              note: "",
             },
             {
-              text: "Travel days and dry environments can make hydration harder to read.",
+              text: "You can meet some of your hydration needs by consuming watery foods like cucumbers and watermelon.",
               truth: true,
-              note: "Routine changes can change fluid habits and thirst cues.",
+              note: "",
             },
             {
-              text: "Indoor days mean hydration needs never change.",
+              text: "All electrolyte supplements are the same",
               truth: false,
-              note: "Long shifts, dry air, caffeine, and activity can still matter.",
+              note:
+                "Unlike other electrolyte brands, Re-Lyte’s higher sodium content, combined with complementary electrolytes like potassium and magnesium, helps maintain proper fluid distribution inside and outside of cells, supports nerve signaling and muscle function, and promotes more efficient, sustained hydration.",
             },
           ],
           explanation:
-            "Hydration needs move with environment and routine. Heat is obvious, but long days indoors can still change how much support someone needs.",
-          takeaway: "Environment and routine change hydration needs.",
+            "Unlike other electrolyte brands, Re-Lyte’s higher sodium content, combined with complementary electrolytes like potassium and magnesium, helps maintain proper fluid distribution inside and outside of cells, supports nerve signaling and muscle function, and promotes more efficient, sustained hydration.",
+          takeaway:
+            "Unlike other electrolyte brands, Re-Lyte’s higher sodium content, combined with complementary electrolytes like potassium and magnesium, helps maintain proper fluid distribution inside and outside of cells, supports nerve signaling and muscle function, and promotes more efficient, sustained hydration.",
         },
         {
-          topic: "Retention",
-          title: "Using the water you drink",
-          prompt: "One card treats water intake and hydration as the same thing.",
+          topic: "Needs",
+          title: "Changing needs",
+          prompt: "Select the lie.",
           claims: [
             {
-              text: "Electrolytes help maintain fluid balance inside and outside cells.",
+              text: "You can find electrolytes in foods like fruits and vegetables, nuts, and dairy.",
               truth: true,
-              note: "That balance is part of why minerals matter.",
+              note: "",
             },
             {
-              text: "In high-sweat moments, electrolytes can help fluids stick around longer.",
+              text: "Fluids and electrolytes are required for true hydration.",
               truth: true,
-              note: "Retention is the difference between drinking water and using it well.",
+              note: "",
             },
             {
-              text: "Hydration is only the number of ounces you drink.",
+              text: "Our hydration needs don’t change.",
               truth: false,
-              note: "Ounces count, but absorption, retention, and mineral balance count too.",
+              note:
+                "Our hydration needs depend on activity level, illness, pregnancy and breastfeeding, caffeine and alcohol intake, diet, environment, and sleep quality. Our needs are always in flux!",
             },
           ],
           explanation:
-            "Water intake is one input. Hydration is the outcome: fluid balance, mineral balance, and whether the body can actually use what you drink.",
-          takeaway: "Hydration is an outcome, not just an ounce count.",
+            "Our hydration needs depend on activity level, illness, pregnancy and breastfeeding, caffeine and alcohol intake, diet, environment, and sleep quality. Our needs are always in flux!",
+          takeaway:
+            "Our hydration needs depend on activity level, illness, pregnancy and breastfeeding, caffeine and alcohol intake, diet, environment, and sleep quality. Our needs are always in flux!",
         },
         {
-          topic: "Timing",
-          title: "Smart hydration timing",
-          prompt: "Find the advice that waits too long.",
+          topic: "Sources",
+          title: "Electrolyte sources",
+          prompt: "Select the lie.",
           claims: [
             {
-              text: "Starting hydrated before heat or activity can make the day easier.",
+              text: "Caffeine and alcohol consumption cause electrolyte loss.",
               truth: true,
-              note: "Playing catch-up after heavy sweat is harder.",
+              note: "",
             },
             {
-              text: "After sweaty activity, fluids plus electrolytes can support recovery.",
+              text: "Breastfeeding increases electrolyte needs.",
               truth: true,
-              note: "Replacement works best when it matches what was lost.",
+              note: "",
             },
             {
-              text: "You should wait until you feel depleted before thinking about hydration.",
+              text: "Electrolytes are only found in mineral salt and supplements.",
               truth: false,
-              note: "A simple plan before, during, and after works better.",
+              note:
+                "You can also find electrolytes in foods like bananas, leafy greens, potatoes, nuts, dairy, etc.",
             },
           ],
           explanation:
-            "Good hydration is proactive. A small plan before heat, sweat, or long active days is easier than trying to recover after feeling depleted.",
-          takeaway: "Plan hydration before the hard part starts.",
+            "You can also find electrolytes in foods like bananas, leafy greens, potatoes, nuts, dairy, etc.",
+          takeaway:
+            "You can also find electrolytes in foods like bananas, leafy greens, potatoes, nuts, dairy, etc.",
         },
       ],
     },
@@ -473,10 +486,10 @@
         if (selected) {
           button.classList.add("is-selected", answer.correct ? "is-correct-pick" : "is-wrong-pick");
         }
-        button.setAttribute(
-          "aria-label",
-          `${claim.text} ${isLie ? ui.lie : ui.truth}. ${claim.note}`
-        );
+        const revealLabel = `${claim.text} ${isLie ? ui.lie : ui.truth}${
+          claim.note ? `. ${claim.note}` : "."
+        }`;
+        button.setAttribute("aria-label", revealLabel);
       }
 
       button.append(
@@ -500,7 +513,8 @@
 
   function createRevealRow(label, note) {
     const wrap = createElement("span", "reveal-row");
-    wrap.append(createElement("span", "truth-badge", label), createElement("span", "claim-note", note));
+    wrap.append(createElement("span", "truth-badge", label));
+    if (note) wrap.append(createElement("span", "claim-note", note));
     return wrap;
   }
 

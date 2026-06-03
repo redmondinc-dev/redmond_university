@@ -7,7 +7,7 @@ Static vanilla HTML/CSS/JavaScript micro-game for Re-Lyte hydration education.
 - `index.html`: semantic shell, game controls, answer region, progress bottle, stats, recap help dialog, completion modal.
 - `styles.css`: responsive visual system, card states, bottle fill, motion, reduced-motion fallback.
 - `script.js`: English content, session state, rendering, scoring, reveal logic, always-on audio, recap, modal completion.
-- Session progress is stored in `sessionStorage` under `relyte-two-truths-hydration-v1`.
+- Session progress is stored in `sessionStorage` under `relyte-two-truths-hydration-v2`.
 
 ## 2. UX Flow
 
