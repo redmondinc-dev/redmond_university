@@ -134,16 +134,7 @@
       .finish-copy {
         width: min(100%, 1180px);
         margin: 0 auto;
-      }
-
-      .finish-image {
-        display: block;
-        width: auto;
-        max-width: 100%;
-        max-height: min(72vh, 640px);
-        height: auto;
-        margin: 0 auto;
-        object-fit: contain;
+        padding-top: clamp(1.5rem, 4vw, 3.5rem);
       }
 
       .celebration-card::before {
@@ -212,11 +203,6 @@
         line-height: 1.34;
         letter-spacing: 0;
         color: var(--muted);
-      }
-
-      .celebration .celebration-note + p {
-        margin-top: clamp(0.8rem, 1.8vw, 1.3rem);
-        color: #4e4a4c;
       }
 
       .celebration-actions {
@@ -309,7 +295,6 @@
         width: 80%;
         height: 80%;
         margin: auto;
-        object-fit: contain;
         z-index: 0;
         opacity: 0;
         visibility: hidden;
@@ -319,6 +304,21 @@
           transform 160ms ease,
           visibility 0s linear 160ms;
         pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(1rem, 3vw, 3rem);
+      }
+
+      .celebrate-explode img {
+        width: auto;
+        height: 100%;
+        max-width: 38%;
+        object-fit: contain;
+      }
+
+      .celebrate-explode img:first-child {
+        max-width: 54%;
       }
 
       .celebration-actions.is-playing .celebrate-button {
@@ -332,8 +332,6 @@
         opacity: 1;
         visibility: visible;
         transform: scale(0.92);
-        object-fit: contain;
-        object-position: center center;
         transition-delay: 0s;
       }
 
@@ -368,10 +366,6 @@
       html.is-embedded .celebration-card {
         justify-content: center;
         overflow: hidden;
-      }
-
-      html.is-embedded .finish-image {
-        max-height: max(0px, calc(100vh - 116px));
       }
 
       html.is-embedded .celebration-actions {
@@ -477,8 +471,8 @@
   </head>
   <body>
     <canvas class="confetti-canvas" id="confetti-canvas" aria-hidden="true"></canvas>
-    <audio id="claps-audio" preload="auto" src="./claps.mp3"></audio>
-    <audio id="finish-audio" preload="auto" src="./finish game.mp3"></audio>
+    <audio id="claps-audio" preload="auto" src="../finish-rf/claps.mp3"></audio>
+    <audio id="finish-audio" preload="auto" src="../finish-rf/finish game.mp3"></audio>
 
     <main class="page">
       <section class="hero" aria-label="Course completion">
@@ -486,13 +480,10 @@
           <div class="celebration-card">
             <div class="celebration-copy">
               <div class="finish-copy">
-                <img
-                  class="finish-image"
-                  src="./RF_Congratulations%20closing.jpg"
-                  width="4000"
-                  height="1976"
-                  alt="Congratulations, you finished the course! Now, share your amazing new knowledge with customers and coworkers, or anyone who will listen. We'll see you in the next course. P.S. Did you know that Redmond Farms coordinates regular farm and mine tours for associates? Keep an ear out for the next one happening and/or ask your team lead for more details."
-                />
+                <h1>Great job!</h1>
+                <h2>You made it to the end of the course!</h2>
+                <p class="celebration-message">Now that you've learned the Register Position, it's time to put those skills to work.</p>
+                <p class="celebration-note">Remember that there's always more to learn, so keep an eye out for updates and improved processes.</p>
               </div>
             </div>
 
@@ -500,13 +491,10 @@
               <button class="celebrate-button" id="celebrate-button" type="button">
                 <span class="celebrate-button__label">Celebrate</span>
               </button>
-              <img
-                class="celebrate-explode"
-                id="celebrate-explode"
-                data-src="./Jony-registering-old-machine.gif"
-                alt=""
-                aria-hidden="true"
-              />
+              <div class="celebrate-explode" id="celebrate-explode">
+                <img data-src="./registradora-blanco.gif" alt="" aria-hidden="true" />
+                <img data-src="./jump.gif" alt="" aria-hidden="true" />
+              </div>
             </div>
           </div>
         </section>
@@ -690,7 +678,7 @@
           celebrationActions.classList.remove("is-playing");
 
           if (celebrateExplode) {
-            celebrateExplode.removeAttribute("src");
+            celebrateExplode.querySelectorAll("img").forEach((img) => img.removeAttribute("src"));
           }
         }
 
@@ -708,10 +696,10 @@
           celebrationActions.classList.add("is-playing");
 
           if (celebrateExplode) {
-            const celebrationSrc = celebrateExplode.dataset.src;
-            celebrateExplode.removeAttribute("src");
+            const imgs = celebrateExplode.querySelectorAll("img[data-src]");
+            imgs.forEach((img) => img.removeAttribute("src"));
             requestAnimationFrame(() => {
-              if (celebrationSrc) celebrateExplode.setAttribute("src", celebrationSrc);
+              imgs.forEach((img) => img.setAttribute("src", img.dataset.src));
             });
           }
 
@@ -763,7 +751,7 @@
 
         function triggerCelebration() {
           startCelebrationVisual(celebrationDurationMs);
-          startConfetti(confettiDurationMs);
+          startConfetti(celebrationDurationMs);
           startApplause(celebrationDurationMs).catch(() => {});
         }
 
