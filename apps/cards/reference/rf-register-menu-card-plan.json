@@ -1,0 +1,201 @@
+{
+  "sourceText": "apps/cards/reference/rf-register-menu-source.txt",
+  "originalImagesFolder": "/Users/moisessantos/Downloads/RU RF Specialization_ Register",
+  "copiedImagesFolder": "assets/imgs/rf-register-menu",
+  "htmlImagePathPrefixFromAppsCards": "../../assets/imgs/rf-register-menu/",
+  "cardOrder": [
+    {
+      "order": 1,
+      "title": "Breakfast",
+      "sourceSection": "BREAKFAST",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/chili-lime-bowl.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/chili-lime-bowl.webp"
+      ],
+      "menuItems": [
+        "Oatcakes",
+        "The Farm Boy",
+        "Breakfast Sandwich",
+        "Garden Omelet",
+        "Serrano Pork Skillet",
+        "Chili Lime Breakfast Bowl"
+      ]
+    },
+    {
+      "order": 2,
+      "title": "Sandwiches",
+      "sourceSection": "SANDWICHES",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/chicken-pesto.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/chicken-pesto.webp"
+      ],
+      "menuItems": [
+        "Patty Melt",
+        "Chicken Pesto Panini",
+        "Farmhouse Club",
+        "Grilled Cheese"
+      ]
+    },
+    {
+      "order": 3,
+      "title": "Burgers",
+      "sourceSection": "BURGERS",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/farm-burger.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/farm-burger.webp"
+      ],
+      "menuItems": [
+        "Farm Burger",
+        "Spicy Avocado Burger",
+        "Bison Burger",
+        "Simple Burger"
+      ]
+    },
+    {
+      "order": 4,
+      "title": "From The Garden",
+      "sourceSection": "FROM THE GARDEN",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/farm-salad.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/farm-salad.webp"
+      ],
+      "menuItems": [
+        "Farm Salad",
+        "House Salad",
+        "Quinoa Bowl",
+        "Side Salad",
+        "Veg & Greens"
+      ]
+    },
+    {
+      "order": 5,
+      "title": "Fries",
+      "sourceSection": "FRIES",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/seasoned-fries.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/seasoned-fries.webp"
+      ],
+      "menuItems": [
+        "Classic Fries",
+        "Seasoned Fries",
+        "Garlic & Herb Fries"
+      ]
+    },
+    {
+      "order": 6,
+      "title": "Sides",
+      "sourceSection": "SIDES",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/avocado-toast.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/avocado-toast.webp"
+      ],
+      "menuItems": [
+        "Uncured Bacon",
+        "Extra Meat",
+        "Farm Egg",
+        "Avocado",
+        "Pickled Onion",
+        "Sprouts",
+        "Crispy Fried Onions",
+        "Sauerkraut",
+        "Housemade Dressing / Condiments",
+        "Toast With Butter",
+        "Avocado Toast",
+        "House Made Soup of the Day"
+      ]
+    },
+    {
+      "order": 7,
+      "title": "House Made Bone Broth",
+      "sourceSection": "HOUSE MADE BONE BROTH",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/chicken-broth.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/chicken-broth.webp"
+      ],
+      "menuItems": [
+        "Free-Range Chicken Bone Broth",
+        "Beef Bone Broth"
+      ]
+    },
+    {
+      "order": 8,
+      "title": "Smoothies",
+      "sourceSection": "SMOOTHIES",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/strawberry-flax.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/strawberry-flax.webp"
+      ],
+      "menuItems": [
+        "Tropical Ginger",
+        "Matcha Frappe",
+        "Banana Nut",
+        "Cacao Power",
+        "Strawberry Flax"
+      ]
+    },
+    {
+      "order": 9,
+      "title": "Raw Organic Juice",
+      "sourceSection": "RAW ORGANIC JUICE",
+      "recommendedImage": null,
+      "imageCandidates": [],
+      "menuItems": [
+        "Red",
+        "Green"
+      ],
+      "needsImage": true
+    },
+    {
+      "order": 10,
+      "title": "Blended Milks",
+      "sourceSection": "BLENDED MILKS",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/hot-toasted-marshmallow.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/hot-toasted-marshmallow.webp"
+      ],
+      "menuItems": [
+        "Classic Chocolate Milk",
+        "Golden Milk",
+        "Toasted Marshmallow"
+      ]
+    },
+    {
+      "order": 11,
+      "title": "Coffee + Espresso",
+      "sourceSection": "COFFEE + ESPRESSO",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/hot-latte.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/hot-latte.webp"
+      ],
+      "menuItems": [
+        "Drip Coffee",
+        "Latte",
+        "Americano",
+        "Mocha",
+        "Bulletproof",
+        "Espresso",
+        "Cortado"
+      ]
+    },
+    {
+      "order": 12,
+      "title": "Tea",
+      "sourceSection": "TEA",
+      "recommendedImage": "../../assets/imgs/rf-register-menu/hot-matcha-latte.webp",
+      "imageCandidates": [
+        "../../assets/imgs/rf-register-menu/hot-matcha-latte.webp"
+      ],
+      "menuItems": [
+        "Chai Latte",
+        "Matcha Latte",
+        "Loose Leaf Tea"
+      ]
+    }
+  ],
+  "notes": [
+    "Use cardOrder as the source order for menu/category cards.",
+    "The Raw Organic Juice section appears in the pasted menu text but no matching juice image was present in the Downloads folder.",
+    "Recommended images are the final selected real photos copied into the repo.",
+    "Paths in recommendedImage and imageCandidates are ready for HTML files inside apps/cards."
+  ]
+}

@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Hydration Habitats</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="screen-text" id="live-region" aria-live="polite" aria-atomic="true"></div>
+
+    <main class="game-shell" data-habitat="desert">
+      <header class="game-header">
+        <div class="title-stack">
+          <span class="kicker" data-ui="kicker">Hydration Check</span>
+          <h1 data-ui="title">Hydration Habitats</h1>
+          <p class="intro" data-ui="intro">
+            Pick the daily habit that feels closest to yours and watch the habitat respond.
+          </p>
+        </div>
+
+        <button class="secondary-btn" id="reset-btn" type="button" data-ui="reset">Reset</button>
+      </header>
+
+      <section class="game-layout" aria-label="Hydration Habitats game">
+        <section class="habitat-panel" aria-labelledby="habitat-title">
+          <div class="habitat-topline">
+            <div>
+              <span class="small-label" data-ui="habitatLabel">Current habitat</span>
+              <h2 id="habitat-title">Dry Desert</h2>
+            </div>
+            <div
+              class="hydration-meter"
+              id="hydration-meter"
+              role="progressbar"
+              aria-label="Hydration habitat score"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="20"
+            >
+              <span id="hydration-fill"></span>
+              <strong id="hydration-score">20%</strong>
+            </div>
+          </div>
+
+          <div class="scene" id="scene" aria-label="Animated hydration habitat">
+            <div class="sky" aria-hidden="true">
+              <span class="sun"></span>
+              <span class="cloud cloud-a"></span>
+              <span class="cloud cloud-b"></span>
+            </div>
+
+            <div class="horizon" aria-hidden="true">
+              <span class="ridge ridge-a"></span>
+              <span class="ridge ridge-b"></span>
+              <span class="ridge ridge-c"></span>
+            </div>
+
+            <div class="rain-layer" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+
+            <div class="water-body" aria-hidden="true">
+              <span class="water-shine"></span>
+            </div>
+
+            <div class="ground" aria-hidden="true">
+              <span class="crack crack-a"></span>
+              <span class="crack crack-b"></span>
+              <span class="sprout sprout-a"></span>
+              <span class="sprout sprout-b"></span>
+              <span class="tree tree-a"></span>
+              <span class="tree tree-b"></span>
+            </div>
+
+            <div class="mineral-orbit" aria-label="Electrolytes">
+              <img
+                src="../../assets/imgs/hydration-cards/Na.png"
+                alt="Sodium"
+                data-mineral="sodium"
+              />
+              <img
+                src="../../assets/imgs/hydration-cards/Cl.png"
+                alt="Chloride"
+                data-mineral="chloride"
+              />
+              <img
+                src="../../assets/imgs/hydration-cards/Mg.png"
+                alt="Magnesium"
+                data-mineral="magnesium"
+              />
+              <img
+                src="../../assets/imgs/hydration-cards/Ca.png"
+                alt="Calcium"
+                data-mineral="calcium"
+              />
+            </div>
+
+            <div class="character-wrap">
+              <img
+                id="character-img"
+                class="character"
+                src="../../assets/imgs/png/re-lyte-rescue/hydration-boy-01-dehydrated.png"
+                alt="Dehydrated character"
+              />
+            </div>
+
+            <div class="drop-layer" id="drop-layer" aria-hidden="true"></div>
+          </div>
+
+          <div class="feedback-strip" aria-live="polite">
+            <p id="feedback-copy">
+              Your body may be asking for more plain water and a steadier hydration routine.
+            </p>
+          </div>
+        </section>
+
+        <aside class="control-panel" aria-label="Hydration choices">
+          <section class="choice-block" aria-labelledby="habit-title">
+            <span class="small-label" data-ui="habitLabel">Think about this</span>
+            <h2 id="habit-title" data-ui="habitTitle">On a typical day, I drink...</h2>
+
+            <div class="choice-list" id="choice-list"></div>
+
+            <div class="range-wrap">
+              <input
+                id="habit-range"
+                type="range"
+                min="0"
+                max="3"
+                step="1"
+                value="0"
+                aria-labelledby="habit-title"
+              />
+              <div class="range-ticks" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </section>
+
+          <section class="reflection-block" aria-labelledby="reflection-title">
+            <span class="small-label" data-ui="reflectionLabel">Next step</span>
+            <h2 id="reflection-title" data-ui="reflectionTitle">
+              What are you hoping to learn more about?
+            </h2>
+            <div class="goal-list" id="goal-list"></div>
+            <div class="result-box" id="result-box" hidden>
+              <span class="small-label" data-ui="resultLabel">Habitat mapped</span>
+              <p id="result-copy"></p>
+            </div>
+          </section>
+        </aside>
+      </section>
+    </main>
+
+    <script src="script.js"></script>
+  </body>
+</html>

@@ -18,6 +18,7 @@ Static project for training modules and mini-games embedded in Canvas.
 ├── games/
 │   ├── farm/
 │   ├── jeopardy/
+│   ├── hydration-habitats/
 │   ├── re-lyte-rescue/
 │   ├── smoothie/
 │   └── two-truths-hydration/
@@ -37,6 +38,7 @@ The login page lives at the root, and its shared files are stored in `assets/log
 - Reusable CTA: `components/cta/index.html`
 - Games:
   - `games/farm/index.html`
+  - `games/hydration-habitats/index.html`
   - `games/jeopardy/index.html`
   - `games/re-lyte-rescue/index.html`
   - `games/smoothie/index.html`

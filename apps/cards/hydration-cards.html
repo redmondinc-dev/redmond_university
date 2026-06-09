@@ -99,26 +99,39 @@
       }
 
       .card-front {
+        flex-direction: column;
+        gap: 12px;
         padding: 18px 16px;
       }
 
       .card-front.is-combo {
-        flex-direction: column;
-        gap: 10px;
+        gap: 8px;
         padding: 14px 16px;
       }
 
       .card-front img {
         display: block;
         width: 100%;
-        height: 100%;
+        height: 0;
+        min-height: 0;
+        flex: 1 1 0;
         object-fit: contain;
         pointer-events: none;
         -webkit-user-drag: none;
       }
 
       .card-front.is-combo img {
-        height: calc((100% - 10px) / 2);
+        max-height: none;
+      }
+
+      .card-front-name {
+        flex: 0 0 auto;
+        color: var(--ink);
+        font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
+        font-size: 1rem;
+        font-weight: 700;
+        line-height: 1.16;
+        text-align: center;
       }
 
       .card-back {
@@ -248,6 +261,7 @@
         const cardsData = [
           {
             title: "Na",
+            fullName: "Sodium",
             image: "../../assets/imgs/hydration-cards/Na.png",
             alt: "Na hydration card",
             copies: {
@@ -257,6 +271,7 @@
           },
           {
             title: "Cl",
+            fullName: "Chloride",
             image: "../../assets/imgs/hydration-cards/Cl.png",
             alt: "Cl hydration card",
             copies: {
@@ -266,6 +281,7 @@
           },
           {
             title: "Pa",
+            fullName: "Potassium",
             image: "../../assets/imgs/hydration-cards/Pa.png",
             alt: "Pa hydration card",
             copies: {
@@ -275,6 +291,7 @@
           },
           {
             title: "Mg",
+            fullName: "Magnesium",
             image: "../../assets/imgs/hydration-cards/Mg.png",
             alt: "Mg hydration card",
             copies: {
@@ -284,6 +301,7 @@
           },
           {
             title: "Ca",
+            fullName: "Calcium",
             image: "../../assets/imgs/hydration-cards/Ca.png",
             alt: "Ca hydration card",
             copies: {
@@ -301,7 +319,7 @@
             button.classList.add("is-copy-functions");
           }
           button.setAttribute("aria-pressed", "false");
-          button.setAttribute("aria-label", `${card.title}. Click to reveal copy.`);
+          button.setAttribute("aria-label", `${card.fullName || card.title}. Click to reveal copy.`);
 
           const inner = document.createElement("span");
           inner.className = "card-inner";
@@ -325,6 +343,11 @@
             image.loading = index === 0 ? "eager" : "lazy";
             front.appendChild(image);
           });
+
+          const frontName = document.createElement("span");
+          frontName.className = "card-front-name";
+          frontName.textContent = card.fullName || card.title;
+          front.appendChild(frontName);
 
           const back = document.createElement("span");
           back.className = "card-face card-back";

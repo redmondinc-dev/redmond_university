@@ -8,16 +8,16 @@
       @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap");
 
       :root {
-        --card-width: 220px;
-        --card-height: 320px;
+        --card-width: clamp(320px, 30vw, 380px);
+        --card-height: 448px;
         --card-radius: 18px;
         --card-gap: 18px;
-        --ink: #2f2a25;
-        --accent: #ef4a3a;
-        --border: rgba(47, 42, 37, 0.2);
+        --ink: #111111;
+        --accent: #111111;
+        --border: rgba(17, 17, 17, 0.24);
         --paper: #ffffff;
-        --back: #f8fbfb;
-        --shadow: 0 16px 34px rgba(22, 33, 38, 0.14);
+        --back: #ffffff;
+        --shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
       }
 
       * {
@@ -36,12 +36,62 @@
         font-family: "Avenir", "Avenir Next", "Segoe UI", sans-serif;
       }
 
+      .cards-board {
+        width: min(1260px, 100%);
+        background: #ffffff;
+      }
+
+      .cards-board-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 18px;
+        padding: clamp(16px, 2vw, 24px) clamp(18px, 3vw, 34px);
+        background: #111111;
+        border-radius: var(--card-radius);
+        color: #ffffff;
+        font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
+      }
+
+      .cards-board-eyebrow,
+      .cards-board-title,
+      .cards-board-note {
+        margin: 0;
+      }
+
+      .cards-board-eyebrow {
+        font-size: clamp(0.66rem, 0.8vw, 0.78rem);
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        line-height: 1.2;
+        text-transform: uppercase;
+      }
+
+      .cards-board-title {
+        margin-top: 4px;
+        font-size: clamp(1.45rem, 2.6vw, 2.35rem);
+        font-weight: 700;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .cards-board-note {
+        max-width: 18ch;
+        font-size: clamp(0.82rem, 1vw, 0.95rem);
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        line-height: 1.25;
+        text-align: right;
+        text-transform: uppercase;
+      }
+
       .cards-grid {
-        width: min(1220px, 100%);
+        width: 100%;
         display: flex;
         flex-wrap: wrap;
         justify-content: center;
         gap: var(--card-gap);
+        padding: clamp(14px, 2vw, 24px);
       }
 
       .hydration-card {
@@ -71,7 +121,7 @@
       }
 
       .hydration-card:focus-visible {
-        outline: 3px solid rgba(239, 74, 58, 0.42);
+        outline: 3px solid rgba(0, 0, 0, 0.34);
         outline-offset: 5px;
       }
 
@@ -90,7 +140,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border: 2px solid var(--border);
+        border: 1px solid var(--border);
         border-radius: var(--card-radius);
         background: var(--paper);
         backface-visibility: hidden;
@@ -119,11 +169,9 @@
       .card-back {
         transform: rotateY(180deg);
         flex-direction: column;
-        gap: 14px;
-        padding: 24px 20px;
-        background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 0.62)),
-          var(--back);
+        gap: 20px;
+        padding: 34px 28px;
+        background: var(--back);
         text-align: center;
       }
 
@@ -131,23 +179,25 @@
         margin: 0;
         color: var(--accent);
         font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
-        font-size: 1.7rem;
+        font-size: clamp(2rem, 2.3vw, 2.45rem);
         font-weight: 700;
         letter-spacing: 0.08em;
-        line-height: 1;
+        line-height: 1.04;
         text-transform: uppercase;
+        text-wrap: balance;
       }
 
       .card-copy {
         margin: 0;
-        font-size: 0.92rem;
-        line-height: 1.42;
+        font-size: clamp(1.2rem, 1.45vw, 1.48rem);
+        line-height: 1.35;
+        text-wrap: pretty;
       }
 
       @media (max-width: 620px) {
         :root {
-          --card-width: clamp(140px, 44vw, 180px);
-          --card-height: clamp(235px, 72vw, 265px);
+          --card-width: clamp(155px, 44vw, 200px);
+          --card-height: clamp(280px, 78vw, 330px);
           --card-gap: 14px;
         }
 
@@ -155,17 +205,27 @@
           padding: 20px 12px;
         }
 
+        .cards-board-header {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+
+        .cards-board-note {
+          max-width: none;
+          text-align: left;
+        }
+
         .card-back {
-          padding: 18px 14px;
-          gap: 10px;
+          padding: 22px 14px;
+          gap: 12px;
         }
 
         .card-title {
-          font-size: 1.25rem;
+          font-size: clamp(1.24rem, 7.2vw, 1.55rem);
         }
 
         .card-copy {
-          font-size: 0.82rem;
+          font-size: clamp(0.92rem, 4.6vw, 1.05rem);
         }
       }
 
@@ -177,7 +237,17 @@
     </style>
   </head>
   <body>
-    <main id="cards" class="cards-grid" aria-label="Hydration food cards"></main>
+    <section class="cards-board" aria-label="Hydration food board">
+      <header class="cards-board-header">
+        <div>
+          <p class="cards-board-eyebrow">Hydration</p>
+          <h1 class="cards-board-title">Food Sources</h1>
+        </div>
+        <p class="cards-board-note">Mineral Guide</p>
+      </header>
+
+      <main id="cards" class="cards-grid" aria-label="Hydration food cards"></main>
+    </section>
 
     <script>
       (function () {
