@@ -9,30 +9,28 @@
       ui: {
         kicker: "Hydration Check",
         title: "Hydration Habitats",
-        intro: "Pick the daily habit that feels closest to yours and watch the habitat respond.",
+        intro: "Pick one habit and watch the habitat respond.",
         reset: "Reset",
         habitatLabel: "Current habitat",
-        habitLabel: "Think about this",
-        habitTitle: "On a typical day, I drink...",
+        habitLabel: "Hydration",
+        habitTitle: "I drink...",
         reflectionLabel: "Next step",
-        reflectionTitle: "What are you hoping to learn more about?",
+        reflectionTitle: "What do you want to learn?",
         resultLabel: "Habitat mapped",
         liveUpdate: "{habitat}. Hydration habitat score is {score} percent.",
-        goalResult:
-          "Starting from {habitat}, this course can help you focus on {goal} while building hydration habits that fit your day.",
+        goalResult: "From {habitat}, focus on {goal}.",
       },
       levels: [
         {
           id: "desert",
           token: "C",
           title: "Dry Desert",
-          choice: "Only soda, coffee, or energy drinks",
+          choice: "Soda, coffee, or energy drinks",
           short: "Low plain-water intake",
           score: 20,
           image: "hydration-boy-01-dehydrated.png",
           imageAlt: "Dehydrated character",
-          feedback:
-            "Your body may be asking for more plain water and a steadier hydration routine.",
+          feedback: "Your body may be asking for more plain water.",
         },
         {
           id: "sprout",
@@ -43,8 +41,7 @@
           score: 45,
           image: "hydration-boy-02-thirsty.png",
           imageAlt: "Thirsty character",
-          feedback:
-            "You have a start. Adding another water break can help the habitat keep growing.",
+          feedback: "You have a start. Add one more water break.",
         },
         {
           id: "oasis",
@@ -55,8 +52,7 @@
           score: 78,
           image: "hydration-boy-04-retaining.png",
           imageAlt: "Recovering hydrated character",
-          feedback:
-            "Your water routine is strong. Activity, heat, and sweat can still change mineral needs.",
+          feedback: "Strong routine. Heat, activity, and sweat can change mineral needs.",
         },
         {
           id: "rainforest",
@@ -67,8 +63,7 @@
           score: 100,
           image: "hydration-boy-05-hydrated.png",
           imageAlt: "Hydrated character",
-          feedback:
-            "Water plus key electrolytes can support hydration balance when your day asks for more.",
+          feedback: "Water plus electrolytes can support hydration balance.",
         },
       ],
       goals: [
@@ -97,30 +92,28 @@
       ui: {
         kicker: "Chequeo de hidratacion",
         title: "Hydration Habitats",
-        intro: "Elige el habito diario que mas se parece al tuyo y observa como responde el habitat.",
+        intro: "Elige un habito y mira como responde el habitat.",
         reset: "Reiniciar",
         habitatLabel: "Habitat actual",
-        habitLabel: "Piensa en esto",
-        habitTitle: "En un dia normal, tomo...",
+        habitLabel: "Hidratacion",
+        habitTitle: "Tomo...",
         reflectionLabel: "Siguiente paso",
-        reflectionTitle: "Que te gustaria aprender mejor?",
+        reflectionTitle: "Que quieres aprender?",
         resultLabel: "Habitat mapeado",
         liveUpdate: "{habitat}. El puntaje del habitat de hidratacion es {score} por ciento.",
-        goalResult:
-          "Empezando desde {habitat}, este curso puede ayudarte a enfocarte en {goal} mientras creas habitos de hidratacion que encajen con tu dia.",
+        goalResult: "Desde {habitat}, enfocate en {goal}.",
       },
       levels: [
         {
           id: "desert",
           token: "C",
           title: "Desierto seco",
-          choice: "Solo soda, cafe o bebidas energeticas",
+          choice: "Soda, cafe o energeticas",
           short: "Poca agua simple",
           score: 20,
           image: "hydration-boy-01-dehydrated.png",
           imageAlt: "Personaje deshidratado",
-          feedback:
-            "Tu cuerpo podria necesitar mas agua simple y una rutina de hidratacion mas constante.",
+          feedback: "Tu cuerpo podria necesitar mas agua simple.",
         },
         {
           id: "sprout",
@@ -131,8 +124,7 @@
           score: 45,
           image: "hydration-boy-02-thirsty.png",
           imageAlt: "Personaje con sed",
-          feedback:
-            "Ya tienes un inicio. Agregar otra pausa para tomar agua puede ayudar a que el habitat crezca.",
+          feedback: "Ya tienes un inicio. Agrega otra pausa de agua.",
         },
         {
           id: "oasis",
@@ -143,8 +135,7 @@
           score: 78,
           image: "hydration-boy-04-retaining.png",
           imageAlt: "Personaje recuperando hidratacion",
-          feedback:
-            "Tu rutina de agua es fuerte. La actividad, el calor y el sudor aun pueden cambiar tus necesidades de minerales.",
+          feedback: "Buen ritmo. El calor, la actividad y el sudor cambian tus minerales.",
         },
         {
           id: "rainforest",
@@ -155,8 +146,7 @@
           score: 100,
           image: "hydration-boy-05-hydrated.png",
           imageAlt: "Personaje hidratado",
-          feedback:
-            "El agua mas electrolitos clave puede apoyar el balance de hidratacion cuando tu dia exige mas.",
+          feedback: "Agua mas electrolitos apoya el balance de hidratacion.",
         },
       ],
       goals: [
@@ -232,7 +222,6 @@
       <span class="choice-token" aria-hidden="true">${level.token}</span>
       <span class="choice-copy">
         <strong>${level.choice}</strong>
-        <span>${level.short}</span>
       </span>
     `;
     button.addEventListener("click", () => setLevel(index, true));
@@ -249,7 +238,6 @@
       <span class="goal-token" aria-hidden="true">${goal.token}</span>
       <span class="goal-copy">
         <strong>${goal.label}</strong>
-        <span>${goal.detail}</span>
       </span>
     `;
     button.addEventListener("click", () => setGoal(index));

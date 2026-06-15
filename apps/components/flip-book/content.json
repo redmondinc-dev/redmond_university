@@ -8,16 +8,6 @@
   },
   "pages": [
     {
-      "title": "Topics covered",
-      "bullets": [
-        "Overview of Redmond’s 401(k) plan",
-        "Types of contributions (ROTH or Traditional)",
-        "How to register your account (see video)",
-        "How to adjust your contributions and investments (see video)"
-      ],
-      "accent": "#e23c30"
-    },
-    {
       "title": "Summary of Redmond’s 401(k) Plan",
       "bullets": [
         "Operated by Empower Financial Services",
@@ -70,26 +60,6 @@
       "bullets": [
         "Your contribution is 100% yours no matter how long you stay with Redmond",
         "Redmond’s contribution is subject to “vesting” and isn’t 100% yours until you’ve been an employee for the entire vesting period"
-      ],
-      "accent": "#e23c30"
-    },
-    {
-      "title": "ROTH Versus Traditional",
-      "bullets": [
-        "ROTH is post-tax--You pay the full tax amount today and the money grows tax free, which means that when you are old enough to withdraw it, you won’t pay tax on the growth, whether from interest, dividends, investment returns, etc.",
-        "Traditional is pre-tax--The amount you contribute is subtracted from your W-2 wages before your income tax is calculated. That reduces how much you owe in taxes today, but when you retire and withdraw the money the IRS will tax whatever you take out—your initial contribution as well as any interest, investment gains, etc.",
-        "Which is better? Experts disagree and it depends on your situation. In general, the ROTH option is better when you’re younger or in a lower tax bracket, but even that depends on what your goals are. Research the options or talk to an advisor to learn what’s best for your situation."
-      ],
-      "accent": "#e23c30"
-    },
-    {
-      "title": "How to Register and Log In",
-      "image": "assets/empower-register.png",
-      "imageAlt": "Empower login page with the Register button circled",
-      "imageFit": "contain",
-      "imagePosition": "after-copy",
-      "bullets": [
-        "https://participant.empower-retirement.com/"
       ],
       "accent": "#e23c30"
     }

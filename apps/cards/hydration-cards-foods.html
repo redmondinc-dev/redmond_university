@@ -37,65 +37,22 @@
       }
 
       .cards-board {
-        width: min(1260px, 100%);
+        width: min(1480px, 100%);
+        container-type: inline-size;
         background: #ffffff;
-      }
-
-      .cards-board-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 18px;
-        padding: clamp(16px, 2vw, 24px) clamp(18px, 3vw, 34px);
-        background: #111111;
-        border-radius: var(--card-radius);
-        color: #ffffff;
-        font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
-      }
-
-      .cards-board-eyebrow,
-      .cards-board-title,
-      .cards-board-note {
-        margin: 0;
-      }
-
-      .cards-board-eyebrow {
-        font-size: clamp(0.66rem, 0.8vw, 0.78rem);
-        font-weight: 700;
-        letter-spacing: 0.16em;
-        line-height: 1.2;
-        text-transform: uppercase;
-      }
-
-      .cards-board-title {
-        margin-top: 4px;
-        font-size: clamp(1.45rem, 2.6vw, 2.35rem);
-        font-weight: 700;
-        line-height: 1;
-        text-transform: uppercase;
-      }
-
-      .cards-board-note {
-        max-width: 18ch;
-        font-size: clamp(0.82rem, 1vw, 0.95rem);
-        font-weight: 700;
-        letter-spacing: 0.08em;
-        line-height: 1.25;
-        text-align: right;
-        text-transform: uppercase;
       }
 
       .cards-grid {
         width: 100%;
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, var(--card-width)));
         justify-content: center;
         gap: var(--card-gap);
         padding: clamp(14px, 2vw, 24px);
       }
 
       .hydration-card {
-        width: var(--card-width);
+        width: 100%;
         height: var(--card-height);
         border: 0;
         padding: 0;
@@ -194,6 +151,12 @@
         text-wrap: pretty;
       }
 
+      @container (min-width: 1382px) {
+        .cards-grid {
+          grid-template-columns: repeat(4, minmax(0, 1fr));
+        }
+      }
+
       @media (max-width: 620px) {
         :root {
           --card-width: clamp(155px, 44vw, 200px);
@@ -203,16 +166,6 @@
 
         body {
           padding: 20px 12px;
-        }
-
-        .cards-board-header {
-          align-items: flex-start;
-          flex-direction: column;
-        }
-
-        .cards-board-note {
-          max-width: none;
-          text-align: left;
         }
 
         .card-back {
@@ -229,6 +182,12 @@
         }
       }
 
+      @media (max-width: 360px) {
+        .cards-grid {
+          grid-template-columns: minmax(0, var(--card-width));
+        }
+      }
+
       @media (prefers-reduced-motion: reduce) {
         .card-inner {
           transition: none;
@@ -238,14 +197,6 @@
   </head>
   <body>
     <section class="cards-board" aria-label="Hydration food board">
-      <header class="cards-board-header">
-        <div>
-          <p class="cards-board-eyebrow">Hydration</p>
-          <h1 class="cards-board-title">Food Sources</h1>
-        </div>
-        <p class="cards-board-note">Mineral Guide</p>
-      </header>
-
       <main id="cards" class="cards-grid" aria-label="Hydration food cards"></main>
     </section>
 
