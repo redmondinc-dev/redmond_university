@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Electrolyte Matching Game</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="screen-text" id="live-region" aria-live="polite" aria-atomic="true"></div>
+
+    <main class="game-shell">
+      <header class="game-header">
+        <div class="title-stack">
+          <span class="kicker">Hydration Check</span>
+          <h1>Electrolyte Matching Game</h1>
+          <p class="intro">
+            Connect each electrolyte to one role. Threads stay in place, then the final result scores the list.
+          </p>
+        </div>
+
+        <div class="header-actions" aria-label="Game controls">
+          <button class="secondary-btn" id="reset-btn" type="button">Reset</button>
+          <button class="primary-btn" id="score-btn" type="button" hidden>View result</button>
+        </div>
+      </header>
+
+      <section class="game-layout" aria-label="Electrolyte matching game">
+        <section class="match-panel" aria-labelledby="match-title">
+          <div class="match-heading">
+            <div>
+              <span class="small-label">Match list</span>
+              <h2 id="match-title">Electrolytes and roles</h2>
+            </div>
+            <strong id="match-count">0 / 5</strong>
+          </div>
+
+          <div class="match-board" id="match-board">
+            <svg class="thread-layer" id="thread-layer" aria-hidden="true"></svg>
+
+            <section class="choice-column" aria-labelledby="electrolyte-title">
+              <h3 id="electrolyte-title">Electrolytes</h3>
+              <div class="choice-list" id="electrolyte-list"></div>
+            </section>
+
+            <section class="choice-column" aria-labelledby="description-title">
+              <h3 id="description-title">What they help with</h3>
+              <div class="choice-list descriptions" id="description-list"></div>
+            </section>
+          </div>
+
+          <div class="completion-panel" id="completion-panel" hidden>
+            <span class="small-label">Complete</span>
+            <p>All threads are set. View your final result.</p>
+            <button class="primary-btn" id="final-score-btn" type="button">View result</button>
+          </div>
+        </section>
+
+        <section class="scene-panel" aria-labelledby="scene-title">
+          <div class="scene-topline">
+            <div>
+              <span class="small-label">Johnny's hydration</span>
+              <h2 id="scene-title">Build the right mix</h2>
+            </div>
+            <div
+              class="hydration-meter"
+              id="hydration-meter"
+              role="progressbar"
+              aria-label="Johnny hydration level"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="0"
+            >
+              <span id="hydration-fill"></span>
+              <strong id="hydration-percent">0%</strong>
+            </div>
+          </div>
+
+          <div class="johnny-scene" aria-label="Johnny hydration scene">
+            <div class="scene-sky" aria-hidden="true">
+              <span class="sun"></span>
+              <span class="cloud cloud-a"></span>
+              <span class="cloud cloud-b"></span>
+            </div>
+
+            <div class="water-glow" aria-hidden="true"></div>
+
+            <img
+              id="johnny-img"
+              class="johnny-img"
+              src="../../assets/imgs/png/re-lyte-rescue/hydration-boy-01-dehydrated.png"
+              alt="Johnny needs hydration"
+            />
+
+            <div class="mineral-orbit" id="mineral-orbit" aria-label="Connected electrolytes"></div>
+            <div class="drop-layer" id="drop-layer" aria-hidden="true"></div>
+          </div>
+
+          <div class="status-strip" aria-live="polite">
+            <span id="status-chip">Ready</span>
+            <p id="status-copy">Start by choosing an electrolyte.</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <div
+      class="modal-overlay"
+      id="score-modal"
+      role="dialog"
+      aria-labelledby="score-title"
+      tabindex="-1"
+      hidden
+    >
+      <div class="score-card">
+        <div class="modal-heading">
+          <span class="small-label">Results</span>
+          <button class="modal-close" id="close-score-btn" type="button" aria-label="Close score">x</button>
+        </div>
+        <h2 id="score-title">Electrolyte match complete</h2>
+        <div class="score-number" id="score-number">0 / 5</div>
+        <p id="score-copy"></p>
+        <ol class="recap-list" id="recap-list"></ol>
+        <button class="secondary-btn" id="play-again-btn" type="button">Play again</button>
+      </div>
+    </div>
+
+    <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

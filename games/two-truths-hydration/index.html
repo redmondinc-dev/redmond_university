@@ -22,6 +22,21 @@
         </div>
       </header>
 
+      <section class="stats-card" aria-label="Score">
+        <div class="stat-row">
+          <span data-ui="scoreLabel">Score</span>
+          <strong id="score-value">0 / 8</strong>
+        </div>
+        <div class="stat-row">
+          <span data-ui="streakLabel">Streak</span>
+          <strong id="streak-value">0</strong>
+        </div>
+        <div class="stat-row">
+          <span data-ui="knowledgeLabel">Knowledge</span>
+          <strong id="knowledge-value">0 cards</strong>
+        </div>
+      </section>
+
       <main class="game-layout">
         <section class="play-panel" aria-labelledby="round-title">
           <div class="round-bar" aria-label="Round progress">
@@ -88,8 +103,7 @@
                 <div class="bottle-liquid" id="bottle-liquid"></div>
                 <div class="bottle-glass"></div>
                 <div class="bottle-label">
-                  <span>Re-Lyte</span>
-                  <small data-ui="hydrationMix">Hydration Mix</small>
+                  <img src="../../assets/imgs/png/LOGO_REDMOND_REGISTER.png" alt="Redmond" />
                 </div>
                 <div class="bottle-ticks"></div>
               </div>
@@ -100,21 +114,6 @@
               <img src="../../assets/imgs/hydration-cards/Mg.png" alt="" />
               <img src="../../assets/imgs/hydration-cards/Ca.png" alt="" />
               <img src="../../assets/imgs/hydration-cards/Cl.png" alt="" />
-            </div>
-          </section>
-
-          <section class="stats-card" aria-label="Score">
-            <div class="stat-row">
-              <span data-ui="scoreLabel">Score</span>
-              <strong id="score-value">0 / 8</strong>
-            </div>
-            <div class="stat-row">
-              <span data-ui="streakLabel">Streak</span>
-              <strong id="streak-value">0</strong>
-            </div>
-            <div class="stat-row">
-              <span data-ui="knowledgeLabel">Knowledge</span>
-              <strong id="knowledge-value">0 cards</strong>
             </div>
           </section>
         </aside>
