@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redmond University | Hydration Finish</title>
+    <script>
+      (() => {
+        try {
+          if (window.self !== window.top) {
+            document.documentElement.classList.add("is-embedded");
+          }
+        } catch {
+          document.documentElement.classList.add("is-embedded");
+        }
+      })();
+    </script>
+    <style>
+      :root {
+        --stage: #12100f;
+        --stage-deep: #050505;
+        --ink: #fff7ed;
+        --gold: #ffcb4d;
+        --gold-dark: #c87a22;
+        --red: #cf3f32;
+        --green: #2f6b47;
+        --button-shadow: 0 24px 54px rgba(0, 0, 0, 0.36);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        min-height: 100vh;
+        font-family: "Avenir Next", Avenir, "Trebuchet MS", sans-serif;
+        color: var(--ink);
+        background:
+          linear-gradient(115deg, rgba(207, 63, 50, 0.26), transparent 38%),
+          linear-gradient(245deg, rgba(47, 107, 71, 0.28), transparent 42%),
+          linear-gradient(180deg, var(--stage), var(--stage-deep));
+        overflow: hidden;
+      }
+
+      html.is-embedded,
+      html.is-embedded body {
+        height: 100%;
+        min-height: 0;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      .stage {
+        position: relative;
+        display: grid;
+        min-height: 100vh;
+        place-items: center;
+        padding: clamp(18px, 5vw, 64px);
+        isolation: isolate;
+      }
+
+      .stage::before,
+      .stage::after {
+        content: "";
+        position: fixed;
+        inset: 0;
+        z-index: -1;
+        pointer-events: none;
+      }
+
+      .stage::before {
+        background:
+          linear-gradient(90deg, rgba(255, 203, 77, 0.08) 1px, transparent 1px),
+          linear-gradient(0deg, rgba(255, 203, 77, 0.06) 1px, transparent 1px);
+        background-size: 44px 44px;
+        mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
+      }
+
+      .stage::after {
+        background:
+          linear-gradient(78deg, transparent 0 36%, rgba(255, 203, 77, 0.24) 37%, transparent 49%),
+          linear-gradient(282deg, transparent 0 38%, rgba(207, 63, 50, 0.2) 39%, transparent 52%);
+        opacity: 0.8;
+      }
+
+      .celebration-start {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(22px, 4vh, 40px);
+        transition:
+          opacity 150ms ease,
+          transform 150ms ease,
+          visibility 0s linear 150ms;
+      }
+
+      .celebrate-button {
+        position: relative;
+        min-width: min(78vw, 280px);
+        min-height: 70px;
+        padding: 18px 34px;
+        border: 0;
+        border-radius: 999px;
+        color: #1a1006;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0) 35%),
+          linear-gradient(135deg, var(--gold) 0%, #f59e31 48%, var(--gold-dark) 100%);
+        box-shadow:
+          var(--button-shadow),
+          inset 0 -5px 0 rgba(79, 38, 10, 0.2),
+          0 0 0 0 rgba(255, 203, 77, 0.38);
+        cursor: pointer;
+        transform: translateY(0);
+        transition:
+          box-shadow 180ms ease,
+          filter 180ms ease,
+          transform 180ms ease;
+        animation: buttonPulse 2.1s ease-out infinite;
+      }
+
+      .celebrate-button:hover,
+      .celebrate-button:focus-visible {
+        outline: none;
+        filter: saturate(1.1) brightness(1.04);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+          0 30px 66px rgba(0, 0, 0, 0.42),
+          inset 0 -5px 0 rgba(79, 38, 10, 0.18),
+          0 0 0 10px rgba(255, 203, 77, 0.12);
+      }
+
+      .celebrate-button:active {
+        transform: translateY(0) scale(0.98);
+      }
+
+      .celebrate-button:disabled {
+        pointer-events: none;
+      }
+
+      .celebrate-button__label {
+        display: block;
+        font-size: clamp(1rem, 3.8vw, 1.18rem);
+        font-weight: 800;
+        letter-spacing: 0;
+        text-transform: uppercase;
+      }
+
+      .progress-bar-gif {
+        display: block;
+        width: 70vw;
+        max-width: none;
+        height: auto;
+        object-fit: contain;
+      }
+
+      .celebration-gif {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        padding: clamp(10px, 2.5vw, 28px);
+        object-fit: contain;
+        object-position: center;
+        background: #050505;
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.985);
+        transition:
+          opacity 150ms ease,
+          transform 150ms ease,
+          visibility 0s linear 150ms;
+        z-index: 4;
+        pointer-events: none;
+      }
+
+      .stage.is-celebrating .celebration-start {
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.92);
+      }
+
+      .stage.is-celebrating .celebration-gif {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(1);
+        transition-delay: 0s;
+      }
+
+      .status {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      html.is-embedded .stage {
+        min-height: 0;
+        height: 100vh;
+        padding: clamp(12px, 3vw, 32px);
+      }
+
+      html.is-embedded .celebration-gif {
+        padding: clamp(6px, 1.8vw, 18px);
+      }
+
+      html.is-embedded .celebration-start {
+        gap: clamp(14px, 3vh, 28px);
+      }
+
+      html.is-embedded .progress-bar-gif {
+        width: 70vw;
+      }
+
+      @keyframes buttonPulse {
+        0%,
+        100% {
+          box-shadow:
+            var(--button-shadow),
+            inset 0 -5px 0 rgba(79, 38, 10, 0.2),
+            0 0 0 0 rgba(255, 203, 77, 0.34);
+        }
+        68% {
+          box-shadow:
+            0 30px 66px rgba(0, 0, 0, 0.42),
+            inset 0 -5px 0 rgba(79, 38, 10, 0.18),
+            0 0 0 22px rgba(255, 203, 77, 0);
+        }
+      }
+
+      @media (max-width: 560px) {
+        .celebrate-button {
+          width: min(88vw, 320px);
+          min-height: 64px;
+          padding-inline: 24px;
+        }
+
+        .celebration-start {
+          width: 100%;
+          gap: 20px;
+        }
+
+        .progress-bar-gif {
+          width: 78vw;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          scroll-behavior: auto !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="stage" id="stage" aria-label="Hydration celebration">
+      <div class="celebration-start">
+        <button class="celebrate-button" id="celebrate-button" type="button">
+          <span class="celebrate-button__label">Celebrate</span>
+        </button>
+        <img
+          class="progress-bar-gif"
+          src="./Progress-Bar-4%201.gif"
+          width="1920"
+          height="450"
+          alt=""
+          aria-hidden="true"
+        />
+      </div>
+      <img
+        class="celebration-gif"
+        id="celebration-gif"
+        data-src="./Johnny-Singing-.gif"
+        width="1920"
+        height="1080"
+        alt="Johnny singing during a rock-band celebration."
+      />
+      <audio id="rock-audio" preload="auto" src="./hydration-rock.mp3" playsinline></audio>
+      <p class="status" id="status" aria-live="polite"></p>
+    </main>
+
+    <script>
+      (() => {
+        const stage = document.getElementById("stage");
+        const button = document.getElementById("celebrate-button");
+        const celebrationGif = document.getElementById("celebration-gif");
+        const rockAudio = document.getElementById("rock-audio");
+        const status = document.getElementById("status");
+        const gifSrc = celebrationGif ? celebrationGif.dataset.src : "";
+        const celebrationDurationMs = 10000;
+        let audioContext = null;
+        let activeSources = [];
+        let celebrationTimer = 0;
+        let audioStopTimer = 0;
+
+        if (gifSrc) {
+          const preloadGif = new Image();
+          preloadGif.src = gifSrc;
+        }
+
+        function makeDistortionCurve(amount) {
+          const samples = 44100;
+          const curve = new Float32Array(samples);
+          const degree = Math.PI / 180;
+
+          for (let i = 0; i < samples; i += 1) {
+            const x = (i * 2) / samples - 1;
+            curve[i] = ((3 + amount) * x * 20 * degree) / (Math.PI + amount * Math.abs(x));
+          }
+
+          return curve;
+        }
+
+        function rememberSource(source) {
+          activeSources.push(source);
+          source.addEventListener("ended", () => {
+            activeSources = activeSources.filter((item) => item !== source);
+          });
+          return source;
+        }
+
+        function stopRockSound() {
+          if (audioStopTimer) {
+            window.clearTimeout(audioStopTimer);
+            audioStopTimer = 0;
+          }
+
+          activeSources.forEach((source) => {
+            try {
+              source.stop();
+            } catch {
+              // Sources that already stopped can be ignored.
+            }
+          });
+          activeSources = [];
+
+          if (rockAudio) {
+            rockAudio.pause();
+            try {
+              rockAudio.currentTime = 0;
+            } catch {
+              // Some browsers reject seeking before metadata is ready.
+            }
+            rockAudio.volume = 1;
+          }
+        }
+
+        async function startRockSound(durationMs) {
+          if (audioStopTimer) {
+            window.clearTimeout(audioStopTimer);
+            audioStopTimer = 0;
+          }
+
+          activeSources.forEach((source) => {
+            try {
+              source.stop();
+            } catch {
+              // Sources that already stopped can be ignored.
+            }
+          });
+          activeSources = [];
+
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass && !audioContext) {
+            audioContext = new AudioContextClass();
+          }
+          const fallbackAudioReady =
+            audioContext && audioContext.state !== "closed"
+              ? audioContext.resume().catch(() => {})
+              : Promise.resolve();
+
+          if (!rockAudio) {
+            await fallbackAudioReady;
+            await playRockStinger(durationMs / 1000);
+            return;
+          }
+
+          rockAudio.pause();
+          rockAudio.muted = false;
+          rockAudio.volume = 1;
+          if (rockAudio.readyState === 0) {
+            rockAudio.load();
+          }
+
+          try {
+            rockAudio.currentTime = 0;
+          } catch {
+            // If seeking is unavailable, play from the browser's loaded position.
+          }
+
+          try {
+            await rockAudio.play();
+          } catch {
+            await fallbackAudioReady;
+            await playRockStinger(durationMs / 1000);
+            return;
+          }
+
+          audioStopTimer = window.setTimeout(stopRockSound, durationMs);
+        }
+
+        function createNoiseSource(context, seconds) {
+          const length = Math.floor(context.sampleRate * seconds);
+          const buffer = context.createBuffer(1, length, context.sampleRate);
+          const channel = buffer.getChannelData(0);
+
+          for (let i = 0; i < length; i += 1) {
+            channel[i] = Math.random() * 2 - 1;
+          }
+
+          const source = context.createBufferSource();
+          source.buffer = buffer;
+          return source;
+        }
+
+        function scheduleOscillator(context, destination, options) {
+          const {
+            type,
+            frequency,
+            detune = 0,
+            start,
+            duration,
+            gain = 0.08,
+            attack = 0.012,
+            release = 0.16,
+          } = options;
+          const source = rememberSource(context.createOscillator());
+          const envelope = context.createGain();
+          const end = start + duration;
+          const releaseStart = Math.max(start + attack, end - release);
+
+          source.type = type;
+          source.frequency.setValueAtTime(frequency, start);
+          source.detune.setValueAtTime(detune, start);
+
+          envelope.gain.setValueAtTime(0, start);
+          envelope.gain.linearRampToValueAtTime(gain, start + attack);
+          envelope.gain.setValueAtTime(gain * 0.82, releaseStart);
+          envelope.gain.linearRampToValueAtTime(0, end);
+
+          source.connect(envelope);
+          envelope.connect(destination);
+          source.start(start);
+          source.stop(end + 0.05);
+        }
+
+        function scheduleGuitarChord(context, destination, root, start, duration) {
+          const freqs = [root * 2, root * 3, root * 4];
+
+          freqs.forEach((frequency, index) => {
+            [-13, -5, 6, 14].forEach((detune) => {
+              scheduleOscillator(context, destination, {
+                type: "sawtooth",
+                frequency,
+                detune,
+                start,
+                duration,
+                gain: index === 0 ? 0.052 : 0.038,
+                attack: 0.006,
+                release: 0.13,
+              });
+            });
+          });
+        }
+
+        function scheduleLeadSqueal(context, destination, start, duration) {
+          const source = rememberSource(context.createOscillator());
+          const envelope = context.createGain();
+          const end = start + duration;
+
+          source.type = "sawtooth";
+          source.frequency.setValueAtTime(740, start);
+          source.frequency.exponentialRampToValueAtTime(1120, start + duration * 0.38);
+          source.frequency.exponentialRampToValueAtTime(840, end);
+
+          envelope.gain.setValueAtTime(0, start);
+          envelope.gain.linearRampToValueAtTime(0.13, start + 0.035);
+          envelope.gain.setValueAtTime(0.1, end - 0.2);
+          envelope.gain.linearRampToValueAtTime(0, end);
+
+          source.connect(envelope);
+          envelope.connect(destination);
+          source.start(start);
+          source.stop(end + 0.05);
+        }
+
+        function schedulePickScrape(context, destination, start) {
+          const source = rememberSource(createNoiseSource(context, 0.42));
+          const filter = context.createBiquadFilter();
+          const envelope = context.createGain();
+          const end = start + 0.36;
+
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(3600, start);
+          filter.frequency.exponentialRampToValueAtTime(980, end);
+          filter.Q.setValueAtTime(4.2, start);
+
+          envelope.gain.setValueAtTime(0.001, start);
+          envelope.gain.linearRampToValueAtTime(0.18, start + 0.018);
+          envelope.gain.exponentialRampToValueAtTime(0.001, end);
+
+          source.connect(filter);
+          filter.connect(envelope);
+          envelope.connect(destination);
+          source.start(start);
+          source.stop(end + 0.04);
+        }
+
+        function scheduleBass(context, destination, root, start, duration) {
+          scheduleOscillator(context, destination, {
+            type: "square",
+            frequency: root,
+            start,
+            duration,
+            gain: 0.11,
+            attack: 0.008,
+            release: 0.12,
+          });
+        }
+
+        function scheduleKick(context, destination, start) {
+          const source = rememberSource(context.createOscillator());
+          const envelope = context.createGain();
+          const end = start + 0.34;
+
+          source.type = "sine";
+          source.frequency.setValueAtTime(120, start);
+          source.frequency.exponentialRampToValueAtTime(48, start + 0.2);
+
+          envelope.gain.setValueAtTime(0.001, start);
+          envelope.gain.linearRampToValueAtTime(0.72, start + 0.018);
+          envelope.gain.exponentialRampToValueAtTime(0.001, end);
+
+          source.connect(envelope);
+          envelope.connect(destination);
+          source.start(start);
+          source.stop(end + 0.05);
+        }
+
+        function scheduleSnare(context, destination, start) {
+          const source = rememberSource(createNoiseSource(context, 0.28));
+          const filter = context.createBiquadFilter();
+          const envelope = context.createGain();
+          const end = start + 0.24;
+
+          filter.type = "bandpass";
+          filter.frequency.setValueAtTime(1700, start);
+          filter.Q.setValueAtTime(0.9, start);
+
+          envelope.gain.setValueAtTime(0.001, start);
+          envelope.gain.linearRampToValueAtTime(0.28, start + 0.012);
+          envelope.gain.exponentialRampToValueAtTime(0.001, end);
+
+          source.connect(filter);
+          filter.connect(envelope);
+          envelope.connect(destination);
+          source.start(start);
+          source.stop(end + 0.04);
+        }
+
+        function scheduleHat(context, destination, start) {
+          const source = rememberSource(createNoiseSource(context, 0.08));
+          const filter = context.createBiquadFilter();
+          const envelope = context.createGain();
+          const end = start + 0.055;
+
+          filter.type = "highpass";
+          filter.frequency.setValueAtTime(7200, start);
+
+          envelope.gain.setValueAtTime(0.001, start);
+          envelope.gain.linearRampToValueAtTime(0.09, start + 0.006);
+          envelope.gain.exponentialRampToValueAtTime(0.001, end);
+
+          source.connect(filter);
+          filter.connect(envelope);
+          envelope.connect(destination);
+          source.start(start);
+          source.stop(end + 0.02);
+        }
+
+        function scheduleCrash(context, destination, start, gain = 0.2) {
+          const source = rememberSource(createNoiseSource(context, 1.6));
+          const filter = context.createBiquadFilter();
+          const envelope = context.createGain();
+          const end = start + 1.4;
+
+          filter.type = "highpass";
+          filter.frequency.setValueAtTime(4600, start);
+
+          envelope.gain.setValueAtTime(0.001, start);
+          envelope.gain.linearRampToValueAtTime(gain, start + 0.02);
+          envelope.gain.exponentialRampToValueAtTime(0.001, end);
+
+          source.connect(filter);
+          filter.connect(envelope);
+          envelope.connect(destination);
+          source.start(start);
+          source.stop(end + 0.04);
+        }
+
+        function scheduleRockScream(context, destination, start) {
+          const screamBus = context.createGain();
+          const screamDrive = context.createWaveShaper();
+          const formantOne = context.createBiquadFilter();
+          const formantTwo = context.createBiquadFilter();
+          const noiseSource = rememberSource(createNoiseSource(context, 1.18));
+          const noiseFilter = context.createBiquadFilter();
+          const noiseEnvelope = context.createGain();
+          const voiceSource = rememberSource(context.createOscillator());
+          const voiceEnvelope = context.createGain();
+          const end = start + 1.12;
+
+          screamDrive.curve = makeDistortionCurve(760);
+          screamDrive.oversample = "4x";
+
+          formantOne.type = "bandpass";
+          formantOne.frequency.setValueAtTime(920, start);
+          formantOne.frequency.linearRampToValueAtTime(1160, start + 0.42);
+          formantOne.Q.setValueAtTime(5.2, start);
+
+          formantTwo.type = "bandpass";
+          formantTwo.frequency.setValueAtTime(2550, start);
+          formantTwo.frequency.linearRampToValueAtTime(3100, start + 0.5);
+          formantTwo.Q.setValueAtTime(3.2, start);
+
+          screamBus.gain.setValueAtTime(0, start);
+          screamBus.gain.linearRampToValueAtTime(0.48, start + 0.055);
+          screamBus.gain.setValueAtTime(0.36, start + 0.72);
+          screamBus.gain.linearRampToValueAtTime(0, end);
+
+          noiseFilter.type = "bandpass";
+          noiseFilter.frequency.setValueAtTime(1800, start);
+          noiseFilter.frequency.linearRampToValueAtTime(3400, start + 0.62);
+          noiseFilter.Q.setValueAtTime(1.7, start);
+
+          noiseEnvelope.gain.setValueAtTime(0.001, start);
+          noiseEnvelope.gain.linearRampToValueAtTime(0.55, start + 0.035);
+          noiseEnvelope.gain.exponentialRampToValueAtTime(0.001, end);
+
+          voiceSource.type = "sawtooth";
+          voiceSource.frequency.setValueAtTime(520, start);
+          voiceSource.frequency.linearRampToValueAtTime(780, start + 0.2);
+          voiceSource.frequency.linearRampToValueAtTime(610, start + 0.52);
+          voiceSource.frequency.exponentialRampToValueAtTime(360, end);
+          voiceSource.detune.setValueAtTime(-18, start);
+          voiceSource.detune.linearRampToValueAtTime(24, start + 0.12);
+          voiceSource.detune.linearRampToValueAtTime(-12, start + 0.32);
+
+          voiceEnvelope.gain.setValueAtTime(0.001, start);
+          voiceEnvelope.gain.linearRampToValueAtTime(0.38, start + 0.045);
+          voiceEnvelope.gain.exponentialRampToValueAtTime(0.001, end);
+
+          noiseSource.connect(noiseFilter);
+          noiseFilter.connect(noiseEnvelope);
+          noiseEnvelope.connect(screamBus);
+
+          voiceSource.connect(voiceEnvelope);
+          voiceEnvelope.connect(screamBus);
+
+          screamBus.connect(screamDrive);
+          screamDrive.connect(formantOne);
+          screamDrive.connect(formantTwo);
+          formantOne.connect(destination);
+          formantTwo.connect(destination);
+
+          noiseSource.start(start);
+          noiseSource.stop(end + 0.04);
+          voiceSource.start(start);
+          voiceSource.stop(end + 0.04);
+        }
+
+        async function playRockStinger(durationSeconds) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContextClass) return;
+
+          stopRockSound();
+
+          if (!audioContext) {
+            audioContext = new AudioContextClass();
+          }
+
+          await audioContext.resume();
+
+          const context = audioContext;
+          const start = context.currentTime + 0.025;
+          const master = context.createGain();
+          const compressor = context.createDynamicsCompressor();
+          const guitarBus = context.createGain();
+          const guitarDistortion = context.createWaveShaper();
+          const guitarHighpass = context.createBiquadFilter();
+          const guitarTone = context.createBiquadFilter();
+          const bassFilter = context.createBiquadFilter();
+
+          master.gain.setValueAtTime(0, start);
+          master.gain.linearRampToValueAtTime(0.82, start + 0.045);
+          master.gain.setValueAtTime(0.76, start + durationSeconds - 0.85);
+          master.gain.linearRampToValueAtTime(0, start + durationSeconds);
+
+          compressor.threshold.setValueAtTime(-22, start);
+          compressor.knee.setValueAtTime(18, start);
+          compressor.ratio.setValueAtTime(10, start);
+          compressor.attack.setValueAtTime(0.002, start);
+          compressor.release.setValueAtTime(0.14, start);
+
+          guitarBus.gain.setValueAtTime(1.35, start);
+          guitarDistortion.curve = makeDistortionCurve(900);
+          guitarDistortion.oversample = "4x";
+
+          guitarHighpass.type = "highpass";
+          guitarHighpass.frequency.setValueAtTime(115, start);
+          guitarHighpass.Q.setValueAtTime(0.7, start);
+
+          guitarTone.type = "lowpass";
+          guitarTone.frequency.setValueAtTime(3600, start);
+          guitarTone.Q.setValueAtTime(0.9, start);
+
+          bassFilter.type = "lowpass";
+          bassFilter.frequency.setValueAtTime(420, start);
+          bassFilter.Q.setValueAtTime(0.8, start);
+
+          master.connect(compressor);
+          compressor.connect(context.destination);
+          guitarBus.connect(guitarDistortion);
+          guitarDistortion.connect(guitarHighpass);
+          guitarHighpass.connect(guitarTone);
+          guitarTone.connect(master);
+          bassFilter.connect(master);
+
+          const riff = [
+            { root: 82.41, at: 0, length: 0.72 },
+            { root: 98.0, at: 0.75, length: 0.72 },
+            { root: 110.0, at: 1.5, length: 0.72 },
+            { root: 123.47, at: 2.25, length: 0.72 },
+            { root: 164.81, at: 3.0, length: 0.72 },
+            { root: 146.83, at: 3.75, length: 0.72 },
+            { root: 123.47, at: 4.5, length: 0.72 },
+            { root: 82.41, at: 5.25, length: 0.7 },
+          ];
+
+          riff.forEach(({ root, at, length }) => {
+            scheduleGuitarChord(context, guitarBus, root, start + at, length);
+            scheduleBass(context, bassFilter, root, start + at, length);
+          });
+
+          [0.36, 1.1, 1.86, 2.62, 3.36, 4.1, 4.86].forEach((at) => {
+            scheduleGuitarChord(context, guitarBus, 82.41, start + at, 0.18);
+          });
+
+          for (let at = 0; at < durationSeconds; at += 0.375) {
+            scheduleHat(context, master, start + at);
+          }
+
+          [0, 0.75, 1.5, 2.25, 3.0, 3.75, 4.5, 5.25].forEach((at) => {
+            scheduleKick(context, master, start + at);
+          });
+
+          [0.75, 2.25, 3.75, 5.25].forEach((at) => {
+            scheduleSnare(context, master, start + at);
+          });
+
+          scheduleCrash(context, master, start, 0.24);
+          scheduleCrash(context, master, start + 5.2, 0.18);
+          scheduleRockScream(context, master, start + 0.18);
+          scheduleLeadSqueal(context, guitarBus, start + 0.1, 0.96);
+          scheduleLeadSqueal(context, guitarBus, start + 4.72, 0.92);
+          schedulePickScrape(context, guitarBus, start + 2.84);
+          schedulePickScrape(context, guitarBus, start + 5.58);
+
+          audioStopTimer = window.setTimeout(stopRockSound, durationSeconds * 1000 + 120);
+        }
+
+        function stopCelebration() {
+          if (celebrationTimer) {
+            window.clearTimeout(celebrationTimer);
+            celebrationTimer = 0;
+          }
+
+          stage.classList.remove("is-celebrating");
+          button.disabled = false;
+          if (status) status.textContent = "";
+          if (celebrationGif) celebrationGif.removeAttribute("src");
+          stopRockSound();
+        }
+
+        function startCelebration() {
+          if (!stage || !button || !celebrationGif || !gifSrc) return;
+
+          stopCelebration();
+
+          button.disabled = true;
+          stage.classList.add("is-celebrating");
+          celebrationGif.removeAttribute("src");
+          if (status) status.textContent = "Celebrating";
+
+          requestAnimationFrame(() => {
+            celebrationGif.setAttribute("src", gifSrc);
+          });
+
+          startRockSound(celebrationDurationMs).catch(() => {});
+
+          celebrationTimer = window.setTimeout(stopCelebration, celebrationDurationMs);
+        }
+
+        button.addEventListener("click", startCelebration);
+        window.addEventListener("pagehide", stopCelebration);
+      })();
+    </script>
+  </body>
+</html>
