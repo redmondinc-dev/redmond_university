@@ -635,13 +635,20 @@ h2 {
   left: 50%;
   bottom: 9%;
   z-index: 8;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
   width: clamp(150px, 22vw, 230px);
+  height: min(380px, calc(100% - 42px));
   transform: translateX(-50%);
 }
 
 .character {
-  width: 100%;
+  width: auto;
   height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
   filter: drop-shadow(0 18px 22px rgba(22, 48, 55, 0.2));
   transform-origin: bottom center;
   animation: character-breathe 2.8s ease-in-out infinite;
