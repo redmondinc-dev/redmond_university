@@ -41,10 +41,7 @@
         min-height: 100vh;
         font-family: "Avenir Next", Avenir, "Trebuchet MS", sans-serif;
         color: var(--ink);
-        background:
-          linear-gradient(115deg, rgba(207, 63, 50, 0.26), transparent 38%),
-          linear-gradient(245deg, rgba(47, 107, 71, 0.28), transparent 42%),
-          linear-gradient(180deg, var(--stage), var(--stage-deep));
+        background: transparent;
         overflow: hidden;
       }
 
@@ -64,6 +61,13 @@
         min-height: 100vh;
         place-items: center;
         padding: clamp(18px, 5vw, 64px);
+        background: linear-gradient(
+          180deg,
+          rgba(5, 5, 5, 0.72) 0%,
+          rgba(5, 5, 5, 0.16) 26%,
+          rgba(5, 5, 5, 0.16) 74%,
+          rgba(5, 5, 5, 0.72) 100%
+        );
         isolation: isolate;
       }
 
@@ -88,7 +92,7 @@
         background:
           linear-gradient(78deg, transparent 0 36%, rgba(255, 203, 77, 0.24) 37%, transparent 49%),
           linear-gradient(282deg, transparent 0 38%, rgba(207, 63, 50, 0.2) 39%, transparent 52%);
-        opacity: 0.8;
+        opacity: 0.58;
       }
 
       .celebration-start {
@@ -99,7 +103,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: clamp(22px, 4vh, 40px);
+        gap: max(200px, 18vh);
         transition:
           opacity 150ms ease,
           transform 150ms ease,
@@ -159,7 +163,7 @@
 
       .progress-bar-gif {
         display: block;
-        width: 70vw;
+        width: 100vw;
         max-width: none;
         height: auto;
         object-fit: contain;
@@ -170,10 +174,10 @@
         inset: 0;
         width: 100%;
         height: 100%;
-        padding: clamp(10px, 2.5vw, 28px);
-        object-fit: contain;
+        padding: 0;
+        object-fit: cover;
         object-position: center;
-        background: #050505;
+        background: #fff;
         opacity: 0;
         visibility: hidden;
         transform: scale(0.985);
@@ -213,19 +217,19 @@
       html.is-embedded .stage {
         min-height: 0;
         height: 100vh;
-        padding: clamp(12px, 3vw, 32px);
+        padding: clamp(12px, 3vw, 32px) 0;
       }
 
       html.is-embedded .celebration-gif {
-        padding: clamp(6px, 1.8vw, 18px);
+        padding: 0;
       }
 
       html.is-embedded .celebration-start {
-        gap: clamp(14px, 3vh, 28px);
+        gap: max(200px, 18vh);
       }
 
       html.is-embedded .progress-bar-gif {
-        width: 70vw;
+        width: 100vw;
       }
 
       @keyframes buttonPulse {
@@ -253,11 +257,11 @@
 
         .celebration-start {
           width: 100%;
-          gap: 20px;
+          gap: 200px;
         }
 
         .progress-bar-gif {
-          width: 78vw;
+          width: 100vw;
         }
       }
 
@@ -281,7 +285,7 @@
         </button>
         <img
           class="progress-bar-gif"
-          src="./Progress-Bar-4%201.gif"
+          src="./Progress-Bar-4-transparent.gif"
           width="1920"
           height="450"
           alt=""

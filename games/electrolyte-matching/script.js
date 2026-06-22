@@ -59,31 +59,31 @@
 
   const johnnyFrames = [
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-01-dehydrated.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-1.png",
       alt: "Johnny needs hydration",
       label: "Ready",
       copy: "Start by choosing an electrolyte.",
     },
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-02-thirsty.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-2.png",
       alt: "Johnny is getting thirsty",
       label: "Started",
       copy: "One electrolyte is in place.",
     },
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-03-recovering.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-3.png",
       alt: "Johnny is recovering hydration",
       label: "Recovering",
       copy: "The mix is starting to work.",
     },
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-04-retaining.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-4.png",
       alt: "Johnny is retaining hydration",
       label: "Retaining",
       copy: "Johnny is holding onto more hydration.",
     },
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-05-hydrated.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-5.png",
       alt: "Johnny is hydrated",
       label: "Hydrated",
       copy: "Almost every electrolyte role is matched.",

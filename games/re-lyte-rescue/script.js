@@ -29,27 +29,27 @@ const SIP_POWER = [22, 30, 38, 46, 54];
 const CHARACTER_STATES = [
   {
     id: "dehydrated",
-    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-01-dehydrated.png",
+    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-1.png",
     alt: "Dehydrated boy looking tired",
   },
   {
     id: "thirsty",
-    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-02-thirsty.png",
+    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-2.png",
     alt: "Thirsty boy asking for water",
   },
   {
     id: "recovering",
-    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-03-recovering.png",
+    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-3.png",
     alt: "Boy beginning to recover hydration",
   },
   {
     id: "retaining",
-    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-04-retaining.png",
+    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-4.png",
     alt: "Boy retaining hydration and smiling",
   },
   {
     id: "hydrated",
-    src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-05-hydrated.png",
+    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-5.png",
     alt: "Fully hydrated boy celebrating",
   },
 ];
