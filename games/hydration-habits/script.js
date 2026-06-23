@@ -5,11 +5,11 @@
 
   const content = {
     en: {
-      pageTitle: "Hydration Habitats",
+      pageTitle: "Hydration Habits",
       ui: {
         kicker: "Hydration Check",
-        title: "Hydration Habitats",
-        intro: "Pick one habit and watch the habitat respond.",
+        title: "Hydration Habits",
+        intro: "Pick one hydration habit and watch the habitat respond.",
         reset: "Reset",
         habitatLabel: "Current habitat",
         habitLabel: "Hydration",
@@ -88,11 +88,11 @@
       ],
     },
     es: {
-      pageTitle: "Hydration Habitats",
+      pageTitle: "Habitos de Hidratacion",
       ui: {
         kicker: "Chequeo de hidratacion",
-        title: "Hydration Habitats",
-        intro: "Elige un habito y mira como responde el habitat.",
+        title: "Habitos de Hidratacion",
+        intro: "Elige un habito de hidratacion y mira como responde el habitat.",
         reset: "Reiniciar",
         habitatLabel: "Habitat actual",
         habitLabel: "Hidratacion",
