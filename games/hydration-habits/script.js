@@ -14,11 +14,7 @@
         habitatLabel: "Current habitat",
         habitLabel: "Hydration",
         habitTitle: "I drink...",
-        reflectionLabel: "Next step",
-        reflectionTitle: "What do you want to learn?",
-        resultLabel: "Habitat mapped",
         liveUpdate: "{habitat}. Hydration habitat score is {score} percent.",
-        goalResult: "From {habitat}, focus on {goal}.",
       },
       levels: [
         {
@@ -66,26 +62,6 @@
           feedback: "Water plus electrolytes can support hydration balance.",
         },
       ],
-      goals: [
-        {
-          token: "H2O",
-          label: "Drink more water",
-          detail: "Build a simple daily rhythm",
-          result: "drinking more water",
-        },
-        {
-          token: "Na",
-          label: "Understand electrolytes",
-          detail: "Connect minerals to hydration",
-          result: "understanding electrolytes",
-        },
-        {
-          token: "DAY",
-          label: "Build a daily routine",
-          detail: "Make hydration easier to repeat",
-          result: "building a daily routine",
-        },
-      ],
     },
     es: {
       pageTitle: "Habitos de Hidratacion",
@@ -97,11 +73,7 @@
         habitatLabel: "Habitat actual",
         habitLabel: "Hidratacion",
         habitTitle: "Tomo...",
-        reflectionLabel: "Siguiente paso",
-        reflectionTitle: "Que quieres aprender?",
-        resultLabel: "Habitat mapeado",
         liveUpdate: "{habitat}. El puntaje del habitat de hidratacion es {score} por ciento.",
-        goalResult: "Desde {habitat}, enfocate en {goal}.",
       },
       levels: [
         {
@@ -149,26 +121,6 @@
           feedback: "Agua mas electrolitos apoya el balance de hidratacion.",
         },
       ],
-      goals: [
-        {
-          token: "H2O",
-          label: "Tomar mas agua",
-          detail: "Crear un ritmo diario simple",
-          result: "tomar mas agua",
-        },
-        {
-          token: "Na",
-          label: "Entender electrolitos",
-          detail: "Conectar minerales con hidratacion",
-          result: "entender los electrolitos",
-        },
-        {
-          token: "DIA",
-          label: "Crear una rutina diaria",
-          detail: "Hacer la hidratacion mas repetible",
-          result: "crear una rutina diaria",
-        },
-      ],
     },
   };
 
@@ -183,10 +135,7 @@
     character: document.getElementById("character-img"),
     feedback: document.getElementById("feedback-copy"),
     choiceList: document.getElementById("choice-list"),
-    goalList: document.getElementById("goal-list"),
     range: document.getElementById("habit-range"),
-    resultBox: document.getElementById("result-box"),
-    resultCopy: document.getElementById("result-copy"),
     dropLayer: document.getElementById("drop-layer"),
   };
 
@@ -196,7 +145,6 @@
   const dictionary = content[lang];
   const state = {
     levelIndex: 0,
-    goalIndex: null,
   };
 
   function format(template, values) {
@@ -228,25 +176,8 @@
     return button;
   }
 
-  function createGoalButton(goal, index) {
-    const button = document.createElement("button");
-    button.className = "goal-choice";
-    button.type = "button";
-    button.dataset.index = String(index);
-    button.setAttribute("aria-pressed", "false");
-    button.innerHTML = `
-      <span class="goal-token" aria-hidden="true">${goal.token}</span>
-      <span class="goal-copy">
-        <strong>${goal.label}</strong>
-      </span>
-    `;
-    button.addEventListener("click", () => setGoal(index));
-    return button;
-  }
-
   function renderControls() {
     refs.choiceList.replaceChildren(...dictionary.levels.map(createChoiceButton));
-    refs.goalList.replaceChildren(...dictionary.goals.map(createGoalButton));
   }
 
   function updateChoiceState() {
@@ -255,28 +186,6 @@
       button.classList.toggle("is-active", active);
       button.setAttribute("aria-pressed", String(active));
     });
-
-    refs.goalList.querySelectorAll(".goal-choice").forEach((button) => {
-      const active = Number(button.dataset.index) === state.goalIndex;
-      button.classList.toggle("is-active", active);
-      button.setAttribute("aria-pressed", String(active));
-    });
-  }
-
-  function updateResult() {
-    if (state.goalIndex === null) {
-      refs.resultBox.hidden = true;
-      refs.resultCopy.textContent = "";
-      return;
-    }
-
-    const level = dictionary.levels[state.levelIndex];
-    const goal = dictionary.goals[state.goalIndex];
-    refs.resultCopy.textContent = format(dictionary.ui.goalResult, {
-      habitat: level.title,
-      goal: goal.result,
-    });
-    refs.resultBox.hidden = false;
   }
 
   function burstDrops(score) {
@@ -311,7 +220,6 @@
     refs.range.value = String(nextIndex);
 
     updateChoiceState();
-    updateResult();
 
     if (announce) {
       refs.live.textContent = format(dictionary.ui.liveUpdate, {
@@ -322,18 +230,9 @@
     }
   }
 
-  function setGoal(nextIndex) {
-    state.goalIndex = nextIndex;
-    updateChoiceState();
-    updateResult();
-    burstDrops(dictionary.levels[state.levelIndex].score);
-  }
-
   function resetGame() {
-    state.goalIndex = null;
     setLevel(0, true);
     updateChoiceState();
-    updateResult();
   }
 
   function bindEvents() {
