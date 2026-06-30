@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Re-Lyte Product Cards</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #17323a;
+        --muted: #60747b;
+        --paper: #ffffff;
+        --line: rgba(23, 50, 58, 0.16);
+        --teal: #007c89;
+        --teal-dark: #07525d;
+        --orange: #e96538;
+        --shadow: 0 14px 30px rgba(23, 50, 58, 0.12);
+        --radius: 8px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        color: var(--ink);
+        background: transparent;
+        font-family: "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+      }
+
+      button {
+        font: inherit;
+      }
+
+      button:not(:disabled) {
+        cursor: pointer;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      .section {
+        width: min(1080px, calc(100% - 28px));
+        margin: 0 auto;
+        padding: clamp(22px, 4vw, 42px) 0;
+      }
+
+      .intro {
+        max-width: 760px;
+        margin-bottom: 20px;
+      }
+
+      .eyebrow {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--orange);
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 0.76rem;
+        font-weight: 800;
+        line-height: 1.2;
+        text-transform: uppercase;
+      }
+
+      h1,
+      h2,
+      p {
+        margin: 0;
+      }
+
+      h1,
+      h2 {
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        color: var(--teal-dark);
+        font-size: clamp(1.7rem, 1.26rem + 1.8vw, 2.75rem);
+        font-weight: 800;
+        line-height: 1.05;
+      }
+
+      .intro p {
+        max-width: 620px;
+        margin-top: 8px;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.42;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .card {
+        min-height: 290px;
+        border: 0;
+        padding: 0;
+        border-radius: var(--radius);
+        background: transparent;
+        perspective: 1100px;
+        text-align: left;
+      }
+
+      .card:focus-visible {
+        outline: 3px solid rgba(233, 101, 56, 0.42);
+        outline-offset: 4px;
+      }
+
+      .card-inner {
+        position: relative;
+        display: block;
+        width: 100%;
+        height: 100%;
+        min-height: 290px;
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        transform-style: preserve-3d;
+        transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .card:hover .card-inner {
+        transform: translateY(-2px);
+      }
+
+      .card.is-open .card-inner {
+        transform: rotateY(180deg);
+      }
+
+      .card.is-open:hover .card-inner {
+        transform: rotateY(180deg) translateY(-2px);
+      }
+
+      .face {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--paper);
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+
+      .front {
+        justify-content: space-between;
+      }
+
+      .visual {
+        display: grid;
+        place-items: center;
+        min-height: 152px;
+        padding: 18px 16px 10px;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0)),
+          color-mix(in srgb, var(--color), #ffffff 86%);
+      }
+
+      .visual img {
+        width: min(78%, 190px);
+        max-height: 132px;
+        object-fit: contain;
+        filter: drop-shadow(0 12px 12px rgba(23, 50, 58, 0.16));
+      }
+
+      .mock-pack {
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        width: min(74%, 160px);
+        min-height: 124px;
+        padding: 14px 12px 12px;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        border-radius: 7px;
+        color: #ffffff;
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0)),
+          #1d343b;
+        box-shadow: 0 18px 24px rgba(23, 50, 58, 0.16);
+        text-align: center;
+      }
+
+      .mock-brand {
+        color: color-mix(in srgb, var(--color), #ffffff 38%);
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 0.62rem;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .mock-name {
+        align-self: center;
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 1.18rem;
+        font-weight: 800;
+        line-height: 0.98;
+      }
+
+      .mock-strip {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 24px;
+        padding: 4px 8px;
+        border-radius: 4px;
+        color: #17323a;
+        background: var(--color);
+        font-size: 0.68rem;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      .front-copy {
+        display: grid;
+        gap: 8px;
+        padding: 15px 16px 16px;
+      }
+
+      .tag {
+        display: inline-flex;
+        width: fit-content;
+        min-height: 24px;
+        align-items: center;
+        padding: 0 8px;
+        border-radius: 4px;
+        color: color-mix(in srgb, var(--color), #17323a 22%);
+        background: color-mix(in srgb, var(--color), #ffffff 84%);
+        font-size: 0.7rem;
+        font-weight: 900;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      h2 {
+        color: var(--ink);
+        font-size: 1.12rem;
+        font-weight: 800;
+        line-height: 1.12;
+      }
+
+      .summary {
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.34;
+      }
+
+      .back {
+        justify-content: center;
+        gap: 14px;
+        padding: 22px 20px;
+        transform: rotateY(180deg);
+        background:
+          linear-gradient(180deg, rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.7)),
+          color-mix(in srgb, var(--color), #ffffff 88%);
+        text-align: center;
+      }
+
+      .back h2 {
+        color: var(--teal-dark);
+        font-size: 1.32rem;
+      }
+
+      .back p {
+        color: var(--ink);
+        font-size: 0.96rem;
+        line-height: 1.42;
+      }
+
+      .tap {
+        margin-top: 2px;
+        color: color-mix(in srgb, var(--color), #17323a 18%);
+        font-size: 0.72rem;
+        font-weight: 900;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 860px) {
+        .cards {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 560px) {
+        .section {
+          width: min(100% - 20px, 1080px);
+          padding: 20px 0;
+        }
+
+        .cards {
+          grid-template-columns: 1fr;
+        }
+
+        .card,
+        .card-inner {
+          min-height: 264px;
+        }
+
+        .visual {
+          min-height: 134px;
+        }
+
+        .visual img {
+          max-height: 116px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .card-inner {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="section">
+      <header class="intro">
+        <span class="eyebrow">The Re-Lyte Product Line</span>
+        <h1>Choose the Re-Lyte that fits your day</h1>
+        <p>Tap a card to see the simplest use case for each product type.</p>
+      </header>
+
+      <section class="cards" aria-label="Re-Lyte product cards">
+        <button class="card" type="button" style="--color: #37acd3" aria-pressed="false">
+          <span class="card-inner">
+            <span class="face front">
+              <span class="visual">
+                <img
+                  src="../../../games/memory/assets/rewatermelon.webp"
+                  alt="Re-Lyte Hydration Watermelon Lime tub"
+                />
+              </span>
+              <span class="front-copy">
+                <span class="tag">Everyday</span>
+                <h2>Re-Lyte Hydration</h2>
+                <p class="summary">Basic electrolyte support for healthy adults.</p>
+              </span>
+            </span>
+            <span class="face back">
+              <h2>Everyday hydration</h2>
+              <p>Best for daily water routines, busy days, heat, and general electrolyte support.</p>
+              <span class="tap">Tap to flip back</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="card" type="button" style="--color: #78c7d9" aria-pressed="false">
+          <span class="card-inner">
+            <span class="face front">
+              <span class="visual">
+                <span class="mock-pack">
+                  <span class="mock-brand">Re-Lyte</span>
+                  <span class="mock-name">Kids</span>
+                  <span class="mock-strip">Gentle</span>
+                </span>
+              </span>
+              <span class="front-copy">
+                <span class="tag">Kids</span>
+                <h2>Re-Lyte Kids</h2>
+                <p class="summary">Gentler hydration support for smaller bodies.</p>
+              </span>
+            </span>
+            <span class="face back">
+              <h2>Made for kids</h2>
+              <p>Less than half the strength of Re-Lyte Hydration, with clean flavors and colors.</p>
+              <span class="tap">Tap to flip back</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="card" type="button" style="--color: #e96538" aria-pressed="false">
+          <span class="card-inner">
+            <span class="face front">
+              <span class="visual">
+                <span class="mock-pack">
+                  <span class="mock-brand">Re-Lyte</span>
+                  <span class="mock-name">Pre-Workout</span>
+                  <span class="mock-strip">150 mg caffeine</span>
+                </span>
+              </span>
+              <span class="front-copy">
+                <span class="tag">Workout</span>
+                <h2>Re-Lyte Pre-Workout</h2>
+                <p class="summary">Energy and amino acids for harder training.</p>
+              </span>
+            </span>
+            <span class="face back">
+              <h2>For training</h2>
+              <p>The highest caffeine Re-Lyte option, made for workouts and recovery support.</p>
+              <span class="tap">Tap to flip back</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="card" type="button" style="--color: #e6b849" aria-pressed="false">
+          <span class="card-inner">
+            <span class="face front">
+              <span class="visual">
+                <span class="mock-pack">
+                  <span class="mock-brand">Re-Lyte</span>
+                  <span class="mock-name">Energy</span>
+                  <span class="mock-strip">120 mg caffeine</span>
+                </span>
+              </span>
+              <span class="front-copy">
+                <span class="tag">Energy</span>
+                <h2>Re-Lyte Energy</h2>
+                <p class="summary">Daily energy support with a lighter caffeine dose.</p>
+              </span>
+            </span>
+            <span class="face back">
+              <h2>For full days</h2>
+              <p>A daily-use energy option for work, errands, travel, and active routines.</p>
+              <span class="tap">Tap to flip back</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="card" type="button" style="--color: #257b55" aria-pressed="false">
+          <span class="card-inner">
+            <span class="face front">
+              <span class="visual">
+                <span class="mock-pack">
+                  <span class="mock-brand">Re-Lyte</span>
+                  <span class="mock-name">Immunity</span>
+                  <span class="mock-strip">Immune support</span>
+                </span>
+              </span>
+              <span class="front-copy">
+                <span class="tag">Immunity</span>
+                <h2>Re-Lyte Immunity</h2>
+                <p class="summary">Hydration with vitamins and herbs.</p>
+              </span>
+            </span>
+            <span class="face back">
+              <h2>For extra support</h2>
+              <p>Useful for travel, seasonal routines, or days when immune support matters more.</p>
+              <span class="tap">Tap to flip back</span>
+            </span>
+          </span>
+        </button>
+
+        <button class="card" type="button" style="--color: #2f9c72" aria-pressed="false">
+          <span class="card-inner">
+            <span class="face front">
+              <span class="visual">
+                <span class="mock-pack">
+                  <span class="mock-brand">Re-Lyte</span>
+                  <span class="mock-name">Capsules</span>
+                  <span class="mock-strip">No mix</span>
+                </span>
+              </span>
+              <span class="front-copy">
+                <span class="tag">On the go</span>
+                <h2>Re-Lyte Capsules</h2>
+                <p class="summary">Convenient hydration, energy, or recovery support.</p>
+              </span>
+            </span>
+            <span class="face back">
+              <h2>Capsule options</h2>
+              <p>Hydration, Hydration Plus, Energy Boost, and Muscle Recovery in a no-mix format.</p>
+              <span class="tap">Tap to flip back</span>
+            </span>
+          </span>
+        </button>
+      </section>
+    </main>
+
+    <script>
+      (function () {
+        const cards = Array.from(document.querySelectorAll(".card"));
+
+        cards.forEach((card) => {
+          card.addEventListener("click", () => {
+            const isOpen = card.classList.toggle("is-open");
+            card.setAttribute("aria-pressed", String(isOpen));
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
