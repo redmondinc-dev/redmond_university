@@ -131,7 +131,7 @@ h2 {
 
 .intro {
   min-width: 0;
-  max-width: 66ch;
+  width: 100%;
   margin: 0.28rem 0 0;
   color: var(--muted);
   font-size: 0.93rem;

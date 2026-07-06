@@ -28,9 +28,8 @@
       id: "potassium",
       name: "Potassium",
       symbol: "K",
-      image: "../../assets/imgs/hydration-cards/potassium.png",
-      alt: "Potassium food sources",
-      photo: true,
+      image: "../../assets/imgs/hydration-cards/Pa.png",
+      alt: "Potassium electrolyte character",
       description: "Helps balance fluids and supports muscle and heart function.",
       cue:
         "Complementary electrolytes like potassium help maintain proper fluid distribution inside and outside of cells.",
