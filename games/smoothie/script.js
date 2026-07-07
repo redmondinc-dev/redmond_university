@@ -1,11 +1,60 @@
 const ingredients = [
-  { id: "peanut", name: "Peanut Butter", measure: "2 tbsp", icon: "🥜", required: false, order: 1 },
-  { id: "almond", name: "Almond Butter", measure: "2 tbsp", icon: "🌰", required: true, order: 2 },
-  { id: "maple", name: "Maple Syrup", measure: "2 tbsp", icon: "🍁", required: true, order: 3 },
-  { id: "flax", name: "Flax Seeds", measure: "2 tbsp", icon: "🌾", required: true, order: 4 },
-  { id: "strawberries", name: "Strawberries", measure: "3/4 cup", icon: "🍓", required: true, order: 5 },
-  { id: "milk", name: "Milk", measure: "4 oz", icon: "🥛", required: true, order: 6 },
-  { id: "ice", name: "Ice", measure: "1 cup", icon: "🧊", required: true, order: 7 },
+  {
+    id: "peanut",
+    name: "Peanut Butter",
+    measure: "2 tbsp",
+    image: "assets/peanut-butter.png",
+    required: false,
+    order: 1,
+  },
+  {
+    id: "almond",
+    name: "Almond Butter",
+    measure: "2 tbsp",
+    image: "assets/almond-butter.png",
+    required: true,
+    order: 2,
+  },
+  {
+    id: "maple",
+    name: "Maple Syrup",
+    measure: "2 tbsp",
+    image: "assets/maple-syrup.png",
+    required: true,
+    order: 3,
+  },
+  {
+    id: "flax",
+    name: "Flax Seeds",
+    measure: "2 tbsp",
+    image: "assets/flax-seeds.png",
+    required: true,
+    order: 4,
+  },
+  {
+    id: "strawberries",
+    name: "Strawberries",
+    measure: "3/4 cup",
+    image: "assets/strawberries.png",
+    required: true,
+    order: 5,
+  },
+  {
+    id: "milk",
+    name: "Milk",
+    measure: "4 oz",
+    image: "assets/milk.png",
+    required: true,
+    order: 6,
+  },
+  {
+    id: "ice",
+    name: "Ice",
+    measure: "1 cup",
+    image: "assets/ice.png",
+    required: true,
+    order: 7,
+  },
 ];
 
 const orderedIngredients = [...ingredients].sort(
@@ -34,7 +83,7 @@ let addedIngredients = [];
 let audioCtx;
 let blendTimeoutId = null;
 let activeOscillator = null;
-let floatingEmojis = [];
+let floatingIngredients = [];
 let isLidOpen = false;
 let lidCloseTimeout = null;
 const ingredientColors = {
@@ -47,20 +96,26 @@ const ingredientColors = {
   ice: [200, 230, 255],
 };
 
-function createIngredientCard({ id, name, measure, icon }) {
+function createIngredientCard({ id, name, measure, image }) {
   const card = document.createElement("div");
   card.className = "card";
   card.draggable = true;
   card.dataset.id = id;
 
-  const iconEl = document.createElement("div");
-  iconEl.className = "icon";
-  iconEl.textContent = icon;
+  const photoFrame = document.createElement("div");
+  photoFrame.className = "ingredient-photo-frame";
+
+  const photo = document.createElement("img");
+  photo.className = "ingredient-photo";
+  photo.src = image;
+  photo.alt = name;
+  photo.draggable = false;
+  photoFrame.append(photo);
 
   const title = document.createElement("h3");
   title.textContent = name;
 
-  card.append(iconEl, title);
+  card.append(photoFrame, title);
 
   if (measure) {
     const measureEl = document.createElement("p");
@@ -70,7 +125,8 @@ function createIngredientCard({ id, name, measure, icon }) {
 
   card.addEventListener("dragstart", (e) => {
     e.dataTransfer.setData("text/plain", id);
-    e.dataTransfer.setData("emoji", icon);
+    e.dataTransfer.setData("image", image);
+    e.dataTransfer.setData("label", name);
   });
 
   return card;
@@ -134,16 +190,19 @@ function addLayer(id) {
   });
 }
 
-function addFloatingEmoji(emoji) {
-  const float = document.createElement("div");
+function addFloatingIngredient(image, name) {
+  const float = document.createElement("img");
   float.classList.add("ingredient-inside");
-  float.textContent = emoji;
+  float.src = image;
+  float.alt = "";
+  float.setAttribute("aria-hidden", "true");
+  float.title = name;
 
   float.style.left = `${12 + Math.random() * 72}%`;
   float.style.bottom = `${12 + Math.random() * 60}%`;
 
   blendContent.appendChild(float);
-  floatingEmojis.push(float);
+  floatingIngredients.push(float);
 }
 
 dropzone.addEventListener("dragover", (e) => {
@@ -172,23 +231,23 @@ dropzone.addEventListener("drop", (e) => {
     return;
   }
 
-  const ingredient = e.dataTransfer.getData("text/plain");
-  const emoji = e.dataTransfer.getData("emoji");
+  const ingredientId = e.dataTransfer.getData("text/plain");
+  const ingredient = ingredients.find(({ id }) => id === ingredientId);
 
-  if (!ingredient || addedIngredients.includes(ingredient)) {
+  if (!ingredient || addedIngredients.includes(ingredientId)) {
     alert("That ingredient is already inside or not valid.");
     return;
   }
 
-  const card = document.querySelector(`[data-id="${ingredient}"]`);
+  const card = document.querySelector(`[data-id="${ingredientId}"]`);
   card.classList.add("used");
   card.setAttribute("draggable", "false");
 
-  flyToBlender(emoji, e);
-  addLayer(ingredient);
-  addFloatingEmoji(emoji);
+  flyToBlender(ingredient.image, e);
+  addLayer(ingredientId);
+  addFloatingIngredient(ingredient.image, ingredient.name);
 
-  addedIngredients.push(ingredient);
+  addedIngredients.push(ingredientId);
 
   const requiredCount = addedIngredients.filter((id) =>
     requiredIds.includes(id)
@@ -201,10 +260,12 @@ dropzone.addEventListener("drop", (e) => {
   }
 });
 
-function flyToBlender(emoji, dropEvent) {
-  const fly = document.createElement("div");
-  fly.classList.add("fly-emoji");
-  fly.textContent = emoji;
+function flyToBlender(image, dropEvent) {
+  const fly = document.createElement("img");
+  fly.classList.add("fly-ingredient");
+  fly.src = image;
+  fly.alt = "";
+  fly.setAttribute("aria-hidden", "true");
   document.body.appendChild(fly);
 
   const jarRect = jarInner.getBoundingClientRect();
@@ -239,7 +300,7 @@ function startBlend() {
   dropzone.classList.add("blending");
   playBlendSound(BLEND_DURATION_MS);
   renderSmoothieFill(false, { durationMs: BLEND_DURATION_MS, reveal: true });
-  fadeOutFloatingEmojis();
+  fadeOutFloatingIngredients();
   fadeOutLayers(BLEND_DURATION_MS);
 
   if (blendTimeoutId) clearTimeout(blendTimeoutId);
@@ -252,7 +313,7 @@ function startBlend() {
     });
 
     if (requiredComplete && isCorrect) {
-      dropText.textContent = "Smoothie completed! 🥤✨";
+      dropText.textContent = "Smoothie completed!";
       launchConfetti();
     } else {
       let message = "Check: ";
@@ -348,9 +409,9 @@ function resetGame() {
   isBlending = false;
   addedIngredients = [];
   dropzone.classList.remove("blending", "ready");
-  dropText.textContent = "⬇ Drop here ⬇";
+  dropText.textContent = "Drop here";
   blendContent.innerHTML = "";
-  floatingEmojis = [];
+  floatingIngredients = [];
   setLidOpen(false);
 
   document.querySelectorAll(".card").forEach((card) => {
@@ -359,13 +420,13 @@ function resetGame() {
   });
 }
 
-function fadeOutFloatingEmojis() {
-  floatingEmojis.forEach((node, idx) => {
+function fadeOutFloatingIngredients() {
+  floatingIngredients.forEach((node, idx) => {
     const delay = idx * 120;
     setTimeout(() => node.classList.add("fade-out"), delay);
     setTimeout(() => node.remove(), delay + 1400);
   });
-  floatingEmojis = [];
+  floatingIngredients = [];
 }
 
 function renderSmoothieFill(

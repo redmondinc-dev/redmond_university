@@ -59,32 +59,34 @@ main {
 }
 
 .card {
-  background: linear-gradient(140deg, #ffffff, #f5f8ff);
-  padding: 12px;
-  border-radius: 16px;
+  background: linear-gradient(140deg, #ffffff, #f7fbff);
+  padding: 10px;
+  border-radius: 8px;
   box-shadow: 0 12px 24px rgba(25, 68, 102, 0.08);
   cursor: grab;
   text-align: center;
   transition: transform 0.22s ease, box-shadow 0.22s ease, border 0.22s ease;
   border: 1px solid transparent;
-  min-width: 140px;
-  max-width: 160px;
+  min-width: 152px;
+  max-width: 168px;
+  min-height: 188px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 4px;
+  justify-content: flex-start;
+  gap: 8px;
   scroll-snap-align: center;
 }
 
 .card h3 {
   margin: 0;
-  font-size: 15px;
+  font-size: 14px;
+  line-height: 1.18;
   color: #1f2c3a;
 }
 
 .card p {
   margin: 0;
-  font-size: 13px;
+  font-size: 12px;
   color: #4a5a70;
 }
 
@@ -99,6 +101,30 @@ main {
   cursor: not-allowed;
   transform: none;
   box-shadow: 0 6px 12px rgba(25, 68, 102, 0.05);
+}
+
+.ingredient-photo-frame {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow:
+    inset 0 0 0 1px rgba(31, 44, 58, 0.08),
+    0 8px 18px rgba(31, 44, 58, 0.08);
+}
+
+.ingredient-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  pointer-events: none;
+  user-select: none;
+}
+
+.card.used .ingredient-photo {
+  filter: grayscale(0.18) saturate(0.82);
 }
 
 .ingredients-carousel {
@@ -230,11 +256,6 @@ main {
   100% { transform: translate3d(var(--x, 0), 130vh, 0) rotate(720deg); }
 }
 
-.icon {
-  font-size: 36px;
-  margin-bottom: 4px;
-}
-
 .blender-zone {
   width: 100%;
   display: flex;
@@ -245,9 +266,12 @@ main {
 .blender {
   width: min(420px, 100%);
   text-align: center;
-  padding: 14px 18px 18px;
+  min-height: 510px;
+  padding: 14px 18px 22px;
   border-radius: 18px;
-  background: radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.85), rgba(232, 241, 252, 0.82) 48%, rgba(215, 225, 238, 0.9));
+  background:
+    radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.9), rgba(232, 241, 252, 0.82) 48%, rgba(215, 225, 238, 0.9)),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.72), rgba(202, 215, 229, 0.76));
   border: 1px solid #cfd7e6;
   box-shadow:
     0 22px 60px rgba(15, 45, 76, 0.18),
@@ -259,6 +283,26 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.blender > *:not(.blender-shell) {
+  position: relative;
+  z-index: 2;
+}
+
+.blender-shell {
+  position: absolute;
+  top: 42px;
+  left: 50%;
+  width: min(342px, 78vw);
+  height: auto;
+  transform: translateX(-50%);
+  z-index: 1;
+  opacity: 0.24;
+  mix-blend-mode: multiply;
+  filter: contrast(1.08) saturate(0.96);
+  pointer-events: none;
+  user-select: none;
 }
 
 .blender::after {
@@ -293,11 +337,15 @@ main {
   width: 240px;
   height: 34px;
   margin: 0 auto 4px;
-  background: linear-gradient(180deg, #3f474f, #272c32);
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.12), transparent 28%, rgba(255, 255, 255, 0.07) 72%, transparent),
+    linear-gradient(180deg, #464d55, #1f242a 72%, #12161b);
   border-radius: 14px 14px 10px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
   box-shadow:
     0 12px 18px rgba(17, 30, 46, 0.28),
-    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    inset 0 -3px 10px rgba(0, 0, 0, 0.36);
   position: relative;
   clip-path: polygon(6% 0, 94% 0, 100% 34%, 94% 100%, 6% 100%, 0 34%);
   transform-origin: 50% 50%;
@@ -402,10 +450,11 @@ main {
   height: 250px;
   margin: 10px auto 0;
   background:
-    linear-gradient(195deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.06)),
+    linear-gradient(100deg, rgba(255, 255, 255, 0.58), rgba(255, 255, 255, 0.08) 17%, rgba(255, 255, 255, 0) 42%),
+    linear-gradient(195deg, rgba(255, 255, 255, 0.34), rgba(255, 255, 255, 0.06)),
     radial-gradient(circle at 80% 16%, rgba(255, 255, 255, 0.3), transparent 40%),
     linear-gradient(200deg, rgba(219, 236, 255, 0.55), rgba(210, 223, 236, 0.16));
-  border: 3px solid #c2d6e8;
+  border: 2px solid rgba(180, 204, 226, 0.88);
   border-radius: 18px 18px 22px 22px;
   box-shadow:
     0 18px 26px rgba(34, 73, 112, 0.2),
@@ -478,13 +527,25 @@ main {
 .jar-ridges {
   position: absolute;
   inset: 10px 14px 18px 14px;
-  background: repeating-linear-gradient(
-    to right,
-    rgba(255, 255, 255, 0.1) 0,
-    rgba(255, 255, 255, 0.1) 6px,
-    rgba(255, 255, 255, 0) 6px,
-    rgba(255, 255, 255, 0) 20px
-  );
+  background:
+    linear-gradient(90deg, transparent 47%, rgba(41, 62, 84, 0.32) 48%, rgba(41, 62, 84, 0.32) 49%, transparent 50%),
+    repeating-linear-gradient(
+      to bottom,
+      rgba(41, 62, 84, 0.3) 0,
+      rgba(41, 62, 84, 0.3) 2px,
+      transparent 2px,
+      transparent 24px
+    ),
+    repeating-linear-gradient(
+      to right,
+      rgba(255, 255, 255, 0.13) 0,
+      rgba(255, 255, 255, 0.13) 6px,
+      rgba(255, 255, 255, 0) 6px,
+      rgba(255, 255, 255, 0) 20px
+    );
+  background-size: 64px 180px, 22px 132px, auto;
+  background-position: center 12px, 56% 24px, 0 0;
+  background-repeat: no-repeat, no-repeat, repeat;
   opacity: 0.7;
   z-index: 1;
   pointer-events: none;
@@ -682,7 +743,9 @@ main {
   width: min(280px, 94vw);
   height: 120px;
   margin: -6px auto 0;
-  background: linear-gradient(180deg, #5f6670, #2e343b 72%, #20262c);
+  background:
+    linear-gradient(90deg, #2b3036 0%, #8e9498 18%, #e6e7e5 35%, #8b9297 50%, #f2f2ef 66%, #5e666c 84%, #23282e 100%),
+    linear-gradient(180deg, #737b84, #30363d 72%, #1e242a);
   border-radius: 20px 20px 18px 18px;
   box-shadow:
     0 18px 28px rgba(0, 0, 0, 0.22),
@@ -690,6 +753,23 @@ main {
     inset 0 -2px 0 rgba(0, 0, 0, 0.22);
   position: relative;
   clip-path: polygon(7% 0, 93% 0, 100% 22%, 93% 100%, 7% 100%, 0 22%);
+}
+
+.base::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.1) 0,
+      rgba(255, 255, 255, 0.1) 1px,
+      rgba(0, 0, 0, 0.08) 1px,
+      rgba(0, 0, 0, 0.08) 3px
+    ),
+    radial-gradient(circle at 50% 0, rgba(255, 255, 255, 0.34), transparent 48%);
+  opacity: 0.38;
+  pointer-events: none;
 }
 
 .base::after {
@@ -716,6 +796,7 @@ main {
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.15),
     0 8px 14px rgba(0, 0, 0, 0.28);
+  z-index: 1;
 }
 
 .base-line {
@@ -736,7 +817,7 @@ main {
   width: 220px;
   padding: 8px 14px;
   background: linear-gradient(180deg, #1c2128, #0e1217 70%);
-  border-radius: 12px;
+  border-radius: 10px;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.08),
     0 8px 14px rgba(0, 0, 0, 0.4);
@@ -817,10 +898,13 @@ main {
 }
 
 .control-pill.accent {
-  background: linear-gradient(180deg, #394253, #1f2430);
+  background:
+    radial-gradient(circle at 50% 38%, #737c87, #232a34 55%, #0f141a 72%),
+    linear-gradient(180deg, #394253, #1f2430);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.16),
-    0 0 0 1px rgba(255, 255, 255, 0.08);
+    0 0 0 1px rgba(255, 255, 255, 0.08),
+    0 0 0 4px rgba(111, 230, 155, 0.1);
 }
 
 .start-btn {
@@ -829,6 +913,7 @@ main {
   letter-spacing: 0.4px;
   padding: 10px 18px;
   color: #ffffff;
+  border-radius: 999px;
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.18s ease, background 0.18s ease;
 }
@@ -870,13 +955,21 @@ main {
   font-weight: 700;
 }
 
-/* Ingredient emoji floating inside */
+/* Ingredient images floating inside */
 .ingredient-inside {
   position: absolute;
-  font-size: 42px;
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 8px 16px rgba(31, 44, 58, 0.16),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.72);
   opacity: 0;
   animation: floaty 3.4s ease-in-out infinite, pop-in 0.45s forwards;
   z-index: 4;
+  pointer-events: none;
 }
 
 .ingredient-inside.fade-out {
@@ -889,9 +982,14 @@ main {
 }
 
 /* Fly-to-blender animation */
-.fly-emoji {
+.fly-ingredient {
   position: fixed;
-  font-size: 36px;
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 12px 22px rgba(31, 44, 58, 0.2);
   pointer-events: none;
   z-index: 9999;
   animation: fly 0.7s ease forwards;
