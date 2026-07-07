@@ -10,22 +10,33 @@
     {
       "title": "Summary of Redmond’s 401(k) Plan",
       "bullets": [
-        "Operated by Empower Financial Services",
-        "All associates are automatically enrolled after 6 months",
-        "Default: 4% into the ROTH option & target fund",
-        "Automatic 1% annual increase until 8%",
-        "Redmond contributes about half of your contribution up to 4%",
-        "Redmond’s contribution is to a Traditional option",
-        "Redmond’s contribution has a vesting period"
+        {
+          "text": "Operated by Empower Financial Services",
+          "children": [
+            "This means you have access to Empower's financial tools--connect other accounts, create a budget, debt payoff plan, savings plan for future purchases, track your net worth, and more.",
+            "You can log in after your first month at Redmond and use the tools, submit roll overs, or make changes that will apply when you're eligible to participate."
+          ]
+        }
       ],
       "accent": "#e23c30"
     },
     {
       "title": "(Summary continued)",
       "bullets": [
-        "Contributions don’t start for 6 months, but you can register and log in within one month of your start date",
-        "You can consolidate (rollover) a 401(k) from a previous employer into your Redmond 401(k) after you register your account",
-        "You can change the defaults after you register and before contributions start"
+        {
+          "text": "All associates age 18 and older are eligible to participate after 6 months, and are automatically enrolled into the default option",
+          "children": [
+            "The default is a 4% contribution into the Roth option & target date fund.",
+            "If you only contribute 4%, you won't receive all the money Redmond wants to give you.",
+            "Log in to Empower and increase your contribution to at least 8%. That way, you'll get all of Redmond's match.",
+            {
+              "text": "You own 100% of your contributions, but Redmond’s contribution has a vesting period.",
+              "children": [
+                "This means that you won't keep the Redmond match until you've worked at least 1,000 hours per year for two years"
+              ]
+            }
+          ]
+        }
       ],
       "accent": "#e23c30"
     },

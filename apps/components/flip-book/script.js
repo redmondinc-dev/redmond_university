@@ -76,6 +76,30 @@
     return text ? [text] : [];
   }
 
+  function normalizeBullets(value) {
+    if (!Array.isArray(value)) {
+      const text = toText(value);
+      return text ? [{ text, children: [] }] : [];
+    }
+
+    return value
+      .map((rawBullet) => {
+        if (rawBullet && typeof rawBullet === "object" && !Array.isArray(rawBullet)) {
+          const text = toText(rawBullet.text || rawBullet.label || rawBullet.title);
+          const children = normalizeBullets(
+            rawBullet.children || rawBullet.bullets || rawBullet.items
+          );
+
+          if (!text && !children.length) return null;
+          return { text, children };
+        }
+
+        const text = toText(rawBullet);
+        return text ? { text, children: [] } : null;
+      })
+      .filter(Boolean);
+  }
+
   function padRow(row, columnCount) {
     return Array.from({ length: columnCount }, (_, index) => row[index] || "");
   }
@@ -108,7 +132,7 @@
           title: toText(section.title),
           description: toText(section.description),
           body: toTextArray(section.body),
-          bullets: toTextArray(section.bullets),
+          bullets: normalizeBullets(section.bullets),
         };
       })
       .filter((section) => {
@@ -119,7 +143,7 @@
   function normalizePage(rawPage, index) {
     const page = rawPage && typeof rawPage === "object" ? rawPage : {};
     const body = toTextArray(page.body);
-    const bullets = toTextArray(page.bullets);
+    const bullets = normalizeBullets(page.bullets);
     const image = toText(page.image);
     const layout = toText(page.layout);
     const allowedLayouts = new Set(["default", "text-only", "image-full", "document-full"]);
@@ -221,6 +245,21 @@
     return wrapper;
   }
 
+  function renderBulletList(bullets, className = "page-list") {
+    const list = makeElement("ul", className);
+
+    bullets.forEach((bullet) => {
+      const item = document.createElement("li");
+      if (bullet.text) item.append(document.createTextNode(bullet.text));
+      if (bullet.children.length) {
+        item.append(renderBulletList(bullet.children, "page-list page-list--nested"));
+      }
+      list.append(item);
+    });
+
+    return list;
+  }
+
   function renderStatus(message) {
     leftPage.className = "book-page book-page--left book-page--empty";
     rightPage.className = "book-page book-page--right";
@@ -293,11 +332,7 @@
     }
 
     if (page.bullets.length) {
-      const list = makeElement("ul", "page-list");
-      page.bullets.forEach((bullet) => {
-        list.append(makeElement("li", "", bullet));
-      });
-      copy.append(list);
+      copy.append(renderBulletList(page.bullets));
     }
 
     if (page.sections.length) {
@@ -318,11 +353,7 @@
         });
 
         if (section.bullets.length) {
-          const list = makeElement("ul", "page-list");
-          section.bullets.forEach((bullet) => {
-            list.append(makeElement("li", "", bullet));
-          });
-          sectionElement.append(list);
+          sectionElement.append(renderBulletList(section.bullets));
         }
 
         sections.append(sectionElement);

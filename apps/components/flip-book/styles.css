@@ -322,12 +322,33 @@ textarea {
   margin: 12px 0 0;
   padding-left: 18px;
   color: var(--book-muted);
-  font-size: 0.95rem;
-  line-height: 1.52;
+  font-size: 0.92rem;
+  line-height: 1.45;
 }
 
 .page-list li + li {
   margin-top: 6px;
+}
+
+.page-list li {
+  overflow-wrap: anywhere;
+}
+
+.page-list--nested {
+  margin-top: 6px;
+  padding-left: 16px;
+  font-size: 0.94em;
+  line-height: 1.42;
+  list-style-type: circle;
+}
+
+.page-list--nested .page-list--nested {
+  font-size: 0.92em;
+  list-style-type: square;
+}
+
+.page-list--nested li + li {
+  margin-top: 5px;
 }
 
 .page-list li::marker {
@@ -402,25 +423,28 @@ textarea {
 
 .page-table {
   width: 100%;
-  min-width: 380px;
+  min-width: 0;
   border-collapse: collapse;
   color: var(--book-ink);
   background: rgba(255, 255, 255, 0.5);
+  table-layout: fixed;
   text-align: center;
-  font-size: 0.78rem;
+  font-size: 0.74rem;
   line-height: 1.25;
 }
 
 .page-table th {
-  padding: 8px 10px;
+  padding: 8px 6px;
   color: #fff;
   background: var(--page-accent, var(--accent));
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .page-table td {
-  padding: 8px 10px;
+  padding: 7px 6px;
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .page-table th + th,
@@ -903,6 +927,10 @@ html.is-embedded .flipbook-shell {
     font-size: 1.38rem;
   }
 
+  .page-inner--text-only .page-copy {
+    align-self: start;
+  }
+
   .page-media {
     min-height: 150px;
     max-height: 180px;
@@ -910,6 +938,20 @@ html.is-embedded .flipbook-shell {
 
   .page-media img {
     min-height: 150px;
+  }
+
+  .page-table-wrap {
+    overflow-x: hidden;
+  }
+
+  .page-table {
+    font-size: 0.66rem;
+  }
+
+  .page-table th,
+  .page-table td {
+    padding: 6px 2px;
+    word-break: break-word;
   }
 
   .nav-button--prev {
@@ -990,12 +1032,12 @@ html.is-embedded .flipbook-shell {
   .page-table {
     min-width: 100%;
     table-layout: fixed;
-    font-size: 0.66rem;
+    font-size: 0.58rem;
   }
 
   .page-table th,
   .page-table td {
-    padding: 7px 5px;
+    padding: 6px 2px;
     overflow-wrap: anywhere;
   }
 }
