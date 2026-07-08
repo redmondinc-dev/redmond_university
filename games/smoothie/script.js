@@ -60,13 +60,14 @@ const ingredients = [
 const orderedIngredients = [...ingredients].sort(
   (a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER)
 );
-const correctOrder = orderedIngredients.map(({ id }) => id);
 const requiredIds = orderedIngredients
   .filter(({ required }) => required !== false)
   .map(({ id }) => id);
+const correctOrder = requiredIds;
 
 const LAYER_HEIGHT = 24;
 const BLEND_DURATION_MS = 5000;
+const NON_INGREDIENT_MESSAGE = "Peanut Butter is not a Strawberry Flax ingredient";
 
 const blendContent = document.querySelector(".blend-content");
 const dropzone = document.getElementById("dropzone");
@@ -78,6 +79,8 @@ const carousel = document.getElementById("carousel");
 const resetBtn = document.getElementById("reset-btn");
 const prevBtn = document.querySelector(".carousel-btn.prev");
 const nextBtn = document.querySelector(".carousel-btn.next");
+const ingredientWarning = document.getElementById("ingredient-warning");
+const warningCopy = ingredientWarning?.querySelector(".warning-copy");
 let isBlending = false;
 let addedIngredients = [];
 let audioCtx;
@@ -86,6 +89,7 @@ let activeOscillator = null;
 let floatingIngredients = [];
 let isLidOpen = false;
 let lidCloseTimeout = null;
+let warningTimeoutId = null;
 const ingredientColors = {
   peanut: [198, 146, 86],
   almond: [210, 170, 120],
@@ -238,6 +242,13 @@ dropzone.addEventListener("drop", (e) => {
     alert("That ingredient is already inside or not valid.");
     return;
   }
+
+  if (ingredient.required === false) {
+    showIngredientWarning(NON_INGREDIENT_MESSAGE);
+    return;
+  }
+
+  hideIngredientWarning();
 
   const card = document.querySelector(`[data-id="${ingredientId}"]`);
   card.classList.add("used");
@@ -410,6 +421,7 @@ function resetGame() {
   addedIngredients = [];
   dropzone.classList.remove("blending", "ready");
   dropText.textContent = "Drop here";
+  hideIngredientWarning();
   blendContent.innerHTML = "";
   floatingIngredients = [];
   setLidOpen(false);
@@ -418,6 +430,40 @@ function resetGame() {
     card.classList.remove("used");
     card.setAttribute("draggable", "true");
   });
+}
+
+function showIngredientWarning(message) {
+  if (!ingredientWarning || !warningCopy) return;
+
+  if (warningTimeoutId) {
+    clearTimeout(warningTimeoutId);
+    warningTimeoutId = null;
+  }
+
+  warningCopy.textContent = message;
+  ingredientWarning.hidden = false;
+  ingredientWarning.classList.remove("is-visible");
+  dropzone.classList.add("ingredient-rejected");
+
+  requestAnimationFrame(() => {
+    ingredientWarning.classList.add("is-visible");
+  });
+
+  warningTimeoutId = setTimeout(() => {
+    hideIngredientWarning();
+  }, 3200);
+}
+
+function hideIngredientWarning() {
+  if (warningTimeoutId) {
+    clearTimeout(warningTimeoutId);
+    warningTimeoutId = null;
+  }
+  if (!ingredientWarning) return;
+
+  ingredientWarning.classList.remove("is-visible");
+  dropzone.classList.remove("ingredient-rejected");
+  ingredientWarning.hidden = true;
 }
 
 function fadeOutFloatingIngredients() {
@@ -451,9 +497,13 @@ function renderSmoothieFill(
   fill.style.setProperty("--smoothie-bottom", toRgba(bottom, 0.98));
 
   const totalForHeight = Math.max(requiredIds.length, addedIngredients.length);
+  const maxFillHeight = Math.max(180, blendContent.clientHeight - 10);
   const targetHeight = Math.max(
-    40,
-    Math.min(220, (addedIngredients.length / totalForHeight) * 220)
+    44,
+    Math.min(
+      maxFillHeight,
+      (addedIngredients.length / totalForHeight) * maxFillHeight
+    )
   );
   const heightDuration = Math.min(durationMs, 1200);
   fill.style.transition = `height ${heightDuration}ms ease, background 0.6s ease, opacity ${durationMs}ms ease`;

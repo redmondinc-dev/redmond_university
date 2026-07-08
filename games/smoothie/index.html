@@ -36,6 +36,10 @@
                 <div id="dropzone" class="blender">
                     <img class="blender-shell" src="assets/blender-premium.png" alt="" aria-hidden="true" />
                     <p class="drop-text">Drop here</p>
+                    <div id="ingredient-warning" class="ingredient-warning" role="status" aria-live="polite" hidden>
+                        <span class="warning-face" aria-hidden="true">😟</span>
+                        <span class="warning-copy"></span>
+                    </div>
                     <div class="lid" tabindex="0" role="button" aria-pressed="false" aria-label="Toggle lid">
                         <div class="lid-button"></div>
                         <div class="lid-handle"></div>
@@ -72,6 +76,11 @@
                                 <button id="start-btn" class="control-pill accent start-btn" type="button">
                                     Blend
                                 </button>
+                            </div>
+                            <div class="speed-lights" aria-hidden="true">
+                                <span></span>
+                                <span></span>
+                                <span></span>
                             </div>
                         </div>
                         <div class="base-foot"></div>

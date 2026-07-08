@@ -286,7 +286,7 @@ h1 {
 .claim-card {
   position: relative;
   display: grid;
-  grid-template-rows: auto minmax(90px, 1fr) auto;
+  grid-template-rows: auto 104px auto;
   gap: 0.62rem;
   min-height: 215px;
   min-width: 0;
@@ -375,7 +375,7 @@ h1 {
   position: relative;
   z-index: 1;
   display: block;
-  align-self: center;
+  align-self: start;
   margin: 0;
   color: #14323b;
   font-size: 1rem;
@@ -403,7 +403,7 @@ h1 {
 .claim-note {
   position: relative;
   z-index: 1;
-  display: block;
+  display: none;
   margin: 0;
   color: var(--muted);
   font-size: 0.82rem;
@@ -421,6 +421,14 @@ h1 {
   transition:
     opacity 0.22s ease,
     transform 0.22s ease;
+}
+
+.claim-card.is-revealed .claim-note {
+  display: block;
+}
+
+.claim-card.is-revealed {
+  grid-template-rows: auto minmax(104px, auto) auto;
 }
 
 .claim-card.is-truth {
