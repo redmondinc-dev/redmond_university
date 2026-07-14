@@ -23,29 +23,23 @@
       "accent": "#0a2f68"
     },
     {
-      "title": "Prefer to begin your journey online?",
-      "bullets": [
-        "Log on to empowermyretirement.com.",
-        "Select Register.",
-        "Choose the I do not have a PIN tab.",
-        "Follow the prompts to create your username and password."
-      ],
-      "callout": "If Empower does not have your email or phone number on file from your employer, or if you have another account with Empower, you will need to call to access your new plan account.",
-      "accent": "#0a2f68"
-    },
-    {
       "title": "From the convenience of your mobile device",
       "image": "assets/empower-mobile-app-user.jpeg",
       "imageAlt": "Person holding a phone while using a mobile app",
       "imageFit": "cover",
       "imagePosition": "before-copy",
+      "layout": "image-full",
+      "accent": "#0a2f68"
+    },
+    {
+      "title": "From the convenience of your mobile device (continued)",
       "bullets": [
         "Quickly check balances.",
         "Change your allocation elections.",
         "Customize your communications preferences.",
         "Change your savings rate.",
         "Update your beneficiary.",
-        "And more."
+        "And more!"
       ],
       "accent": "#0a2f68"
     },
@@ -53,7 +47,7 @@
       "title": "Download the free app today",
       "body": [
         "Get the Empower mobile app and connect to your plan whenever, wherever.",
-        "Available in the App Store from Apple and on Google Play."
+        "Available in the App Store® from Apple® and on Google Play™."
       ],
       "image": "assets/empower-mobile-app-download.png",
       "imageAlt": "Empower app download options with QR code, App Store badge, and Google Play badge",
@@ -67,30 +61,20 @@
     },
     {
       "title": "Important information",
-      "finePrint": [
+      "body": [
         "IMPORTANT: The projections or other information generated on the website by the investment analysis tool regarding the likelihood of various investment outcomes are hypothetical in nature, do not reflect actual investment results, and are not guarantees of future results. The results may vary with each use and over time.",
-        "Securities, when presented, are offered and/or distributed by Empower Financial Services, Inc., Member FINRA/SIPC. EFSI is an affiliate of Empower Retirement, LLC; Empower Funds, Inc.; and registered investment adviser Empower Advisory Group, LLC. This material is for informational purposes only and is not intended to provide investment, legal, or tax recommendations or advice.",
+        "Securities, when presented, are offered and/or distributed by Empower Financial Services, Inc., Member FINRA/SIPC. EFSI is an affiliate of Empower Retirement, LLC; Empower Funds, Inc.; and registered investment adviser Empower Advisory Group, LLC. This material is for informational purposes only and is not intended to provide investment, legal, or tax recommendations or advice."
+      ],
+      "accent": "#0a2f68"
+    },
+    {
+      "title": "Trademarks and copyright",
+      "body": [
         "iPhone, iPad, Apple, Apple Watch, and App Store are trademarks of Apple Inc.",
         "Android, Google Play, and the Google Play logo are trademarks of Google LLC.",
         "\"EMPOWER\" and all associated logos and product names are trademarks of Empower Annuity Insurance Company of America.",
         "©2025 Empower Annuity Insurance Company of America. All rights reserved. WPM-FLY-WF-1531356-1225(5322320) RO5005666-1125"
       ],
-      "accent": "#0a2f68"
-    },
-    {
-      "title": "Original flyer page 1",
-      "image": "assets/empower-mobile-app-page-1.png",
-      "imageAlt": "Original Empower mobile app flyer page 1",
-      "imageFit": "contain",
-      "layout": "document-full",
-      "accent": "#0a2f68"
-    },
-    {
-      "title": "Original flyer page 2",
-      "image": "assets/empower-mobile-app-page-2.png",
-      "imageAlt": "Original Empower mobile app flyer page 2",
-      "imageFit": "contain",
-      "layout": "document-full",
       "accent": "#0a2f68"
     }
   ]
