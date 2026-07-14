@@ -1,0 +1,800 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redmond University | RF Barista Finish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <script>
+      (() => {
+        try {
+          if (window.self !== window.top) {
+            document.documentElement.classList.add("is-embedded");
+          }
+        } catch {
+          document.documentElement.classList.add("is-embedded");
+        }
+      })();
+    </script>
+    <style>
+      :root {
+        --bg: #f4efe6;
+        --bg-accent: #e6dfd1;
+        --surface: rgba(255, 250, 243, 0.78);
+        --surface-strong: rgba(255, 250, 243, 0.94);
+        --ink: #1f1a16;
+        --muted: #6e6256;
+        --soft-muted: #8a734f;
+        --brand: #2f4b36;
+        --brand-dark: #274030;
+        --sand: #c78853;
+        --forest: #6e8f50;
+        --shadow: 0 28px 70px rgba(66, 48, 35, 0.13);
+        --shadow-strong: 0 36px 90px rgba(51, 29, 20, 0.18);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+      }
+
+      body {
+        font-family: "Avenir Next", Avenir, "Trebuchet MS", sans-serif;
+        color: var(--ink);
+        background: #ffffff;
+        overflow-x: hidden;
+      }
+
+      html.is-embedded,
+      html.is-embedded body {
+        height: 100%;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: none;
+        pointer-events: none;
+      }
+
+      button,
+      a {
+        font: inherit;
+      }
+
+      .confetti-canvas {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        z-index: 30;
+      }
+
+      .page {
+        position: relative;
+        min-height: 100vh;
+        padding: 10px clamp(18px, 4vw, 48px) 20px;
+        display: grid;
+        grid-template-rows: 1fr auto;
+        z-index: 1;
+      }
+
+      .hero {
+        position: relative;
+        display: grid;
+        place-items: start center;
+        align-content: start;
+        min-height: 100vh;
+        padding-top: 0;
+      }
+
+      .celebration {
+        width: min(86vw, 1180px);
+        max-width: 100%;
+        text-align: center;
+        margin-top: 0;
+        padding-top: 0;
+      }
+
+      .celebration-card {
+        position: relative;
+        overflow: visible;
+        padding: 0;
+        border-radius: 0;
+        background: transparent;
+        border: 0;
+        box-shadow: none;
+        backdrop-filter: none;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+      }
+
+      .celebration-copy {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+      }
+
+      .finish-copy {
+        width: min(100%, 1180px);
+        margin: 0 auto;
+      }
+
+      .celebration-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: none;
+        pointer-events: none;
+      }
+
+      .celebration h1 {
+        position: relative;
+        margin: 0;
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 5rem;
+        line-height: 0.94;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        color: var(--brand);
+        text-wrap: balance;
+      }
+
+      .celebration h2 {
+        position: relative;
+        max-width: 80%;
+        margin: 10px auto 8px;
+        color: var(--soft-muted);
+        font-size: 3rem;
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-weight: 800;
+        line-height: 0.92;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        text-wrap: balance;
+      }
+
+      .celebration .celebration-message {
+        position: relative;
+        max-width: 920px;
+        margin: clamp(1.15rem, 2.4vw, 2rem) auto 0;
+        color: #3f3428;
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.16;
+        letter-spacing: 0;
+        text-transform: none;
+        text-wrap: balance;
+      }
+
+      .celebration p {
+        position: relative;
+        max-width: 80%;
+        margin: 0 auto;
+        color: var(--ink);
+        font-size: 1.05rem;
+        line-height: 1.4;
+        text-wrap: balance;
+      }
+
+      .celebration .celebration-note {
+        max-width: 890px;
+        margin-top: clamp(1rem, 2vw, 1.7rem);
+        font-size: 1.08rem;
+        font-weight: 500;
+        line-height: 1.34;
+        letter-spacing: 0;
+        color: var(--muted);
+      }
+
+      .celebration-actions {
+        margin-top: clamp(1rem, 2vw, 1.8rem);
+        position: relative;
+        width: 100%;
+        min-height: 124px;
+        padding-bottom: 64px;
+        overflow: visible;
+        display: grid;
+        place-items: center;
+      }
+
+      .celebration.is-playing .celebration-copy {
+        display: none;
+      }
+
+      .celebration.is-playing .celebration-actions {
+        margin-top: 0;
+        padding-bottom: 0;
+      }
+
+      .celebration-actions.is-playing {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 50%;
+        width: min(calc(100vw - clamp(36px, 8vw, 96px)), 1200px);
+        min-height: 0;
+        transform: translateX(-50%);
+        z-index: 20;
+        pointer-events: none;
+        overflow: hidden;
+        background: #fff;
+      }
+
+      .celebration-actions > * {
+        grid-area: 1 / 1;
+      }
+
+      .celebrate-button {
+        position: relative;
+        isolation: isolate;
+        min-width: min(100%, 260px);
+        padding: 15px 30px;
+        border: 0;
+        border-radius: 999px;
+        background: linear-gradient(135deg, #6e8f50 0%, var(--brand) 44%, #5c3c1f 100%);
+        box-shadow:
+          0 18px 34px rgba(39, 64, 48, 0.24),
+          0 0 0 0 rgba(199, 136, 83, 0.22);
+        color: #fff8f3;
+        cursor: pointer;
+        transition:
+          transform 180ms ease,
+          box-shadow 180ms ease,
+          filter 180ms ease;
+        animation:
+          buttonPulse 2.4s ease-out infinite,
+          gradientShift 5.2s ease-in-out infinite;
+        background-size: 180% 180%;
+      }
+
+      .celebrate-button:hover,
+      .celebrate-button:focus-visible {
+        transform: translateY(-3px) scale(1.02);
+        box-shadow:
+          0 24px 42px rgba(39, 64, 48, 0.28),
+          0 0 0 8px rgba(199, 136, 83, 0.14);
+        outline: none;
+        filter: saturate(1.05);
+      }
+
+      .celebrate-button:active,
+      .celebrate-button.is-bursting {
+        transform: translateY(0) scale(0.985);
+      }
+
+      .celebrate-button__label {
+        display: block;
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 1rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .celebrate-explode {
+        position: absolute;
+        inset: 0;
+        width: 80%;
+        height: 80%;
+        margin: auto;
+        z-index: 0;
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.92);
+        transition:
+          opacity 160ms ease,
+          transform 160ms ease,
+          visibility 0s linear 160ms;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: clamp(1rem, 3vw, 3rem);
+      }
+
+      .celebrate-explode img {
+        width: auto;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .celebrate-explode__machine {
+        max-width: 50%;
+        animation: machineCelebrate 1.8s ease-in-out infinite;
+      }
+
+      .celebrate-explode__johnny {
+        max-width: 30%;
+      }
+
+      .celebration-actions.is-playing .celebrate-button {
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.96);
+        pointer-events: none;
+      }
+
+      .celebration-actions.is-playing .celebrate-explode {
+        opacity: 1;
+        visibility: visible;
+        transform: scale(0.92);
+        transition-delay: 0s;
+      }
+
+      html.is-embedded .page {
+        height: 100vh;
+        min-height: 0;
+        padding: 8px clamp(10px, 2.5vw, 28px);
+        grid-template-rows: 1fr;
+        overflow: hidden;
+      }
+
+      html.is-embedded .hero {
+        min-height: 0;
+        height: 100%;
+        place-items: center;
+        align-content: center;
+        overflow: hidden;
+      }
+
+      html.is-embedded .celebration,
+      html.is-embedded .celebration-card {
+        height: 100%;
+      }
+
+      html.is-embedded .celebration {
+        width: min(94vw, 1180px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      html.is-embedded .celebration-card {
+        justify-content: center;
+        overflow: hidden;
+      }
+
+      html.is-embedded .celebration-actions {
+        min-height: 86px;
+        margin-top: 8px;
+        padding-bottom: 0;
+      }
+
+      html.is-embedded .celebrate-button {
+        padding: 13px 26px;
+      }
+
+      html.is-embedded .celebration-actions.is-playing {
+        width: 100vw;
+      }
+
+      @keyframes buttonPulse {
+        0%,
+        100% {
+          box-shadow:
+            0 20px 40px rgba(39, 64, 48, 0.26),
+            0 0 0 0 rgba(199, 136, 83, 0.24);
+        }
+        70% {
+          box-shadow:
+            0 26px 52px rgba(39, 64, 48, 0.32),
+            0 0 0 18px rgba(199, 136, 83, 0);
+        }
+      }
+
+      @keyframes gradientShift {
+        0%,
+        100% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+      }
+
+      @keyframes machineCelebrate {
+        0%,
+        100% {
+          transform: translateY(0) rotate(-0.35deg);
+        }
+        50% {
+          transform: translateY(-6px) rotate(0.35deg);
+        }
+      }
+
+      @media (max-width: 760px) {
+        .page {
+          padding-top: 18px;
+        }
+
+        .hero {
+          padding-top: 0;
+        }
+
+        .celebration {
+          width: 100%;
+        }
+
+        .celebrate-button__label {
+          font-size: 0.9rem;
+        }
+
+        .celebration h1 {
+          font-size: 2.7rem;
+        }
+
+        .celebration h2 {
+          font-size: 1.9rem;
+        }
+
+        .celebration .celebration-message {
+          font-size: 1.18rem;
+          line-height: 1.25;
+        }
+
+        .celebration p,
+        .celebration .celebration-note {
+          font-size: 0.98rem;
+        }
+
+        .celebration h2,
+        .celebration .celebration-message,
+        .celebration p,
+        .celebration .celebration-note {
+          max-width: 100%;
+        }
+
+        .celebration-actions {
+          width: 100%;
+        }
+
+        .celebration-actions.is-playing {
+          width: min(calc(100vw - 24px), 1200px);
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <canvas class="confetti-canvas" id="confetti-canvas" aria-hidden="true"></canvas>
+    <audio id="claps-audio" preload="auto" src="../finish-rf/claps.mp3"></audio>
+    <audio id="finish-audio" preload="auto" src="../finish-rf/finish%20game.mp3"></audio>
+
+    <main class="page">
+      <section class="hero" aria-label="RF Barista course completion">
+        <section class="celebration" id="celebration">
+          <div class="celebration-card">
+            <div class="celebration-copy">
+              <div class="finish-copy">
+                <h1>Great job!</h1>
+                <h2>You made it to the end of the course!</h2>
+                <p class="celebration-message">Now that you've completed the Barista Specialization, it's time to put those skills to work.</p>
+                <p class="celebration-note">Remember that there's always more to learn, so keep an eye out for updates and improved processes.</p>
+              </div>
+            </div>
+
+            <div class="celebration-actions">
+              <button class="celebrate-button" id="celebrate-button" type="button">
+                <span class="celebrate-button__label">Celebrate</span>
+              </button>
+              <div class="celebrate-explode" id="celebrate-explode">
+                <img
+                  class="celebrate-explode__machine"
+                  data-src="./capuchinera.png"
+                  alt=""
+                  aria-hidden="true"
+                />
+                <img
+                  class="celebrate-explode__johnny"
+                  data-src="./jump.gif"
+                  alt=""
+                  aria-hidden="true"
+                />
+              </div>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const celebration = document.getElementById("celebration");
+        const celebrateButton = document.getElementById("celebrate-button");
+        const celebrationButtons = [celebrateButton].filter(Boolean);
+        const celebrationActions = document.querySelector(".celebration-actions");
+        const celebrateExplode = document.getElementById("celebrate-explode");
+        const confettiCanvas = document.getElementById("confetti-canvas");
+        const confettiCtx = confettiCanvas ? confettiCanvas.getContext("2d") : null;
+        const clapsAudio = document.getElementById("claps-audio");
+        const finishAudio = document.getElementById("finish-audio");
+        const celebrationDurationMs = 10000;
+        const confettiDurationMs = 2000;
+        const clapsVolume = 1;
+        const finishVolume = 1;
+        let confettiParticles = [];
+        let confettiFrame = 0;
+        let confettiUntil = 0;
+        let confettiStopTimer = 0;
+        let lastConfettiSpawn = 0;
+        let celebrationAudioTimer = 0;
+        let celebrationFadeStartTimer = 0;
+        let celebrationFadeTimer = 0;
+        let celebrationUiTimer = 0;
+
+        function resizeConfettiCanvas() {
+          if (!confettiCanvas || !confettiCtx) return;
+          const dpr = window.devicePixelRatio || 1;
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+          confettiCanvas.width = Math.floor(width * dpr);
+          confettiCanvas.height = Math.floor(height * dpr);
+          confettiCanvas.style.width = `${width}px`;
+          confettiCanvas.style.height = `${height}px`;
+          confettiCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        }
+
+        function createConfettiPiece(width, height) {
+          const palette = [
+            "#274030",
+            "#2f4b36",
+            "#6e8f50",
+            "#c78853",
+            "#dca55c",
+            "#8a734f",
+            "#fff6ed",
+          ];
+
+          return {
+            x: Math.random() * width,
+            y: -20 - Math.random() * height * 0.24,
+            w: 6 + Math.random() * 10,
+            h: 10 + Math.random() * 14,
+            vx: (Math.random() - 0.5) * 2.8,
+            vy: 2.8 + Math.random() * 4.2,
+            gravity: 0.045 + Math.random() * 0.025,
+            rotation: Math.random() * Math.PI,
+            vr: (Math.random() - 0.5) * 0.24,
+            tilt: Math.random() * Math.PI,
+            color: palette[Math.floor(Math.random() * palette.length)],
+            opacity: 1,
+            decay: 0.002 + Math.random() * 0.0022,
+          };
+        }
+
+        function spawnConfettiBatch(count) {
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+          for (let i = 0; i < count; i += 1) {
+            confettiParticles.push(createConfettiPiece(width, height));
+          }
+        }
+
+        function stopConfetti() {
+          if (confettiFrame) {
+            cancelAnimationFrame(confettiFrame);
+            confettiFrame = 0;
+          }
+          if (confettiStopTimer) {
+            window.clearTimeout(confettiStopTimer);
+            confettiStopTimer = 0;
+          }
+          confettiUntil = 0;
+          confettiParticles = [];
+          if (confettiCtx) {
+            confettiCtx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+          }
+        }
+
+        function animateConfetti(timestamp) {
+          if (!confettiCtx) return;
+          const width = window.innerWidth;
+          const height = window.innerHeight;
+
+          if (timestamp < confettiUntil && timestamp - lastConfettiSpawn > 85) {
+            spawnConfettiBatch(Math.max(10, Math.floor(width / 120)));
+            lastConfettiSpawn = timestamp;
+          }
+
+          confettiCtx.clearRect(0, 0, width, height);
+          confettiParticles = confettiParticles.filter((piece) => {
+            piece.vy += piece.gravity;
+            piece.x += piece.vx;
+            piece.y += piece.vy;
+            piece.rotation += piece.vr;
+            piece.tilt += 0.16;
+            piece.opacity -= piece.decay;
+
+            if (piece.opacity <= 0 || piece.y > height + 60) {
+              return false;
+            }
+
+            confettiCtx.save();
+            confettiCtx.globalAlpha = Math.max(piece.opacity, 0);
+            confettiCtx.translate(piece.x, piece.y);
+            confettiCtx.rotate(piece.rotation);
+            confettiCtx.scale(Math.cos(piece.tilt), 1);
+            confettiCtx.fillStyle = piece.color;
+            confettiCtx.fillRect(-piece.w / 2, -piece.h / 2, piece.w, piece.h);
+            confettiCtx.restore();
+            return true;
+          });
+
+          if (timestamp < confettiUntil || confettiParticles.length) {
+            confettiFrame = requestAnimationFrame(animateConfetti);
+          } else {
+            stopConfetti();
+          }
+        }
+
+        function startConfetti(durationMs) {
+          if (!confettiCtx) return;
+          stopConfetti();
+          resizeConfettiCanvas();
+          confettiUntil = performance.now() + durationMs;
+          lastConfettiSpawn = 0;
+          spawnConfettiBatch(Math.max(90, Math.floor(window.innerWidth / 8)));
+          confettiFrame = requestAnimationFrame(animateConfetti);
+          confettiStopTimer = window.setTimeout(stopConfetti, durationMs);
+        }
+
+        function stopApplause() {
+          if (celebrationAudioTimer) {
+            window.clearTimeout(celebrationAudioTimer);
+            celebrationAudioTimer = 0;
+          }
+          if (celebrationFadeStartTimer) {
+            window.clearTimeout(celebrationFadeStartTimer);
+            celebrationFadeStartTimer = 0;
+          }
+          if (celebrationFadeTimer) {
+            window.clearInterval(celebrationFadeTimer);
+            celebrationFadeTimer = 0;
+          }
+
+          [clapsAudio, finishAudio].forEach((audio) => {
+            if (!audio) return;
+            audio.pause();
+            audio.currentTime = 0;
+            audio.loop = false;
+          });
+          if (clapsAudio) clapsAudio.volume = clapsVolume;
+          if (finishAudio) finishAudio.volume = finishVolume;
+        }
+
+        function stopCelebrationVisual() {
+          if (celebrationUiTimer) {
+            window.clearTimeout(celebrationUiTimer);
+            celebrationUiTimer = 0;
+          }
+          celebrationButtons.forEach((button) => {
+            button.disabled = false;
+          });
+          celebration.classList.remove("is-playing");
+          celebrationActions.classList.remove("is-playing");
+
+          if (celebrateExplode) {
+            celebrateExplode.querySelectorAll("img").forEach((img) => img.removeAttribute("src"));
+          }
+        }
+
+        function startCelebrationVisual(durationMs) {
+          if (!celebrationActions) return;
+
+          if (celebrationUiTimer) {
+            window.clearTimeout(celebrationUiTimer);
+            celebrationUiTimer = 0;
+          }
+          celebrationButtons.forEach((button) => {
+            button.disabled = true;
+          });
+          celebration.classList.add("is-playing");
+          celebrationActions.classList.add("is-playing");
+
+          if (celebrateExplode) {
+            const imgs = celebrateExplode.querySelectorAll("img[data-src]");
+            imgs.forEach((img) => img.removeAttribute("src"));
+            requestAnimationFrame(() => {
+              imgs.forEach((img) => img.setAttribute("src", img.dataset.src));
+            });
+          }
+
+          celebrationUiTimer = window.setTimeout(() => {
+            stopCelebrationVisual();
+          }, durationMs);
+        }
+
+        async function startApplause(durationMs) {
+          stopApplause();
+
+          if (!clapsAudio || !finishAudio) return;
+
+          const clapsStartVolume = clapsVolume;
+          const finishStartVolume = finishVolume;
+          const fadeDurationMs = Math.min(2200, Math.max(1400, Math.floor(durationMs * 0.3)));
+          const fadeStartMs = Math.max(0, durationMs - fadeDurationMs);
+
+          clapsAudio.currentTime = 0;
+          finishAudio.currentTime = 0;
+          clapsAudio.volume = clapsStartVolume;
+          finishAudio.volume = finishStartVolume;
+          clapsAudio.loop = true;
+          finishAudio.loop = true;
+
+          await Promise.allSettled([clapsAudio.play(), finishAudio.play()]);
+
+          celebrationFadeStartTimer = window.setTimeout(() => {
+            const fadeStart = performance.now();
+            celebrationFadeTimer = window.setInterval(() => {
+              const elapsed = performance.now() - fadeStart;
+              const progress = Math.min(elapsed / fadeDurationMs, 1);
+              const nextLevel = 1 - progress;
+
+              clapsAudio.volume = Math.max(0, clapsStartVolume * nextLevel);
+              finishAudio.volume = Math.max(0, finishStartVolume * nextLevel);
+
+              if (progress >= 1) {
+                window.clearInterval(celebrationFadeTimer);
+                celebrationFadeTimer = 0;
+              }
+            }, 80);
+          }, fadeStartMs);
+
+          celebrationAudioTimer = window.setTimeout(() => {
+            stopApplause();
+          }, durationMs);
+        }
+
+        function triggerCelebration() {
+          startCelebrationVisual(celebrationDurationMs);
+          startConfetti(celebrationDurationMs);
+          startApplause(celebrationDurationMs).catch(() => {});
+        }
+
+        celebrationButtons.forEach((button) => {
+          button.addEventListener("click", () => {
+            if (button.disabled) return;
+            triggerCelebration();
+          });
+        });
+
+        window.addEventListener("resize", resizeConfettiCanvas, { passive: true });
+        window.addEventListener("pagehide", () => {
+          stopConfetti();
+          stopApplause();
+          stopCelebrationVisual();
+        });
+
+        resizeConfettiCanvas();
+      })();
+    </script>
+  </body>
+</html>
