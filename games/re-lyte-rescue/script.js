@@ -29,34 +29,30 @@ const SIP_POWER = [22, 30, 38, 46, 54];
 const CHARACTER_STATES = [
   {
     id: "dehydrated",
-    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-1.png",
-    alt: "Dehydrated boy looking tired",
+    src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-1.png",
+    alt: "Dehydrated Johnny looking tired",
   },
   {
     id: "thirsty",
-    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-2.png",
-    alt: "Thirsty boy asking for water",
+    src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-2.png",
+    alt: "Thirsty Johnny asking for water",
   },
   {
     id: "recovering",
-    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-3.png",
-    alt: "Boy beginning to recover hydration",
+    src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-3.png",
+    alt: "Johnny beginning to recover hydration",
   },
   {
     id: "retaining",
-    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-4.png",
-    alt: "Boy retaining hydration and smiling",
+    src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-4.png",
+    alt: "Johnny retaining hydration and smiling",
   },
   {
     id: "hydrated",
-    src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-5.png",
-    alt: "Fully hydrated boy celebrating",
+    src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-5.png",
+    alt: "Fully hydrated Johnny celebrating",
   },
 ];
-const HYDRATED_CELEBRATION_FRAMES = Array.from({ length: 12 }, (_, index) => {
-  const frame = String(index + 1).padStart(2, "0");
-  return `../../assets/imgs/png/re-lyte-rescue/hydration-boy-hydrated-celebrate-${frame}.png`;
-});
 const reducedMotionQuery = window.matchMedia
   ? window.matchMedia("(prefers-reduced-motion: reduce)")
   : { matches: false };
@@ -105,8 +101,6 @@ const refs = {
 
 let state = createInitialState();
 let hydrationFrame = 0;
-let celebrationTimer = 0;
-let celebrationFrame = 0;
 let scheduledTimers = [];
 let toastTimer = 0;
 let audioContext = null;
@@ -328,7 +322,6 @@ function clearQueuedWork() {
   scheduledTimers.forEach((timerId) => clearTimeout(timerId));
   scheduledTimers = [];
   cancelAnimationFrame(hydrationFrame);
-  stopHydratedCelebration();
   if (toastTimer) {
     clearTimeout(toastTimer);
     toastTimer = 0;
@@ -379,40 +372,6 @@ function setCharacterSpriteSource(src, alt, stateId) {
   refs.characterSprite.dataset.state = stateId;
 }
 
-function stopHydratedCelebration() {
-  if (!celebrationTimer) return;
-  clearInterval(celebrationTimer);
-  celebrationTimer = 0;
-  celebrationFrame = 0;
-}
-
-function startHydratedCelebration(characterState) {
-  if (!refs.characterSprite) return;
-
-  refs.characterSprite.alt = characterState.alt;
-  refs.characterSprite.dataset.state = characterState.id;
-
-  if (reducedMotionQuery.matches) {
-    stopHydratedCelebration();
-    setCharacterSpriteSource(characterState.src, characterState.alt, characterState.id);
-    return;
-  }
-
-  if (celebrationTimer) return;
-
-  celebrationFrame = 0;
-  setCharacterSpriteSource(
-    HYDRATED_CELEBRATION_FRAMES[celebrationFrame],
-    characterState.alt,
-    characterState.id
-  );
-
-  celebrationTimer = window.setInterval(() => {
-    celebrationFrame = (celebrationFrame + 1) % HYDRATED_CELEBRATION_FRAMES.length;
-    refs.characterSprite.setAttribute("src", HYDRATED_CELEBRATION_FRAMES[celebrationFrame]);
-  }, 82);
-}
-
 function updateSceneClasses() {
   const leakLevel = getLeakLevel();
   const characterState = getCharacterState();
@@ -425,12 +384,6 @@ function updateSceneClasses() {
   refs.character.style.setProperty("--leak-scale", String(0.22 + leakLevel * 0.78));
   refs.character.style.setProperty("--leak-height", `${12 + leakLevel * 72}px`);
 
-  if (state.rescued && characterState.id === "hydrated") {
-    startHydratedCelebration(characterState);
-    return;
-  }
-
-  stopHydratedCelebration();
   if (refs.characterSprite && refs.characterSprite.dataset.state !== characterState.id) {
     setCharacterSpriteSource(characterState.src, characterState.alt, characterState.id);
   }
@@ -771,17 +724,15 @@ refs.overlayReplayBtn.addEventListener("click", advanceProfile);
 
 if (reducedMotionQuery.addEventListener) {
   reducedMotionQuery.addEventListener("change", () => {
-    stopHydratedCelebration();
     render();
   });
 } else if (reducedMotionQuery.addListener) {
   reducedMotionQuery.addListener(() => {
-    stopHydratedCelebration();
     render();
   });
 }
 
-[...CHARACTER_STATES.map(({ src }) => src), ...HYDRATED_CELEBRATION_FRAMES].forEach((src) => {
+CHARACTER_STATES.map(({ src }) => src).forEach((src) => {
   const image = new Image();
   image.src = src;
 });

@@ -28,7 +28,7 @@
       id: "potassium",
       name: "Potassium",
       symbol: "K",
-      image: "../../assets/imgs/hydration-cards/Pa.png",
+      image: "../../assets/imgs/hydration-cards/K.png",
       alt: "Potassium electrolyte character",
       description: "Helps balance fluids and supports muscle and heart function.",
       cue:
@@ -58,37 +58,37 @@
 
   const johnnyFrames = [
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-1.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-1.png",
       alt: "Johnny needs hydration",
       label: "Ready",
       copy: "Start by choosing an electrolyte.",
     },
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-2.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-2.png",
       alt: "Johnny is getting thirsty",
       label: "Started",
       copy: "One electrolyte is in place.",
     },
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-3.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-3.png",
       alt: "Johnny is recovering hydration",
       label: "Recovering",
       copy: "The mix is starting to work.",
     },
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-4.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-4.png",
       alt: "Johnny is retaining hydration",
       label: "Retaining",
       copy: "Johnny is holding onto more hydration.",
     },
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/Hydration 101-ilustration-5.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-5.png",
       alt: "Johnny is hydrated",
       label: "Hydrated",
       copy: "Almost every electrolyte role is matched.",
     },
     {
-      src: "../../assets/imgs/png/re-lyte-rescue/hydration-boy-hydrated-celebrate-01.png",
+      src: "../../assets/imgs/png/re-lyte-rescue/johnny-hydration-5.png",
       alt: "Johnny is celebrating hydration",
       label: "Complete",
       copy: "Every electrolyte role is matched.",

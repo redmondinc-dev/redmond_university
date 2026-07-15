@@ -375,6 +375,11 @@ h1 {
   filter: drop-shadow(0 22px 26px rgba(21, 50, 58, 0.18));
 }
 
+.johnny-scene[data-level="5"] .johnny-img {
+  animation: johnny-complete 0.82s ease-out both;
+  filter: drop-shadow(0 24px 28px rgba(15, 127, 166, 0.26));
+}
+
 .mineral-orbit {
   position: absolute;
   inset: 0;
@@ -876,6 +881,24 @@ h1 {
   100% {
     opacity: 0;
     transform: translate(var(--x), var(--y)) rotate(45deg) scale(0.2);
+  }
+}
+
+@keyframes johnny-complete {
+  0% {
+    transform: translateY(0) scale(1);
+  }
+
+  45% {
+    transform: translateY(-14px) scale(1.07) rotate(-1.5deg);
+  }
+
+  72% {
+    transform: translateY(2px) scale(0.99) rotate(1deg);
+  }
+
+  100% {
+    transform: translateY(0) scale(1.03) rotate(0deg);
   }
 }
 
