@@ -41,7 +41,7 @@
         min-height: 100vh;
         font-family: "Avenir Next", Avenir, "Trebuchet MS", sans-serif;
         color: var(--ink);
-        background: transparent;
+        background: #fff;
         overflow: hidden;
       }
 
@@ -61,38 +61,13 @@
         min-height: 100vh;
         place-items: center;
         padding: clamp(18px, 5vw, 64px);
-        background: linear-gradient(
-          180deg,
-          rgba(5, 5, 5, 0.72) 0%,
-          rgba(5, 5, 5, 0.16) 26%,
-          rgba(5, 5, 5, 0.16) 74%,
-          rgba(5, 5, 5, 0.72) 100%
-        );
+        background: #fff;
         isolation: isolate;
       }
 
       .stage::before,
       .stage::after {
-        content: "";
-        position: fixed;
-        inset: 0;
-        z-index: -1;
-        pointer-events: none;
-      }
-
-      .stage::before {
-        background:
-          linear-gradient(90deg, rgba(255, 203, 77, 0.08) 1px, transparent 1px),
-          linear-gradient(0deg, rgba(255, 203, 77, 0.06) 1px, transparent 1px);
-        background-size: 44px 44px;
-        mask-image: linear-gradient(180deg, transparent, #000 20%, #000 80%, transparent);
-      }
-
-      .stage::after {
-        background:
-          linear-gradient(78deg, transparent 0 36%, rgba(255, 203, 77, 0.24) 37%, transparent 49%),
-          linear-gradient(282deg, transparent 0 38%, rgba(207, 63, 50, 0.2) 39%, transparent 52%);
-        opacity: 0.58;
+        content: none;
       }
 
       .celebration-start {
@@ -163,9 +138,10 @@
 
       .progress-bar-gif {
         display: block;
-        width: 100vw;
-        max-width: none;
+        width: 100%;
+        max-width: 1920px;
         height: auto;
+        margin-inline: auto;
         object-fit: contain;
       }
 
@@ -217,7 +193,7 @@
       html.is-embedded .stage {
         min-height: 0;
         height: 100vh;
-        padding: clamp(12px, 3vw, 32px) 0;
+        padding: clamp(12px, 3vw, 32px);
       }
 
       html.is-embedded .celebration-gif {
@@ -229,7 +205,7 @@
       }
 
       html.is-embedded .progress-bar-gif {
-        width: 100vw;
+        width: 100%;
       }
 
       @keyframes buttonPulse {
@@ -261,7 +237,7 @@
         }
 
         .progress-bar-gif {
-          width: 100vw;
+          width: 100%;
         }
       }
 
@@ -285,7 +261,7 @@
         </button>
         <img
           class="progress-bar-gif"
-          src="./Progress-Bar-4-transparent.gif"
+          src="./4-Progress-Bar-final.gif"
           width="1920"
           height="450"
           alt=""
