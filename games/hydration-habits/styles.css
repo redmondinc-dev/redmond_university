@@ -636,8 +636,8 @@ h2 {
   display: flex;
   align-items: flex-end;
   justify-content: center;
-  width: clamp(150px, 22vw, 230px);
-  height: min(380px, calc(100% - 42px));
+  width: clamp(170px, 25vw, 265px);
+  height: min(420px, calc(100% - 28px));
   transform: translateX(-50%);
 }
 
@@ -921,7 +921,7 @@ h2 {
   }
 
   .character-wrap {
-    width: clamp(126px, 38vw, 170px);
+    width: clamp(145px, 43vw, 195px);
     bottom: 10%;
   }
 

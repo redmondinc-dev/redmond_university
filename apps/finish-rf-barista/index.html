@@ -290,10 +290,12 @@
       }
 
       .celebrate-explode {
+        --artwork-width: min(96vw, 1040px, calc(92vh * 0.9722));
         position: absolute;
         inset: 0;
-        width: 80%;
-        height: 80%;
+        width: var(--artwork-width);
+        height: auto;
+        aspect-ratio: 1050 / 1080;
         margin: auto;
         z-index: 0;
         opacity: 0;
@@ -304,25 +306,28 @@
           transform 160ms ease,
           visibility 0s linear 160ms;
         pointer-events: none;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: clamp(1rem, 3vw, 3rem);
+        display: block;
       }
 
       .celebrate-explode img {
-        width: auto;
-        height: 100%;
+        position: absolute;
+        height: auto;
         object-fit: contain;
       }
 
       .celebrate-explode__machine {
-        max-width: 50%;
+        left: 0;
+        bottom: 12%;
+        z-index: 1;
+        width: 85.714%;
         animation: machineCelebrate 1.8s ease-in-out infinite;
       }
 
       .celebrate-explode__johnny {
-        max-width: 30%;
+        right: 0;
+        bottom: 0;
+        z-index: 2;
+        width: 41.048%;
       }
 
       .celebration-actions.is-playing .celebrate-button {
@@ -496,7 +501,7 @@
               <div class="finish-copy">
                 <h1>Great job!</h1>
                 <h2>You made it to the end of the course!</h2>
-                <p class="celebration-message">Now that you've completed the Barista Specialization, it's time to put those skills to work.</p>
+                <p class="celebration-message">Now that you've completed Kitchen Barista Foundations, it's time to put those skills to work.</p>
                 <p class="celebration-note">Remember that there's always more to learn, so keep an eye out for updates and improved processes.</p>
               </div>
             </div>

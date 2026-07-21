@@ -39,13 +39,6 @@ h2 {
   align-items: center;
 }
 
-.logo-mark {
-  max-height: 100px;
-  width: auto;
-  object-fit: contain;
-  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.14));
-}
-
 p {
   color: #4a5a70;
   font-size: 15px;
