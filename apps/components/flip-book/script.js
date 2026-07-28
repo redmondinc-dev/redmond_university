@@ -19,7 +19,11 @@
 
   if (!root || !book || !spread || !leftPage || !rightPage) return;
 
-  const compactViewport = window.matchMedia("(max-width: 760px)");
+  // A short embedded player needs the single-page layout even when the LMS
+  // reports a relatively wide viewport.
+  const compactViewport = window.matchMedia(
+    "(max-width: 760px), (max-height: 650px) and (max-width: 1000px)"
+  );
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const urlParams = new URLSearchParams(window.location.search);
   const bookSources = {
