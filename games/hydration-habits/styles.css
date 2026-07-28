@@ -35,7 +35,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  font-family: "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0) 44%),
     repeating-linear-gradient(135deg, rgba(0, 166, 206, 0.045) 0 1px, transparent 1px 18px),
@@ -94,7 +94,7 @@ img {
 .small-label {
   display: block;
   color: var(--orange);
-  font-family: "Montserrat", "Avenir Next", Avenir, sans-serif;
+  font-family: "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.68rem;
   font-weight: 800;
   line-height: 1.2;
@@ -111,13 +111,14 @@ p {
 h1,
 h2 {
   margin: 0;
-  font-family: "Montserrat", "Avenir Next", Avenir, sans-serif;
+  font-family: "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-weight: 700;
   letter-spacing: 0;
 }
 
 h1 {
   margin-top: 0.12rem;
+  font-family: "Montserrat", "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   color: var(--teal-dark);
   font-size: clamp(1.55rem, 1.2rem + 1.6vw, 2.45rem);
   line-height: 1.02;
@@ -222,7 +223,7 @@ h2 {
   min-height: 38px;
   place-items: center;
   color: #113238;
-  font-family: "Montserrat", "Avenir Next", Avenir, sans-serif;
+  font-family: "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.9rem;
 }
 
@@ -816,7 +817,7 @@ h2 {
   border-radius: var(--radius);
   color: #ffffff;
   background: var(--teal-dark);
-  font-family: "Montserrat", "Avenir Next", Avenir, sans-serif;
+  font-family: "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.78rem;
   font-weight: 800;
 }

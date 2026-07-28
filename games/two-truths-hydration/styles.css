@@ -35,7 +35,7 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  font-family: "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   background:
     linear-gradient(180deg, rgba(255, 255, 255, 0.68) 0%, rgba(255, 255, 255, 0) 38%),
     repeating-linear-gradient(135deg, rgba(0, 124, 137, 0.045) 0 1px, transparent 1px 16px),
@@ -118,20 +118,20 @@ p {
 h1,
 h2 {
   margin: 0;
-  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-weight: 600;
   letter-spacing: 0;
 }
 
 h1 {
   margin-top: 0.14rem;
+  font-family: "Montserrat", "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-size: 1.58rem;
   line-height: 1.02;
   color: var(--teal-dark);
 }
 
 .intro {
-  max-width: 60ch;
   margin: 0.22rem 0 0;
   color: var(--muted);
   font-size: 0.88rem;
@@ -400,31 +400,12 @@ h1 {
   transform: translateY(6px);
 }
 
-.claim-note {
-  position: relative;
-  z-index: 1;
-  display: none;
-  margin: 0;
-  color: var(--muted);
-  font-size: 0.82rem;
-  font-weight: 600;
-  line-height: 1.34;
-  overflow-wrap: anywhere;
-  opacity: 0;
-  transform: translateY(6px);
-}
-
-.claim-card.is-revealed .truth-badge,
-.claim-card.is-revealed .claim-note {
+.claim-card.is-revealed .truth-badge {
   opacity: 1;
   transform: translateY(0);
   transition:
     opacity 0.22s ease,
     transform 0.22s ease;
-}
-
-.claim-card.is-revealed .claim-note {
-  display: block;
 }
 
 .claim-card.is-revealed {
@@ -437,7 +418,9 @@ h1 {
 }
 
 .claim-card.is-truth .truth-badge {
-  background: var(--green);
+  background:
+    linear-gradient(180deg, rgba(111, 221, 245, 0.94), rgba(20, 142, 184, 0.98)),
+    var(--water);
 }
 
 .claim-card.is-lie {
@@ -446,7 +429,7 @@ h1 {
 }
 
 .claim-card.is-lie .truth-badge {
-  background: var(--red);
+  background: #67b98b;
 }
 
 .claim-card.is-selected {
@@ -671,7 +654,7 @@ h1 {
 
 .mineral-strip {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0.32rem;
   margin-top: 0.48rem;
 }
@@ -688,7 +671,7 @@ h1 {
 
 .stats-card {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 0.45rem;
   margin-top: 0.55rem;
   padding: 0.5rem;
@@ -747,7 +730,7 @@ h1 {
   color: #ffffff;
   border-radius: 50%;
   background: linear-gradient(180deg, var(--teal), var(--teal-dark));
-  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-size: 1.1rem;
   font-weight: 700;
   box-shadow: 0 10px 18px rgba(0, 124, 137, 0.18);
@@ -761,7 +744,7 @@ h1 {
 
 .help-copy strong {
   color: var(--teal-dark);
-  font-family: "Montserrat", "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Avenir", "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-size: 0.92rem;
   line-height: 1.1;
 }

@@ -3,161 +3,25 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Looping Badge Video</title>
-    <style>
-      :root {
-        color-scheme: light;
-      }
-
-      * {
-        box-sizing: border-box;
-      }
-
-      html,
-      body {
-        margin: 0;
-        background: transparent;
-      }
-
-      .video-shell {
-        position: relative;
-        width: min(100vw, 720px);
-        margin: 0 auto;
-        overflow: hidden;
-      }
-
-      video {
-        display: block;
-        width: 100%;
-        height: auto;
-        object-fit: contain;
-        background: #000;
-      }
-
-      .start-audio {
-        position: absolute;
-        inset: auto 12px 12px auto;
-        border: 0;
-        border-radius: 999px;
-        padding: 8px 12px;
-        font: 600 14px/1.2 "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
-        background: rgba(0, 0, 0, 0.78);
-        color: #fff;
-        cursor: pointer;
-      }
-
-      .start-audio[hidden] {
-        display: none;
-      }
-    </style>
+    <title>Redmond University Video</title>
+    <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="video-shell">
-      <video
-        id="badge-video"
-        src="./badges.mp4"
-        preload="auto"
-        autoplay
-        loop
-        muted
-        playsinline
-      ></video>
-      <button id="start-audio" class="start-audio" type="button" hidden>
-        Enable sound
-      </button>
-    </div>
+    <main id="video-frame" class="video-frame" data-frame="wavy">
+      <svg
+        id="frame-wave"
+        class="frame-wave"
+        aria-hidden="true"
+        focusable="false"
+        preserveAspectRatio="none"
+      >
+        <path id="frame-wave-path"></path>
+      </svg>
+    </main>
 
-    <script>
-      (function () {
-        const copy = {
-          en: {
-            pageTitle: "Looping Badge Video",
-            enableAudio: "Enable sound",
-          },
-          es: {
-            pageTitle: "Video de Insignia en Bucle",
-            enableAudio: "Activar sonido",
-          },
-        };
-        const params = new URLSearchParams(window.location.search);
-        const requestedLang = (params.get("lang") || "").toLowerCase();
-        const lang = requestedLang === "es" || requestedLang === "en" ? requestedLang : "en";
-        const dictionary = copy[lang];
+    <p id="video-error" class="video-error" role="alert" hidden></p>
 
-        document.documentElement.lang = lang;
-        document.title = dictionary.pageTitle;
-
-        const video = document.getElementById("badge-video");
-        const startButton = document.getElementById("start-audio");
-        startButton.textContent = dictionary.enableAudio;
-        const unlockEvents = ["pointerdown", "touchstart", "keydown"];
-        let audioUnlocked = false;
-
-        async function tryPlayWithAudio() {
-          video.muted = false;
-          video.volume = 1;
-          await video.play();
-        }
-
-        async function startMutedLoop() {
-          video.muted = true;
-          video.volume = 1;
-          try {
-            await video.play();
-          } catch {}
-        }
-
-        async function startWithAudio() {
-          if (audioUnlocked) {
-            return;
-          }
-          try {
-            await tryPlayWithAudio();
-            audioUnlocked = true;
-            startButton.hidden = true;
-            removeUnlockListeners();
-          } catch {
-            startButton.hidden = false;
-          }
-        }
-
-        function addUnlockListeners() {
-          unlockEvents.forEach((eventName) => {
-            document.addEventListener(eventName, startWithAudio, {
-              capture: true,
-              passive: true
-            });
-          });
-        }
-
-        function removeUnlockListeners() {
-          unlockEvents.forEach((eventName) => {
-            document.removeEventListener(eventName, startWithAudio, {
-              capture: true
-            });
-          });
-        }
-
-        video.addEventListener(
-          "canplay",
-          async function () {
-            try {
-              await tryPlayWithAudio();
-              audioUnlocked = true;
-              startButton.hidden = true;
-            } catch {
-              await startMutedLoop();
-              addUnlockListeners();
-              startButton.hidden = false;
-            }
-          },
-          { once: true }
-        );
-
-        startButton.addEventListener("click", async function () {
-          await startWithAudio();
-        });
-      })();
-    </script>
+    <script src="./videos.js"></script>
+    <script src="./script.js"></script>
   </body>
 </html>

@@ -28,6 +28,7 @@
         chooseLie: "Which statement is the lie?",
         truth: "TRUTH",
         lie: "LIE",
+        foundLie: "You found the lie",
         correct: "Correct",
         incorrect: "Not it",
         correctTitle: "That was the lie.",
@@ -281,7 +282,6 @@
     bottlePercent: document.getElementById("bottle-percent"),
     scoreValue: document.getElementById("score-value"),
     streakValue: document.getElementById("streak-value"),
-    knowledgeValue: document.getElementById("knowledge-value"),
     recapHelpBtn: document.getElementById("recap-help-btn"),
     recapCount: document.getElementById("recap-count"),
     recapModal: document.getElementById("recap-modal"),
@@ -473,6 +473,7 @@
       const revealed = Boolean(answer);
       const selected = answer && answer.selectedClaimIndex === claimIndex;
       const isLie = !claim.truth;
+      const revealText = selected && answer.correct && isLie ? ui.foundLie : isLie ? ui.lie : ui.truth;
 
       button.type = "button";
       button.className = "claim-card";
@@ -486,16 +487,13 @@
         if (selected) {
           button.classList.add("is-selected", answer.correct ? "is-correct-pick" : "is-wrong-pick");
         }
-        const revealLabel = `${claim.text} ${isLie ? ui.lie : ui.truth}${
-          claim.note ? `. ${claim.note}` : "."
-        }`;
-        button.setAttribute("aria-label", revealLabel);
+        button.setAttribute("aria-label", `${claim.text} ${revealText}.`);
       }
 
       button.append(
         createCardTop(round.topic, cardNumber),
         createElement("span", "claim-text", claim.text),
-        createRevealRow(isLie ? ui.lie : ui.truth, claim.note)
+        createRevealRow(revealText)
       );
 
       button.addEventListener("click", () => handleCardSelect(claimIndex, button));
@@ -511,10 +509,9 @@
     return top;
   }
 
-  function createRevealRow(label, note) {
+  function createRevealRow(label) {
     const wrap = createElement("span", "reveal-row");
     wrap.append(createElement("span", "truth-badge", label));
-    if (note) wrap.append(createElement("span", "claim-note", note));
     return wrap;
   }
 
@@ -549,12 +546,9 @@
   }
 
   function renderStats() {
-    const ui = getUi();
-    const completed = getCompletedCount();
     const total = getRounds().length;
     refs.scoreValue.textContent = `${state.score} / ${total}`;
     refs.streakValue.textContent = String(state.streak);
-    refs.knowledgeValue.textContent = `${completed * TOTAL_CARDS_PER_ROUND} ${ui.cards}`;
   }
 
   function renderTakeaways() {
