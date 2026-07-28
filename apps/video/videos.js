@@ -12,16 +12,9 @@ window.REDMOND_VIDEOS = [
       "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen",
     referrerPolicy: "strict-origin-when-cross-origin",
     frame: {
-      style: "wavy",
+      style: "line",
       color: "#2E3B2B",
-      size: 8,
-      wave: {
-        period: 44,
-        amplitude: 5.5,
-        strokeWidth: 5,
-        cornerRadius: 14,
-        cornerTip: 5,
-      },
+      size: 6,
     },
   },
   {
@@ -33,9 +26,9 @@ window.REDMOND_VIDEOS = [
     width: 421,
     height: 469,
     frame: {
-      style: "wavy",
+      style: "line",
       color: "#2E3B2B",
-      size: 18,
+      size: 6,
     },
   },
   {
@@ -46,9 +39,9 @@ window.REDMOND_VIDEOS = [
     width: 720,
     height: 167,
     frame: {
-      style: "wavy",
+      style: "line",
       color: "#2E3B2B",
-      size: 18,
+      size: 6,
     },
     playback: {
       autoplay: true,
@@ -67,9 +60,9 @@ window.REDMOND_VIDEOS = [
   //   width: 720,
   //   height: 405,
   //   frame: {
-  //     style: "wavy",
+  //     style: "line",
   //     color: "#2E3B2B",
-  //     size: 18,
+  //     size: 6,
   //   },
   //   playback: {
   //     autoplay: false,

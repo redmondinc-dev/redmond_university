@@ -39,7 +39,10 @@
   const height = positiveNumber(config.height, 405);
   const frameSize = positiveNumber(config.frame?.size, 18);
   const frameColor = validColor(config.frame?.color, "#2E3B2B");
-  const frameStyle = config.frame?.style === "rounded" ? "rounded" : "wavy";
+  const allowedFrameStyles = new Set(["line", "rounded", "wavy"]);
+  const frameStyle = allowedFrameStyles.has(config.frame?.style)
+    ? config.frame.style
+    : "line";
   const waveConfig = config.frame?.wave || {};
   const wavePeriod = positiveNumber(waveConfig.period, 44);
   const waveAmplitude = positiveNumber(waveConfig.amplitude, 5.5);
