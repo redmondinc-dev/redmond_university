@@ -14,7 +14,18 @@
         <header>
             <div class="title-stack">
                 <h1>Build Your Smoothie</h1>
-                <h2>Strawberry Flax (16oz)</h2>
+                <p class="recipe-prompt">Choose a smoothie to begin</p>
+                <div class="recipe-selector" role="group" aria-label="Choose a smoothie recipe">
+                    <button class="recipe-btn active" type="button" data-recipe="strawberry-flax" aria-pressed="true">
+                        <span>🍓</span>
+                        Strawberry Flax
+                    </button>
+                    <button class="recipe-btn" type="button" data-recipe="tropical-ginger" aria-pressed="false">
+                        <span>🥭</span>
+                        Tropical Ginger
+                    </button>
+                </div>
+                <h2 id="recipe-title">Strawberry Flax</h2>
             </div>
         </header>
 

@@ -1,74 +1,38 @@
-const ingredients = [
-  {
-    id: "peanut",
-    name: "Peanut Butter",
-    measure: "2 tbsp",
-    image: "assets/peanut-butter.png",
-    required: false,
-    order: 1,
+const recipes = {
+  "strawberry-flax": {
+    name: "Strawberry Flax",
+    completedColor: [255, 130, 170],
+    ingredients: [
+      { id: "milk", name: "Milk", measure: "6 oz", image: "assets/milk.png" },
+      { id: "maple", name: "Maple Syrup", measure: "1.5 tbsp", image: "assets/maple-syrup.png" },
+      { id: "flax", name: "Flax Seeds", measure: "2 tbsp", image: "assets/flax-seeds.png" },
+      { id: "almond", name: "Almond Butter", measure: "2 tbsp", image: "assets/almond-butter.png" },
+      { id: "strawberries", name: "Frozen Strawberries", measure: "3/4 cup", image: "assets/strawberries.png" },
+      { id: "protein", name: "Protein Powder", measure: "1 scoop", image: "assets/protein-powder.svg" },
+      { id: "ice", name: "Ice", measure: "1/2 cup", image: "assets/ice.png" },
+    ],
   },
-  {
-    id: "almond",
-    name: "Almond Butter",
-    measure: "2 tbsp",
-    image: "assets/almond-butter.png",
-    required: true,
-    order: 2,
+  "tropical-ginger": {
+    name: "Tropical Ginger",
+    completedColor: [247, 175, 55],
+    ingredients: [
+      { id: "orange-juice", name: "Orange Juice", measure: "6 oz", image: "assets/orange-juice.svg" },
+      { id: "ginger", name: "Ginger", measure: "1 tbsp", image: "assets/ginger.svg" },
+      { id: "honey", name: "Honey", measure: "3 tbsp", image: "assets/honey.svg" },
+      { id: "mango", name: "Frozen Mango", measure: "1/2 cup", image: "assets/mango.svg" },
+      { id: "pineapple", name: "Frozen Pineapple", measure: "1/2 cup", image: "assets/pineapple.svg" },
+      { id: "ice", name: "Ice", measure: "3/4 cup", image: "assets/ice.png" },
+    ],
   },
-  {
-    id: "maple",
-    name: "Maple Syrup",
-    measure: "2 tbsp",
-    image: "assets/maple-syrup.png",
-    required: true,
-    order: 3,
-  },
-  {
-    id: "flax",
-    name: "Flax Seeds",
-    measure: "2 tbsp",
-    image: "assets/flax-seeds.png",
-    required: true,
-    order: 4,
-  },
-  {
-    id: "strawberries",
-    name: "Strawberries",
-    measure: "3/4 cup",
-    image: "assets/strawberries.png",
-    required: true,
-    order: 5,
-  },
-  {
-    id: "milk",
-    name: "Milk",
-    measure: "4 oz",
-    image: "assets/milk.png",
-    required: true,
-    order: 6,
-  },
-  {
-    id: "ice",
-    name: "Ice",
-    measure: "1 cup",
-    image: "assets/ice.png",
-    required: true,
-    order: 7,
-  },
-];
+};
 
-const orderedIngredients = [...ingredients].sort(
-  (a, b) => (a.order ?? Number.MAX_SAFE_INTEGER) - (b.order ?? Number.MAX_SAFE_INTEGER)
-);
-const requiredIds = orderedIngredients
-  .filter(({ required }) => required !== false)
-  .map(({ id }) => id);
-const correctOrder = requiredIds;
+let activeRecipeId = "strawberry-flax";
+let ingredients = recipes[activeRecipeId].ingredients;
+let requiredIds = ingredients.map(({ id }) => id);
+let correctOrder = [...requiredIds];
 
 const LAYER_HEIGHT = 24;
 const BLEND_DURATION_MS = 5000;
-const NON_INGREDIENT_MESSAGE = "Peanut Butter is not a Strawberry Flax ingredient";
-
 const blendContent = document.querySelector(".blend-content");
 const dropzone = document.getElementById("dropzone");
 const jarInner = document.querySelector(".jar-inner");
@@ -81,6 +45,8 @@ const prevBtn = document.querySelector(".carousel-btn.prev");
 const nextBtn = document.querySelector(".carousel-btn.next");
 const ingredientWarning = document.getElementById("ingredient-warning");
 const warningCopy = ingredientWarning?.querySelector(".warning-copy");
+const recipeTitle = document.getElementById("recipe-title");
+const recipeButtons = document.querySelectorAll(".recipe-btn");
 let isBlending = false;
 let addedIngredients = [];
 let audioCtx;
@@ -91,13 +57,18 @@ let isLidOpen = false;
 let lidCloseTimeout = null;
 let warningTimeoutId = null;
 const ingredientColors = {
-  peanut: [198, 146, 86],
   almond: [210, 170, 120],
   maple: [230, 140, 70],
   flax: [185, 160, 90],
   strawberries: [255, 95, 130],
   milk: [245, 245, 255],
   ice: [200, 230, 255],
+  protein: [235, 222, 194],
+  "orange-juice": [255, 174, 45],
+  ginger: [218, 180, 105],
+  honey: [244, 173, 45],
+  mango: [255, 184, 43],
+  pineapple: [255, 217, 76],
 };
 
 function createIngredientCard({ id, name, measure, image }) {
@@ -138,13 +109,37 @@ function createIngredientCard({ id, name, measure, image }) {
 
 function renderIngredientCards() {
   carousel.innerHTML = "";
-  orderedIngredients.forEach((ingredient) => {
+  ingredients.forEach((ingredient) => {
     const card = createIngredientCard(ingredient);
     carousel.appendChild(card);
   });
 }
 
 renderIngredientCards();
+
+function selectRecipe(recipeId) {
+  if (!recipes[recipeId] || recipeId === activeRecipeId) return;
+
+  activeRecipeId = recipeId;
+  ingredients = recipes[activeRecipeId].ingredients;
+  requiredIds = ingredients.map(({ id }) => id);
+  correctOrder = [...requiredIds];
+  recipeTitle.textContent = recipes[activeRecipeId].name;
+
+  recipeButtons.forEach((button) => {
+    const isActive = button.dataset.recipe === activeRecipeId;
+    button.classList.toggle("active", isActive);
+    button.setAttribute("aria-pressed", String(isActive));
+  });
+
+  resetGame();
+  renderIngredientCards();
+  carousel.scrollLeft = 0;
+}
+
+recipeButtons.forEach((button) => {
+  button.addEventListener("click", () => selectRecipe(button.dataset.recipe));
+});
 
 function setLidOpen(open) {
   if (!lid) return;
@@ -240,11 +235,6 @@ dropzone.addEventListener("drop", (e) => {
 
   if (!ingredient || addedIngredients.includes(ingredientId)) {
     alert("That ingredient is already inside or not valid.");
-    return;
-  }
-
-  if (ingredient.required === false) {
-    showIngredientWarning(NON_INGREDIENT_MESSAGE);
     return;
   }
 
@@ -488,7 +478,8 @@ function renderSmoothieFill(
   fill.classList.toggle("completed", isCompleted);
 
   let rgb = getBlendColor(addedIngredients);
-  const targetTone = isCompleted ? [255, 130, 170] : [255, 140, 170];
+  const recipeTone = recipes[activeRecipeId].completedColor;
+  const targetTone = isCompleted ? recipeTone : blendTowards(recipeTone, [255, 255, 255], 0.18);
   rgb = blendTowards(rgb, targetTone, isCompleted ? 0.55 : 0.25);
 
   const top = adjustColor(rgb, 22);
