@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300">
-  <rect width="300" height="300" fill="#fff4cd"/>
-  <path d="M94 75h112l19 39-15 125c-3 24-117 24-120 0L75 114z" fill="#f5b51b" stroke="#c98208" stroke-width="7"/>
-  <path d="M105 48h90v38h-90z" fill="#f1d052" stroke="#b8860b" stroke-width="7"/>
-  <path d="M82 125h136" stroke="#ffe486" stroke-width="13" opacity=".8"/>
-  <text x="150" y="190" text-anchor="middle" font-family="Arial,sans-serif" font-size="28" font-weight="700" fill="#8b5700">HONEY</text>
-</svg>
