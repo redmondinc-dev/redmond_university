@@ -333,7 +333,11 @@ startBtn?.addEventListener("click", startBlend);
 resetBtn.addEventListener("click", resetGame);
 
 function scrollCarousel(direction) {
-  const cardWidth = 170; // card width + gap
+  const firstCard = carousel.querySelector(".card");
+  const trackStyles = getComputedStyle(carousel);
+  const cardWidth =
+    (firstCard?.getBoundingClientRect().width || 152) +
+    (parseFloat(trackStyles.columnGap || trackStyles.gap) || 14);
   carousel.scrollBy({ left: direction * cardWidth, behavior: "smooth" });
 }
 

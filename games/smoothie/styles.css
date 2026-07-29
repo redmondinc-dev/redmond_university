@@ -1300,6 +1300,97 @@ main {
   .blender { width: 100%; }
 }
 
+/* Keep the full game visible on compact laptop screens (for example 13" MacBook Air). */
+@media (min-width: 641px) and (max-height: 900px) {
+  .container {
+    max-width: 1120px;
+    padding: 10px 18px 18px;
+  }
+
+  header {
+    gap: 4px;
+    margin-bottom: 4px;
+  }
+
+  h1 {
+    font-size: 24px;
+    margin-bottom: 0;
+  }
+
+  h2 {
+    font-size: 15px;
+    margin: 0;
+  }
+
+  .recipe-prompt {
+    font-size: 13px;
+    margin: 0 0 5px;
+  }
+
+  .recipe-selector {
+    gap: 8px;
+    margin-bottom: 5px;
+  }
+
+  .recipe-btn {
+    min-width: 170px;
+    padding: 7px 14px;
+    border-radius: 11px;
+    font-size: 13px;
+  }
+
+  main {
+    gap: 2px;
+  }
+
+  .ingredients-carousel {
+    max-width: 1000px;
+  }
+
+  .carousel-header {
+    margin-bottom: 2px;
+  }
+
+  .carousel-header p {
+    font-size: 13px;
+  }
+
+  .carousel-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .carousel-track {
+    gap: 9px;
+    padding: 4px 5px 5px;
+  }
+
+  .card {
+    min-width: 112px;
+    max-width: 120px;
+    min-height: 132px;
+    padding: 6px;
+    gap: 3px;
+  }
+
+  .card h3 {
+    font-size: 11px;
+  }
+
+  .card p {
+    font-size: 10px;
+  }
+
+  .blender-zone {
+    padding: 0;
+  }
+
+  .blender {
+    width: 460px;
+    zoom: 0.68;
+  }
+}
+
 @media (max-width: 640px) {
   .reset-row { right: 12px; bottom: 12px; }
   .card {
