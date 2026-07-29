@@ -8,16 +8,16 @@
       @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap");
 
       :root {
-        --card-width: clamp(320px, 30vw, 380px);
-        --card-height: 448px;
-        --card-radius: 18px;
-        --card-gap: 18px;
+        --card-width: clamp(220px, 20vw, 260px);
+        --card-height: 330px;
+        --card-radius: 14px;
+        --card-gap: 14px;
         --ink: #111111;
         --accent: #111111;
         --border: rgba(17, 17, 17, 0.24);
         --paper: #ffffff;
         --back: #ffffff;
-        --shadow: 0 16px 34px rgba(0, 0, 0, 0.14);
+        --shadow: 0 10px 24px rgba(0, 0, 0, 0.13);
       }
 
       * {
@@ -30,14 +30,14 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 30px 20px;
+        padding: 16px;
         color: var(--ink);
         background: transparent;
         font-family: "Avenir", "Avenir Next", "Segoe UI", sans-serif;
       }
 
       .cards-board {
-        width: min(1480px, 100%);
+        width: min(1120px, 100%);
         container-type: inline-size;
         background: #ffffff;
       }
@@ -48,7 +48,7 @@
         grid-template-columns: repeat(2, minmax(0, var(--card-width)));
         justify-content: center;
         gap: var(--card-gap);
-        padding: clamp(14px, 2vw, 24px);
+        padding: clamp(10px, 1.4vw, 16px);
       }
 
       .hydration-card {
@@ -126,8 +126,8 @@
       .card-back {
         transform: rotateY(180deg);
         flex-direction: column;
-        gap: 20px;
-        padding: 34px 28px;
+        gap: 13px;
+        padding: 24px 20px;
         background: var(--back);
         text-align: center;
       }
@@ -136,7 +136,7 @@
         margin: 0;
         color: var(--accent);
         font-family: "Montserrat", "Avenir Next", "Segoe UI", sans-serif;
-        font-size: clamp(2rem, 2.3vw, 2.45rem);
+        font-size: clamp(1.35rem, 1.6vw, 1.7rem);
         font-weight: 700;
         letter-spacing: 0.08em;
         line-height: 1.04;
@@ -146,22 +146,47 @@
 
       .card-copy {
         margin: 0;
-        font-size: clamp(1.2rem, 1.45vw, 1.48rem);
+        font-size: clamp(0.92rem, 1.05vw, 1.08rem);
         line-height: 1.35;
         text-wrap: pretty;
       }
 
-      @container (min-width: 1382px) {
+      @container (min-width: 980px) {
         .cards-grid {
           grid-template-columns: repeat(4, minmax(0, 1fr));
         }
       }
 
+      @media (min-width: 981px) and (max-height: 900px) {
+        :root {
+          --card-width: 238px;
+          --card-height: 304px;
+          --card-gap: 12px;
+        }
+
+        .cards-board {
+          width: min(1040px, 100%);
+        }
+
+        .card-back {
+          gap: 10px;
+          padding: 20px 16px;
+        }
+
+        .card-title {
+          font-size: 1.38rem;
+        }
+
+        .card-copy {
+          font-size: 0.9rem;
+        }
+      }
+
       @media (max-width: 620px) {
         :root {
-          --card-width: clamp(155px, 44vw, 200px);
-          --card-height: clamp(280px, 78vw, 330px);
-          --card-gap: 14px;
+          --card-width: clamp(140px, 42vw, 180px);
+          --card-height: clamp(220px, 62vw, 270px);
+          --card-gap: 10px;
         }
 
         body {
@@ -174,11 +199,11 @@
         }
 
         .card-title {
-          font-size: clamp(1.24rem, 7.2vw, 1.55rem);
+          font-size: clamp(1.05rem, 5.8vw, 1.35rem);
         }
 
         .card-copy {
-          font-size: clamp(0.92rem, 4.6vw, 1.05rem);
+          font-size: clamp(0.78rem, 4vw, 0.94rem);
         }
       }
 
