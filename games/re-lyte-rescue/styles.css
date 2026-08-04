@@ -56,7 +56,7 @@ button {
 
 .hero {
   display: grid;
-  grid-template-columns: minmax(180px, 232px) minmax(0, 1fr) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 0.75rem;
   margin-bottom: 0.55rem;
@@ -65,20 +65,6 @@ button {
   border-radius: var(--radius);
   background: rgba(255, 253, 248, 0.82);
   box-shadow: 0 16px 34px rgba(18, 56, 70, 0.08);
-}
-
-.brand-lockup {
-  display: inline-flex;
-  align-items: center;
-  min-width: 0;
-}
-
-.brand-logo {
-  display: block;
-  width: min(100%, 220px);
-  height: auto;
-  max-height: 32px;
-  object-fit: contain;
 }
 
 .hero-copy {
@@ -1997,11 +1983,7 @@ h1 {
 
 @media (max-width: 1050px) {
   .hero {
-    grid-template-columns: 170px minmax(0, 1fr) auto;
-  }
-
-  .brand-logo {
-    max-height: 28px;
+    grid-template-columns: minmax(0, 1fr) auto;
   }
 }
 
@@ -2071,11 +2053,6 @@ h1 {
     align-items: start;
     gap: 0.45rem;
     padding: 0.5rem;
-  }
-
-  .brand-logo {
-    width: min(190px, 64vw);
-    max-height: 24px;
   }
 
   .hero-actions {

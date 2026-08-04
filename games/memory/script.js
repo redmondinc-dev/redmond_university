@@ -1,55 +1,51 @@
 (function () {
   "use strict";
 
-  const flavors = [
+  const products = [
     {
-      id: "mixed-berry",
-      name: "Mixed Berry",
-      image: "assets/remixedberry.webp",
+      id: "hydration",
+      name: "Re-Lyte Hydration",
+      image: "assets/re-lyte-hydration.webp",
+      description: "Our most basic product, perfect for the everyday hydration needs of healthy adults.",
     },
     {
-      id: "grape",
-      name: "Grape",
-      image: "assets/grape.webp",
+      id: "kids",
+      name: "Re-Lyte Kids",
+      image: "assets/re-lyte-kids.webp",
+      description: "Balanced electrolytes for smaller, developing bodies, made with clean Real Salt minerals, naturally sourced colors and flavors, and stevia.",
     },
     {
-      id: "unflavored",
-      name: "Unflavored",
-      image: "assets/unflavored.webp",
+      id: "pre-workout",
+      name: "Re-Lyte Pre-Workout",
+      image: "assets/re-lyte-pre-workout.webp",
+      description: "Our highest-caffeine formula (150 mg), with amino acids to fuel workouts and support muscle recovery.",
     },
     {
-      id: "watermelon",
-      name: "Watermelon Lime",
-      image: "assets/rewatermelon.webp",
+      id: "energy",
+      name: "Re-Lyte Energy",
+      image: "assets/re-lyte-energy.webp",
+      description: "Designed for daily energy without jitters or crashes, with a lighter 120 mg dose of caffeine.",
     },
     {
-      id: "grapefruit",
-      name: "Grapefruit",
-      image: "assets/grapefruit.webp",
+      id: "immunity",
+      name: "Re-Lyte Immunity",
+      image: "assets/re-lyte-immunity.webp",
+      description: "A clean daily formula that blends hydration and immune support using electrolytes, vitamins, and herbs.",
     },
     {
-      id: "lemon-lime",
-      name: "Lemon Lime",
-      image: "assets/relemonlime.webp",
-    },
-    {
-      id: "pina-colada",
-      name: "Pina Colada",
-      image: "assets/repinacolada.webp",
-    },
-    {
-      id: "mango",
-      name: "Mango",
-      image: "assets/remango.webp",
+      id: "capsules",
+      name: "Re-Lyte Capsules",
+      image: "assets/re-lyte-capsules.webp",
+      description: "Convenient, no-mix electrolyte support. Energy Boost Capsules combine herbal energizers like ginseng and maca for sustained lift.",
     },
   ];
 
   const resultTiers = [
     {
       maxAttempts: 10,
-      title: "Flavor master",
+      title: "Product master",
       kicker: "Excellent memory",
-      copy: "You found the pairs with very few extra flips. Your recall was sharp from the start.",
+      copy: "You matched the products and descriptions with very few extra flips. Your recall was sharp from the start.",
     },
     {
       maxAttempts: 14,
@@ -61,7 +57,7 @@
       maxAttempts: 18,
       title: "Steady progress",
       kicker: "Game complete",
-      copy: "You found every pair. A few more rounds will make those flavor locations easier to remember.",
+      copy: "You found every pair. A few more rounds will make the product details easier to remember.",
     },
     {
       maxAttempts: Infinity,
@@ -120,9 +116,9 @@
 
   function buildDeck() {
     return shuffle(
-      flavors.flatMap((flavor) => [
-        { ...flavor, cardId: `${flavor.id}-a`, matched: false },
-        { ...flavor, cardId: `${flavor.id}-b`, matched: false },
+      products.flatMap((product) => [
+        { ...product, kind: "product", cardId: `${product.id}-product`, matched: false },
+        { ...product, kind: "description", cardId: `${product.id}-description`, matched: false },
       ]),
     );
   }
@@ -132,17 +128,19 @@
     button.className = "memory-card";
     button.type = "button";
     button.dataset.index = String(index);
-    button.dataset.flavor = card.id;
-    button.setAttribute("aria-label", `Card ${index + 1}. Hidden flavor.`);
+    button.dataset.product = card.id;
+    button.setAttribute("aria-label", `Card ${index + 1}. Hidden product or description.`);
     button.setAttribute("aria-pressed", "false");
     button.innerHTML = `
       <span class="card-inner">
         <span class="card-face card-back" aria-hidden="true">
           <strong>H2O</strong>
         </span>
-        <span class="card-face card-front">
-          <img src="${card.image}" alt="${card.name} Re-Lyte" draggable="false" />
-          <span class="flavor-name">${card.name}</span>
+        <span class="card-face card-front card-front--${card.kind}">
+          ${card.kind === "product"
+            ? `<img src="${card.image}" alt="${card.name}" draggable="false" />`
+            : `<span class="product-description">${card.description}</span>`}
+          <span class="product-name">${card.kind === "product" ? card.name : "Which product is it?"}</span>
         </span>
       </span>
     `;
@@ -156,8 +154,8 @@
 
   function updateStats() {
     refs.attempts.textContent = String(state.attempts);
-    refs.matches.textContent = `${state.matches} / ${flavors.length}`;
-    refs.progressFill.style.width = `${(state.matches / flavors.length) * 100}%`;
+    refs.matches.textContent = `${state.matches} / ${products.length}`;
+    refs.progressFill.style.width = `${(state.matches / products.length) * 100}%`;
   }
 
   function getCardButton(index) {
@@ -208,7 +206,7 @@
 
     button.classList.add("is-flipped");
     button.setAttribute("aria-pressed", "true");
-    button.setAttribute("aria-label", `Card ${index + 1}. ${card.name}.`);
+    button.setAttribute("aria-label", `Card ${index + 1}. ${card.kind === "product" ? card.name : card.description}`);
   }
 
   function hideCard(index) {
@@ -217,7 +215,7 @@
 
     button.classList.remove("is-flipped", "is-miss", ...compareClasses);
     button.setAttribute("aria-pressed", "false");
-    button.setAttribute("aria-label", `Card ${index + 1}. Hidden flavor.`);
+    button.setAttribute("aria-label", `Card ${index + 1}. Hidden product or description.`);
   }
 
   function markMatch(firstIndex, secondIndex) {
@@ -238,11 +236,11 @@
       button.setAttribute("aria-label", `${first.name} matched.`);
     });
 
-    refs.live.textContent = `${first.name} pair matched. ${state.matches} of ${flavors.length} pairs found.`;
+    refs.live.textContent = `${first.name} pair matched. ${state.matches} of ${products.length} pairs found.`;
     playTone("match");
     updateStats();
 
-    if (state.matches === flavors.length) {
+    if (state.matches === products.length) {
       window.setTimeout(finishGame, 520);
     }
   }
@@ -287,7 +285,7 @@
     const first = state.cards[firstIndex];
     const second = state.cards[secondIndex];
 
-    if (first.id === second.id) {
+    if (first.id === second.id && first.kind !== second.kind) {
       state.flipped = [];
       state.locked = false;
       markMatch(firstIndex, secondIndex);
@@ -303,7 +301,7 @@
 
   function finishGame() {
     const tier = getResultTier();
-    const efficiency = Math.round((flavors.length / state.attempts) * 100);
+    const efficiency = Math.round((products.length / state.attempts) * 100);
 
     refs.resultKicker.textContent = tier.kicker;
     refs.resultTitle.textContent = tier.title;

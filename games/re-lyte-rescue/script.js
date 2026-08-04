@@ -6,19 +6,19 @@ const ELECTROLYTES = [
 ];
 const TRAINING_PROFILES = [
   {
-    name: "Mia",
+    name: "Jonny",
     context: "Soccer practice day",
     scoops: 1,
     message: "Practice day. I need one scoop.",
   },
   {
-    name: "Jordan",
+    name: "Jonny",
     context: "Long warehouse shift",
     scoops: 2,
     message: "Long shift. Count two scoops today.",
   },
   {
-    name: "Sam",
+    name: "Jonny",
     context: "Hot trail afternoon",
     scoops: 3,
     message: "Big heat day. I need three scoops.",

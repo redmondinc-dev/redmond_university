@@ -255,8 +255,8 @@ h2 {
 
 .memory-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 158px));
-  gap: 0.62rem;
+  grid-template-columns: repeat(3, minmax(0, 260px));
+  gap: 0.72rem;
   justify-content: center;
 }
 
@@ -264,7 +264,7 @@ h2 {
   position: relative;
   display: block;
   width: 100%;
-  aspect-ratio: 1;
+  aspect-ratio: 4 / 3;
   padding: 0;
   border: 0;
   border-radius: var(--radius);
@@ -294,53 +294,8 @@ h2 {
 }
 
 .memory-card.is-flipped:not(.is-matched) {
-  z-index: 12;
-  filter: drop-shadow(0 22px 34px rgba(21, 50, 58, 0.28));
-  transform: scale(1.6);
-}
-
-.memory-card.is-flipped:not(.is-matched):hover {
-  transform: scale(1.6);
-}
-
-.memory-card:nth-child(4n + 1).is-flipped:not(.is-matched) {
-  transform-origin: left center;
-}
-
-.memory-card:nth-child(4n).is-flipped:not(.is-matched) {
-  transform-origin: right center;
-}
-
-.memory-card.is-compare-left.is-flipped:not(.is-matched) {
-  transform-origin: right center;
-}
-
-.memory-card.is-compare-right.is-flipped:not(.is-matched) {
-  transform-origin: left center;
-}
-
-.memory-card.is-compare-top.is-flipped:not(.is-matched) {
-  transform-origin: center bottom;
-}
-
-.memory-card.is-compare-bottom.is-flipped:not(.is-matched) {
-  transform-origin: center top;
-}
-
-.memory-card:nth-child(4n + 1).is-compare-top.is-flipped:not(.is-matched) {
-  transform-origin: left bottom;
-}
-
-.memory-card:nth-child(4n + 1).is-compare-bottom.is-flipped:not(.is-matched) {
-  transform-origin: left top;
-}
-
-.memory-card:nth-child(4n).is-compare-top.is-flipped:not(.is-matched) {
-  transform-origin: right bottom;
-}
-
-.memory-card:nth-child(4n).is-compare-bottom.is-flipped:not(.is-matched) {
-  transform-origin: right top;
+  z-index: 2;
+  filter: drop-shadow(0 14px 22px rgba(21, 50, 58, 0.22));
 }
 
 .card-face {
@@ -400,7 +355,7 @@ h2 {
   filter: drop-shadow(0 12px 16px rgba(21, 50, 58, 0.14));
 }
 
-.flavor-name {
+.product-name {
   align-self: end;
   max-width: 100%;
   padding: 0.24rem 0.34rem;
@@ -414,6 +369,24 @@ h2 {
   line-height: 1;
   text-align: center;
   text-transform: uppercase;
+}
+
+.product-description {
+  display: grid;
+  align-items: center;
+  height: 100%;
+  padding: 0.25rem 0.35rem;
+  color: var(--ink);
+  font-size: clamp(0.7rem, 0.55rem + 0.35vw, 0.9rem);
+  font-weight: 600;
+  line-height: 1.32;
+  text-align: left;
+}
+
+.card-front--description {
+  background:
+    radial-gradient(circle at 50% 18%, rgba(229, 184, 75, 0.18), transparent 42%),
+    linear-gradient(180deg, #ffffff 0%, #fffaf0 100%);
 }
 
 .memory-card.is-matched .card-front {
@@ -559,6 +532,7 @@ h2 {
   }
 
   .memory-grid {
+    grid-template-columns: repeat(2, minmax(0, 220px));
     gap: 0.42rem;
   }
 
@@ -571,11 +545,6 @@ h2 {
     height: 68%;
   }
 
-  .memory-card.is-flipped:not(.is-matched),
-  .memory-card.is-flipped:not(.is-matched):hover {
-    transform: scale(1.35);
-  }
-
   .memory-card.is-matched .card-front::after {
     right: 0.28rem;
     top: 0.28rem;
@@ -585,7 +554,7 @@ h2 {
 
 @media (max-width: 420px) {
   .memory-grid {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 0.32rem;
   }
 
@@ -603,9 +572,14 @@ h2 {
     font-size: 1.08rem;
   }
 
-  .flavor-name {
+  .product-name {
     padding: 0.18rem 0.24rem;
-    font-size: 0.5rem;
+    font-size: 0.54rem;
+  }
+
+  .product-description {
+    font-size: 0.61rem;
+    line-height: 1.22;
   }
 
   .memory-card.is-matched .card-front::after {
