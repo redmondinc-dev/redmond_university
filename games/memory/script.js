@@ -12,31 +12,43 @@
       id: "kids",
       name: "Re-Lyte Kids",
       image: "assets/re-lyte-kids.webp",
-      description: "Balanced electrolytes for smaller, developing bodies, made with clean Real Salt minerals, naturally sourced colors and flavors, and stevia.",
+      description: "Delivers levels of sodium, potassium, calcium, and magnesium that are balanced for smaller, developing bodies.",
     },
     {
       id: "pre-workout",
       name: "Re-Lyte Pre-Workout",
       image: "assets/re-lyte-pre-workout.webp",
-      description: "Our highest-caffeine formula (150 mg), with amino acids to fuel workouts and support muscle recovery.",
+      description: "The highest level of caffeine of any of our products (150 mg) to fuel your workouts, plus amino acids to support muscle recovery.",
     },
     {
       id: "energy",
       name: "Re-Lyte Energy",
       image: "assets/re-lyte-energy.webp",
-      description: "Designed for daily energy without jitters or crashes, with a lighter 120 mg dose of caffeine.",
+      description: "Re-Lyte Energy contains 120 mg of caffeine per serving, B vitamins, and herbal energizers ginseng, maca root, ashwagandha, Rhodiola rosea, and beetroot extract.",
     },
     {
       id: "immunity",
       name: "Re-Lyte Immunity",
       image: "assets/re-lyte-immunity.webp",
-      description: "A clean daily formula that blends hydration and immune support using electrolytes, vitamins, and herbs.",
+      description: "Blends hydration and immune support in a clean, daily formula using electrolytes, vitamins, and herbs.",
     },
     {
-      id: "capsules",
+      id: "hydration-capsules",
+      name: "Re-Lyte Hydration Capsules",
+      image: "assets/re-lyte-hydration-capsules.jpg",
+      description: "Provide simple and convenient hydration to replenish electrolytes using a Real Salt-based sodium and chloride combination.",
+    },
+    {
+      id: "hydration-plus-capsules",
+      name: "Hydration Plus Capsules",
+      image: "assets/re-lyte-hydration-plus-capsules.jpg",
+      description: "Provides key electrolytes paired with sea kelp, a natural source of iodine that supports healthy thyroid function and overall metabolic balance.",
+    },
+    {
+      id: "energy-boost-capsules",
       name: "Energy Boost Capsules",
       image: "assets/re-lyte-capsules.webp",
-      description: "Convenient, no-mix electrolyte support. Energy Boost Capsules combine herbal energizers like ginseng and maca for sustained lift.",
+      description: "A convenient and affordable Energy option with herbal energizers like ginseng and maca for a sustained lift without mixing.",
     },
   ];
 
@@ -146,7 +158,9 @@
         </span>
         <span class="card-face card-front card-front--${card.kind}">
           ${card.kind === "product"
-            ? `<img src="${card.image}" alt="${card.name}" draggable="false" />`
+            ? card.image
+              ? `<img src="${card.image}" alt="${card.name}" draggable="false" />`
+              : `<span class="product-image-placeholder" aria-hidden="true">Image coming soon</span>`
             : `<span class="product-description">${card.description}</span>`}
           <span class="product-name">${card.kind === "product" ? card.name : "Which product is it?"}</span>
         </span>
