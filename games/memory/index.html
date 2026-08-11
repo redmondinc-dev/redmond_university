@@ -43,6 +43,19 @@
           </div>
         </div>
 
+        <div class="reading-prompt" id="reading-prompt" role="status" aria-live="polite" hidden>
+          <div class="reading-prompt__copy">
+            <strong>Finished reading?</strong>
+            <span>The cards will turn back over in <b id="reading-seconds">10</b> seconds.</span>
+          </div>
+          <button class="primary-btn reading-prompt__button" id="continue-btn" type="button">
+            Continue playing
+          </button>
+          <div class="reading-timer" aria-hidden="true">
+            <span id="reading-timer-fill"></span>
+          </div>
+        </div>
+
         <div class="memory-grid" id="memory-grid" aria-label="Memory cards"></div>
       </section>
     </main>

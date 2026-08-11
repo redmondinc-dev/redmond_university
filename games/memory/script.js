@@ -34,7 +34,7 @@
     },
     {
       id: "capsules",
-      name: "Re-Lyte Capsules",
+      name: "Energy Boost Capsules",
       image: "assets/re-lyte-capsules.webp",
       description: "Convenient, no-mix electrolyte support. Energy Boost Capsules combine herbal energizers like ginseng and maca for sustained lift.",
     },
@@ -82,6 +82,10 @@
     finalRating: document.getElementById("final-rating"),
     playAgain: document.getElementById("play-again-btn"),
     confettiLayer: document.getElementById("confetti-layer"),
+    readingPrompt: document.getElementById("reading-prompt"),
+    readingSeconds: document.getElementById("reading-seconds"),
+    readingTimerFill: document.getElementById("reading-timer-fill"),
+    continueButton: document.getElementById("continue-btn"),
   };
 
   const reducedMotionQuery = window.matchMedia
@@ -89,6 +93,10 @@
     : { matches: false };
 
   let audioContext = null;
+  let readingTimeout = null;
+  let readingInterval = null;
+
+  const readingDelay = 10000;
 
   const state = {
     cards: [],
@@ -245,6 +253,40 @@
     }
   }
 
+  function clearReadingPrompt() {
+    window.clearTimeout(readingTimeout);
+    window.clearInterval(readingInterval);
+    readingTimeout = null;
+    readingInterval = null;
+    refs.readingPrompt.hidden = true;
+    refs.readingTimerFill.style.animation = "none";
+  }
+
+  function finishMiss(firstIndex, secondIndex) {
+    clearReadingPrompt();
+    hideCard(firstIndex);
+    hideCard(secondIndex);
+    state.flipped = [];
+    state.locked = false;
+    const nextCard = refs.grid.querySelector(".memory-card:not(:disabled):not(.is-flipped)");
+    if (nextCard) nextCard.focus({ preventScroll: true });
+  }
+
+  function startReadingPrompt(firstIndex, secondIndex) {
+    const startedAt = Date.now();
+    refs.readingSeconds.textContent = String(readingDelay / 1000);
+    refs.readingPrompt.hidden = false;
+    refs.readingTimerFill.style.animation = "none";
+    void refs.readingTimerFill.offsetWidth;
+    refs.readingTimerFill.style.animation = `reading-countdown ${readingDelay}ms linear forwards`;
+
+    readingInterval = window.setInterval(() => {
+      const remaining = Math.max(0, Math.ceil((readingDelay - (Date.now() - startedAt)) / 1000));
+      refs.readingSeconds.textContent = String(remaining);
+    }, 200);
+    readingTimeout = window.setTimeout(() => finishMiss(firstIndex, secondIndex), readingDelay);
+  }
+
   function markMiss(firstIndex, secondIndex) {
     const firstButton = getCardButton(firstIndex);
     const secondButton = getCardButton(secondIndex);
@@ -256,12 +298,12 @@
     refs.live.textContent = "No match. Try another pair.";
     playTone("miss");
 
-    window.setTimeout(() => {
-      hideCard(firstIndex);
-      hideCard(secondIndex);
-      state.flipped = [];
-      state.locked = false;
-    }, 720);
+    if (state.cards[secondIndex].kind === "description") {
+      startReadingPrompt(firstIndex, secondIndex);
+      return;
+    }
+
+    readingTimeout = window.setTimeout(() => finishMiss(firstIndex, secondIndex), 720);
   }
 
   function flipCard(index) {
@@ -325,6 +367,7 @@
   }
 
   function resetGame(focusBoard) {
+    clearReadingPrompt();
     state.cards = buildDeck();
     state.flipped = [];
     state.attempts = 0;
@@ -398,6 +441,10 @@
 
   refs.reset.addEventListener("click", () => resetGame(false));
   refs.playAgain.addEventListener("click", () => resetGame(true));
+  refs.continueButton.addEventListener("click", () => {
+    if (state.flipped.length !== 2) return;
+    finishMiss(state.flipped[0], state.flipped[1]);
+  });
   refs.resultOverlay.addEventListener("click", (event) => {
     if (event.target === refs.resultOverlay) {
       refs.playAgain.focus({ preventScroll: true });
