@@ -14,6 +14,16 @@
         <header>
             <div class="title-stack">
                 <h1>Build Your Smoothie</h1>
+                <div class="game-instructions" role="note" aria-label="Game instructions">
+                    <div class="instruction-copy">
+                        <strong>Follow the recipe card instructions to build the smoothie.</strong>
+                        <span>Start with ingredients at the top of the card and work your way down before blending. Don’t forget to remove the lid and put it back on before pressing Blend!</span>
+                    </div>
+                    <button id="recipe-help-btn" class="help-btn" type="button" aria-haspopup="dialog" aria-controls="recipe-help-dialog">
+                        <span aria-hidden="true">?</span>
+                        Recipe help
+                    </button>
+                </div>
                 <p class="recipe-prompt">Choose a smoothie to begin</p>
                 <div class="recipe-selector" role="group" aria-label="Choose a smoothie recipe">
                     <button class="recipe-btn active" type="button" data-recipe="strawberry-flax" aria-pressed="true">
@@ -25,7 +35,6 @@
                         Tropical Ginger
                     </button>
                 </div>
-                <h2 id="recipe-title">Strawberry Flax</h2>
             </div>
         </header>
 
@@ -100,6 +109,23 @@
         </main>
 
     </div>
+
+    <dialog id="recipe-help-dialog" class="recipe-dialog" aria-labelledby="recipe-dialog-title">
+        <div class="dialog-heading">
+            <div>
+                <p class="dialog-eyebrow">16 oz recipe</p>
+                <h2 id="recipe-dialog-title">Strawberry Flax</h2>
+            </div>
+            <button id="recipe-help-close" class="dialog-close" type="button" aria-label="Close recipe help">×</button>
+        </div>
+        <p class="dialog-note">Add the ingredients in this order, from top to bottom.</p>
+        <div class="recipe-table-wrap">
+            <table class="recipe-table">
+                <thead><tr><th scope="col">Ingredient</th><th scope="col">16 oz amount</th></tr></thead>
+                <tbody id="recipe-help-body"></tbody>
+            </table>
+        </div>
+    </dialog>
 
     <script src="script.js"></script>
 </body>

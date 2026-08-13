@@ -4,10 +4,10 @@ const recipes = {
     completedColor: [255, 130, 170],
     ingredients: [
       { id: "milk", name: "Milk", measure: "6 oz", image: "assets/milk.png" },
-      { id: "maple", name: "Maple Syrup", measure: "1.5 tbsp", image: "assets/maple-syrup.png" },
       { id: "flax", name: "Flax Seeds", measure: "2 tbsp", image: "assets/flax-seeds.png" },
       { id: "almond", name: "Almond Butter", measure: "2 tbsp", image: "assets/almond-butter.png" },
-      { id: "strawberries", name: "Frozen Strawberries", measure: "3/4 cup", image: "assets/strawberries.png" },
+      { id: "maple", name: "Maple Syrup", measure: "1 1/2 tbsp", image: "assets/maple-syrup.png" },
+      { id: "strawberries", name: "Frozen Strawberries", measure: "1/2 cup", image: "assets/strawberries.png" },
       { id: "protein", name: "Protein Powder", measure: "1 scoop", image: "assets/protein-powder.png" },
       { id: "ice", name: "Ice", measure: "1/2 cup", image: "assets/ice.png" },
     ],
@@ -18,10 +18,10 @@ const recipes = {
     ingredients: [
       { id: "orange-juice", name: "Orange Juice", measure: "6 oz", image: "assets/orange-juice.png" },
       { id: "ginger", name: "Ginger", measure: "1 tbsp", image: "assets/ginger.png" },
-      { id: "honey", name: "Honey", measure: "3 tbsp", image: "assets/honey.png" },
+      { id: "honey", name: "Honey", measure: "2 tbsp", image: "assets/honey.png" },
       { id: "mango", name: "Frozen Mango", measure: "1/2 cup", image: "assets/mango.png" },
       { id: "pineapple", name: "Frozen Pineapple", measure: "1/2 cup", image: "assets/pineapple.png" },
-      { id: "ice", name: "Ice", measure: "3/4 cup", image: "assets/ice.png" },
+      { id: "ice", name: "Ice", measure: "1/2 cup", image: "assets/ice.png" },
     ],
   },
 };
@@ -45,8 +45,12 @@ const prevBtn = document.querySelector(".carousel-btn.prev");
 const nextBtn = document.querySelector(".carousel-btn.next");
 const ingredientWarning = document.getElementById("ingredient-warning");
 const warningCopy = ingredientWarning?.querySelector(".warning-copy");
-const recipeTitle = document.getElementById("recipe-title");
 const recipeButtons = document.querySelectorAll(".recipe-btn");
+const recipeHelpBtn = document.getElementById("recipe-help-btn");
+const recipeHelpDialog = document.getElementById("recipe-help-dialog");
+const recipeHelpClose = document.getElementById("recipe-help-close");
+const recipeDialogTitle = document.getElementById("recipe-dialog-title");
+const recipeHelpBody = document.getElementById("recipe-help-body");
 let isBlending = false;
 let addedIngredients = [];
 let audioCtx;
@@ -88,15 +92,14 @@ function createIngredientCard({ id, name, measure, image }) {
   photoFrame.append(photo);
 
   const title = document.createElement("h3");
-  title.textContent = name;
+  const ingredientName = document.createElement("span");
+  ingredientName.textContent = name;
+  const ingredientMeasure = document.createElement("span");
+  ingredientMeasure.className = "ingredient-measure";
+  ingredientMeasure.textContent = measure;
+  title.append(ingredientName, ingredientMeasure);
 
   card.append(photoFrame, title);
-
-  if (measure) {
-    const measureEl = document.createElement("p");
-    measureEl.textContent = measure;
-    card.append(measureEl);
-  }
 
   card.addEventListener("dragstart", (e) => {
     e.dataTransfer.setData("text/plain", id);
@@ -115,6 +118,21 @@ function renderIngredientCards() {
   });
 }
 
+function renderRecipeHelp() {
+  const recipe = recipes[activeRecipeId];
+  recipeDialogTitle.textContent = recipe.name;
+  recipeHelpBody.innerHTML = "";
+  recipe.ingredients.forEach(({ name, measure }) => {
+    const row = document.createElement("tr");
+    const ingredientCell = document.createElement("td");
+    const measureCell = document.createElement("td");
+    ingredientCell.textContent = name;
+    measureCell.textContent = measure;
+    row.append(ingredientCell, measureCell);
+    recipeHelpBody.append(row);
+  });
+}
+
 renderIngredientCards();
 
 function selectRecipe(recipeId) {
@@ -124,7 +142,7 @@ function selectRecipe(recipeId) {
   ingredients = recipes[activeRecipeId].ingredients;
   requiredIds = ingredients.map(({ id }) => id);
   correctOrder = [...requiredIds];
-  recipeTitle.textContent = recipes[activeRecipeId].name;
+  renderRecipeHelp();
 
   recipeButtons.forEach((button) => {
     const isActive = button.dataset.recipe === activeRecipeId;
@@ -140,6 +158,17 @@ function selectRecipe(recipeId) {
 recipeButtons.forEach((button) => {
   button.addEventListener("click", () => selectRecipe(button.dataset.recipe));
 });
+
+recipeHelpBtn?.addEventListener("click", () => {
+  renderRecipeHelp();
+  recipeHelpDialog.showModal();
+});
+recipeHelpClose?.addEventListener("click", () => recipeHelpDialog.close());
+recipeHelpDialog?.addEventListener("click", (event) => {
+  if (event.target === recipeHelpDialog) recipeHelpDialog.close();
+});
+
+renderRecipeHelp();
 
 function setLidOpen(open) {
   if (!lid) return;
