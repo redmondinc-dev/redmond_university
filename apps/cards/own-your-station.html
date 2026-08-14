@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Own Your Station</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --forest: #2e3d2c;
+        --cream: #f7f1e8;
+        --paper: #fffdf9;
+        --orange: #d96b35;
+        --gold: #d6a33b;
+        --sage: #7f9477;
+        --ink: #273126;
+        --muted: #647061;
+      }
+
+      * { box-sizing: border-box; }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 0 20px clamp(30px, 6vw, 72px);
+        background: transparent;
+        color: var(--ink);
+        font-family: "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
+      }
+
+      .module { width: min(1050px, 100%); margin: 0 auto; }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 18px;
+        align-items: start;
+      }
+
+      .card {
+        --accent: var(--orange);
+        --wash: #fae9df;
+        position: relative;
+        border: 1px solid color-mix(in srgb, var(--accent) 35%, #d8d3c9);
+        border-radius: 22px;
+        background: var(--paper);
+        box-shadow: 0 12px 30px rgba(46, 61, 44, .09);
+        overflow: hidden;
+        height: 450px;
+        perspective: 1400px;
+        transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+      }
+
+      .card:nth-child(2) { --accent: var(--sage); --wash: #e7eee3; }
+      .card:nth-child(3) { --accent: var(--gold); --wash: #f7edd4; }
+      .card:hover { transform: translateY(-4px); box-shadow: 0 18px 42px rgba(46, 61, 44, .15); }
+      .card.is-open { border-color: var(--accent); }
+
+      .card-button {
+        appearance: none;
+        display: grid;
+        grid-template-rows: 190px minmax(0, 1fr);
+        width: 100%;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: inherit;
+        text-align: left;
+        cursor: pointer;
+        font: inherit;
+        height: 100%;
+        position: relative;
+        z-index: 1;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transform: rotateY(0deg);
+        transform-style: preserve-3d;
+        transition: transform .72s cubic-bezier(.2,.8,.2,1);
+      }
+
+      .card.is-open .card-button { transform: rotateY(-180deg); pointer-events: none; }
+
+      .card-button:focus-visible { outline: 3px solid var(--accent); outline-offset: -4px; border-radius: 22px; }
+
+      .visual {
+        position: relative;
+        display: grid;
+        place-items: center;
+        width: 100%;
+        height: 100%;
+        align-self: start;
+        background: var(--wash);
+        overflow: hidden;
+      }
+
+      .visual::before {
+        content: "";
+        position: absolute;
+        width: 164px;
+        height: 164px;
+        border: 1px solid color-mix(in srgb, var(--accent) 28%, transparent);
+        border-radius: 50%;
+      }
+
+      .visual svg { position: relative; width: 116px; height: 116px; color: var(--accent); }
+
+      .number {
+        position: absolute;
+        top: 14px;
+        left: 16px;
+        color: var(--accent);
+        font: 800 12px/1 "Montserrat", sans-serif;
+        letter-spacing: .12em;
+      }
+
+      .card-copy {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        padding: 21px 22px 18px;
+      }
+
+      .title-row { display: flex; align-items: center; }
+
+      h2 {
+        margin: 0;
+        color: var(--forest);
+        font: 800 19px/1.2 "Montserrat", sans-serif;
+        letter-spacing: -.015em;
+      }
+
+      .action-label {
+        align-self: center;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 7px 9px;
+        border-radius: 999px;
+        background: var(--wash);
+        color: var(--accent);
+        font: 700 10px/1 "Montserrat", sans-serif;
+        letter-spacing: .04em;
+        text-transform: uppercase;
+        margin-top: auto;
+      }
+
+      .action-label svg { width: 14px; height: 14px; transition: transform .25s ease; }
+      .card:hover .action-label svg { transform: translateX(2px) rotate(-8deg); }
+
+      .summary { margin: 9px 0 0; min-height: 48px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+
+      .details {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        overflow: hidden;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        transform: rotateY(180deg);
+        transform-style: preserve-3d;
+        background: var(--paper);
+        pointer-events: none;
+        transition: transform .72s cubic-bezier(.2,.8,.2,1);
+      }
+      .card.is-open .details {
+        transform: rotateY(0deg);
+        pointer-events: auto;
+      }
+
+      .details::before {
+        content: "";
+        position: absolute;
+        inset: -40% -80%;
+        z-index: 3;
+        background: linear-gradient(105deg, transparent 42%, rgba(255,255,255,.72) 49%, transparent 56%);
+        transform: translateX(-45%);
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .card.is-open .details::before { animation: card-sheen .75s .12s ease-out both; }
+      @keyframes card-sheen { 0% { opacity: 0; transform: translateX(-42%); } 35% { opacity: .8; } 100% { opacity: 0; transform: translateX(42%); } }
+      .details-inner { position: relative; display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 44px 24px 24px; }
+      .divider { height: 1px; margin-bottom: 16px; background: color-mix(in srgb, var(--accent) 22%, transparent); }
+      .details p { margin: 0; color: var(--ink); font-size: 14px; line-height: 1.55; }
+
+      .close-card {
+        position: absolute;
+        top: 14px;
+        right: 14px;
+        display: grid;
+        place-items: center;
+        width: 32px;
+        height: 32px;
+        border: 0;
+        border-radius: 50%;
+        background: var(--wash);
+        color: var(--accent);
+        cursor: pointer;
+        font: 700 20px/1 "Montserrat", sans-serif;
+      }
+      .close-card:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+
+      .takeaway {
+        display: flex;
+        gap: 9px;
+        align-items: flex-start;
+        margin-top: 14px;
+        padding: 11px 12px;
+        border-radius: 11px;
+        background: var(--wash);
+        color: var(--forest);
+        font-size: 13px;
+        line-height: 1.4;
+        font-weight: 600;
+      }
+
+      .check { flex: 0 0 auto; display: grid; place-items: center; width: 19px; height: 19px; border-radius: 50%; background: var(--accent); color: white; font-size: 12px; }
+
+      .progress { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 26px; color: var(--muted); font-size: 13px; }
+      .dots { display: flex; gap: 6px; }
+      .dot { width: 26px; height: 5px; border-radius: 4px; background: #dfded8; transition: background .3s ease, transform .3s ease; }
+      .dot.is-active { background: var(--forest); transform: scaleX(1.08); }
+      .ready { display: none; color: var(--forest); font-weight: 700; }
+      .progress.is-complete .prompt { display: none; }
+      .progress.is-complete .ready { display: inline; }
+
+      @media (max-width: 760px) {
+        body { padding-inline: 16px; }
+        .cards { grid-template-columns: 1fr; gap: 14px; }
+        .card { height: 450px; }
+        .card-button {
+          grid-template-columns: 112px minmax(0, 1fr);
+          grid-template-rows: minmax(0, 1fr);
+        }
+        .visual { height: 100%; min-height: 178px; }
+        .visual::before { width: 125px; height: 125px; }
+        .visual svg { width: 76px; height: 76px; }
+        .card-copy { padding: 20px 18px 16px; }
+        .summary { min-height: 0; }
+        .details { grid-column: 1 / -1; }
+        .details-inner { padding: 44px 22px 22px; }
+      }
+
+      @media (max-width: 430px) {
+        .card { grid-template-columns: 92px 1fr; }
+        .visual { min-height: 164px; }
+        .visual svg { width: 66px; height: 66px; }
+        h2 { font-size: 17px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+    </style>
+  </head>
+  <body>
+    <main class="module">
+      <section class="cards" aria-label="Three ways to own your barista station">
+        <article class="card">
+          <button class="card-button" type="button" aria-expanded="false">
+            <div class="visual">
+              <span class="number">01</span>
+              <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+                <path d="M28 91h64M35 84V37h50v47M43 37v-9h34v9M46 50h28M46 61h28M46 72h17" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="m68 73 6 6 12-15" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="card-copy">
+              <div class="title-row"><h2>Staying Stocked</h2></div>
+              <p class="summary">One of the primary ways you can own your station is by ensuring that you are keeping ingredients fresh and stocked…</p>
+              <span class="action-label">Continue reading <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </button>
+          <div class="details" aria-hidden="true" inert>
+            <div class="details-inner">
+              <button class="close-card" type="button" aria-label="Close Staying Stocked details">×</button>
+              <div class="divider"></div>
+              <p>One of the primary ways you can own your station is by ensuring that you are keeping ingredients fresh and stocked. A great way to cultivate this is by using the par sheet provided to check all of your ingredients at the start of your shift so that you can understand priorities in restocking and know what is low (and might run out in a rush). It is also important to ensure you stock items before shift change to set the next barista up for success.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <button class="card-button" type="button" aria-expanded="false">
+            <div class="visual">
+              <span class="number">02</span>
+              <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+                <path d="M28 86h64M34 76h52l5 10H29l5-10ZM42 33h36v43H42V33ZM49 25h22v8" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M51 48c6 5 12 5 18 0M88 29v18M79 38h18" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div class="card-copy">
+              <div class="title-row"><h2>Cleanliness</h2></div>
+              <p class="summary">Keeping your station clean massively effects how fast you will be able to get drinks out during a rush…</p>
+              <span class="action-label">Continue reading <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </button>
+          <div class="details" aria-hidden="true" inert>
+            <div class="details-inner">
+              <button class="close-card" type="button" aria-label="Close Cleanliness details">×</button>
+              <div class="divider"></div>
+              <p>Keeping your station clean massively effects how fast you will be able to get drinks out during a rush. Making sure utensils are rinsed immediately will prevent food from drying to it (making it take double the time to clean it). Wiping off the counter will prevent drinks from slipping (or sticking) and spilling. Keeping the sink clean will allow you to be able to rinse dishes faster and cut down on clutter. At the moment, each one of these things may seem insignificant, but together in a rush they make a massive difference.</p>
+            </div>
+          </div>
+        </article>
+
+        <article class="card">
+          <button class="card-button" type="button" aria-expanded="false">
+            <div class="visual">
+              <span class="number">03</span>
+              <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
+                <path d="M25 35h39c13 0 22 9 22 21s-9 21-22 21H46" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+                <path d="m35 24-11 11 11 11M55 66 44 77l11 11M75 31l6 6 12-14" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="card-copy">
+              <div class="title-row"><h2>Flow</h2></div>
+              <p class="summary">One important aspect of flow is about knowing where things are and having them in the exact spot at the exact time when you need them to make your work the most efficient…</p>
+              <span class="action-label">Continue reading <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h11m-4-4 4 4-4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            </div>
+          </button>
+          <div class="details" aria-hidden="true" inert>
+            <div class="details-inner">
+              <button class="close-card" type="button" aria-label="Close Flow details">×</button>
+              <div class="divider"></div>
+              <p>One important aspect of flow is about knowing where things are and having them in the exact spot at the exact time when you need them to make your work the most efficient. If things are hard to find, then it will take more time to get drinks done. In addition to knowing where everything is, another factor is proactive thinking. You'll discover that every second counts when you are in a rush on the barista station. You'll also discover that every barista has a slightly different flow. As you learn, figure out what flow works (and doesn't work) for YOU. Ask other baristas how they developed their flow, and advice on how to improve quicker.</p>
+            </div>
+          </div>
+        </article>
+      </section>
+
+    </main>
+
+    <script>
+      (() => {
+        const cards = [...document.querySelectorAll('.card')];
+        cards.forEach((card) => {
+          const button = card.querySelector('.card-button');
+          const details = card.querySelector('.details');
+          const close = card.querySelector('.close-card');
+          button.addEventListener('click', () => {
+            const opening = !card.classList.contains('is-open');
+            card.classList.toggle('is-open', opening);
+            button.setAttribute('aria-expanded', String(opening));
+            details.setAttribute('aria-hidden', String(!opening));
+            details.inert = !opening;
+            if (opening) close.focus();
+          });
+          close.addEventListener('click', () => {
+            card.classList.remove('is-open');
+            button.setAttribute('aria-expanded', 'false');
+            details.setAttribute('aria-hidden', 'true');
+            details.inert = true;
+            button.focus();
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>
