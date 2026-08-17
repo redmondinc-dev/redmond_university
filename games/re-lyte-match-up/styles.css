@@ -1,0 +1,130 @@
+:root {
+  color-scheme: light;
+  --ink: #17343b;
+  --muted: #62747a;
+  --teal: #007b83;
+  --teal-dark: #07545b;
+  --orange: #e66b38;
+  --cream: #fff8eb;
+  --line: rgba(23, 52, 59, 0.14);
+  --green: #368965;
+  --red: #b84747;
+  --shadow: 0 18px 44px rgba(23, 52, 59, 0.12);
+  --radius: 14px;
+}
+
+* { box-sizing: border-box; }
+html { min-height: 100%; }
+body {
+  margin: 0;
+  min-height: 100vh;
+  color: var(--ink);
+  font-family: "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+  background:
+    radial-gradient(circle at 9% 4%, rgba(230, 107, 56, 0.12), transparent 22rem),
+    radial-gradient(circle at 95% 30%, rgba(0, 123, 131, 0.11), transparent 26rem),
+    linear-gradient(145deg, #f5faf6, #f7fbff 53%, #fff7e9);
+}
+body.modal-open { overflow: hidden; }
+button { font: inherit; }
+button:not(:disabled) { cursor: pointer; }
+img { display: block; max-width: 100%; }
+h1, h2, p { margin-top: 0; }
+h1, h2 { font-family: Montserrat, "Avenir Next", sans-serif; }
+.screen-text { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
+.game-shell { width: min(1240px, calc(100% - 24px)); margin: 0 auto; padding: 14px 0 24px; }
+.game-header, .progress-panel, .story-card, .products-panel {
+  border: 1px solid var(--line);
+  background: rgba(255,255,255,.92);
+  box-shadow: var(--shadow);
+}
+.game-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 20px; border-radius: var(--radius); }
+.game-header h1 { margin: 3px 0 5px; color: var(--teal-dark); font-size: clamp(1.7rem, 3vw, 2.5rem); line-height: 1; }
+.game-header p { margin: 0; color: var(--muted); font-size: .98rem; }
+.kicker, .small-label { color: var(--orange); font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+.secondary-btn, .primary-btn { min-height: 44px; padding: 10px 17px; border-radius: 10px; font-weight: 700; transition: transform .18s ease, box-shadow .18s ease; }
+.secondary-btn { color: var(--ink); border: 1px solid var(--line); background: #fff; }
+.primary-btn { color: #fff; border: 1px solid var(--teal-dark); background: linear-gradient(#04929a, var(--teal-dark)); box-shadow: 0 10px 22px rgba(0,123,131,.24); }
+.secondary-btn:hover, .primary-btn:hover, .product-card:not(:disabled):hover { transform: translateY(-2px); }
+button:focus-visible { outline: 3px solid rgba(230,107,56,.42); outline-offset: 3px; }
+.progress-panel { margin-top: 10px; padding: 10px 14px; border-radius: 11px; }
+.progress-copy { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 7px; font-size: .82rem; }
+.progress-copy span { color: var(--muted); }
+.progress-track { height: 8px; overflow: hidden; border-radius: 99px; background: #e4eceb; }
+.progress-track span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--teal), #58a96f, #e6b54b); transition: width .45s ease; }
+.game-layout { display: grid; grid-template-columns: minmax(320px, .78fr) minmax(560px, 1.4fr); gap: 10px; margin-top: 10px; }
+.story-card, .products-panel { min-width: 0; border-radius: var(--radius); overflow: hidden; }
+.story-card { display: grid; grid-template-rows: 270px 1fr; }
+.character-stage { position: relative; min-height: 260px; overflow: hidden; background: #fff; }
+.character-stage img { position: absolute; z-index: 1; inset: 18px 24px 0; width: calc(100% - 48px); height: calc(100% - 18px); max-width: none; object-fit: contain; object-position: center center; }
+.story-number { position: absolute; z-index: 2; top: 14px; left: 14px; display: grid; place-items: center; width: 47px; height: 47px; color: #fff; border-radius: 50%; background: var(--orange); font-family: Montserrat, sans-serif; font-weight: 800; }
+.story-copy { padding: 18px 20px 21px; }
+.story-copy h2 { margin: 4px 0 9px; color: var(--teal-dark); font-size: 1.35rem; }
+.story-copy p { margin: 0; color: #455d63; font-size: .94rem; line-height: 1.55; }
+.products-panel { align-self: stretch; }
+.products-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
+.products-heading h2 { margin: 3px 0 0; color: var(--teal-dark); font-size: 1.08rem; }
+.selection-status { flex: 0 0 auto; padding: 7px 10px; color: var(--teal-dark); border-radius: 99px; background: rgba(0,123,131,.09); font-size: .72rem; font-weight: 700; }
+.product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; padding: 10px; }
+.product-card { position: relative; min-width: 0; min-height: 218px; padding: 8px; overflow: hidden; color: var(--ink); border: 2px solid transparent; border-radius: 11px; background: #fff; box-shadow: inset 0 0 0 1px var(--line), 0 7px 17px rgba(23,52,59,.08); transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
+.product-card:not(:disabled) { animation: product-wave 3.2s ease-in-out infinite; }
+.product-card:nth-child(2) { animation-delay: .12s; }
+.product-card:nth-child(3) { animation-delay: .24s; }
+.product-card:nth-child(4) { animation-delay: .36s; }
+.product-card:nth-child(5) { animation-delay: .48s; }
+.product-card:nth-child(6) { animation-delay: .6s; }
+.product-card:nth-child(7) { animation-delay: .72s; }
+.product-card:nth-child(8) { animation-delay: .84s; }
+.product-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 8px; background: #fff; transition: transform .2s ease; }
+.product-card[data-id="hydration"] img { transform: scale(.7); }
+.product-card[data-id="kids"] img { transform: scale(.84); }
+.product-card:not(:disabled):hover { z-index: 2; animation-play-state: paused; box-shadow: inset 0 0 0 1px rgba(0,123,131,.38), 0 13px 25px rgba(0,123,131,.2); }
+.product-card:not(:disabled):hover img { transform: scale(1.04); }
+.product-card[data-id="hydration"]:not(:disabled):hover img { transform: scale(.76); }
+.product-card[data-id="kids"]:not(:disabled):hover img { transform: scale(.9); }
+.product-card strong { display: block; min-height: 36px; margin-top: 6px; font-family: Montserrat, sans-serif; font-size: .74rem; line-height: 1.25; }
+.product-card.is-correct { border-color: var(--green); box-shadow: 0 0 0 3px rgba(54,137,101,.13); }
+.product-card.is-wrong { border-color: var(--red); opacity: .72; }
+.product-card:disabled { cursor: default; }
+.product-card .result-mark { position: absolute; top: 7px; right: 7px; display: grid; place-items: center; width: 29px; height: 29px; color: #fff; border-radius: 50%; background: var(--green); font-weight: 800; }
+.product-card.is-wrong .result-mark { background: var(--red); }
+.feedback-overlay { position: fixed; z-index: 20; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(7, 44, 49, .58); backdrop-filter: blur(5px); animation: overlay-in .2s ease-out; }
+.feedback-overlay[hidden] { display: none; }
+.feedback-modal { position: relative; width: min(460px, 100%); padding: 34px 30px 28px; border: 1px solid rgba(255,255,255,.6); border-radius: 18px; background: #fff; box-shadow: 0 28px 80px rgba(7,44,49,.3); text-align: center; animation: modal-in .28s cubic-bezier(.2,.8,.2,1); }
+.feedback-icon { display: grid; place-items: center; width: 62px; height: 62px; margin: -2px auto 16px; color: #fff; border-radius: 50%; background: var(--green); box-shadow: 0 8px 20px rgba(54,137,101,.28); font-size: 2rem; font-weight: 800; }
+.feedback-overlay.is-wrong .feedback-icon { background: var(--orange); box-shadow: 0 8px 20px rgba(230,107,56,.28); }
+.feedback-modal h2 { margin: 5px 0 8px; color: var(--teal-dark); font-size: 1.35rem; }
+.feedback-modal p { margin: 0 0 22px; color: var(--muted); }
+.feedback-modal .primary-btn { min-width: 170px; }
+.results-overlay { position: fixed; z-index: 25; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(7, 44, 49, .62); backdrop-filter: blur(6px); animation: overlay-in .25s ease-out; }
+.results-overlay[hidden] { display: none; }
+.results-modal { width: min(580px, 100%); padding: 42px 28px 34px; border: 1px solid rgba(255,255,255,.65); border-radius: 20px; background: #fff; box-shadow: 0 30px 90px rgba(7,44,49,.34); text-align: center; animation: modal-in .32s cubic-bezier(.2,.8,.2,1); }
+.results-modal h2 { margin: 6px 0 10px; color: var(--teal-dark); }
+.score-number { margin: 8px 0; color: var(--orange); font: 800 clamp(2.8rem, 8vw, 5rem)/1 Montserrat, sans-serif; }
+.results-modal p { color: var(--muted); }
+.confetti-layer { position: fixed; z-index: 30; inset: 0; overflow: hidden; pointer-events: none; }
+.confetti { position: absolute; top: -24px; width: var(--size, 10px); height: calc(var(--size, 10px) * 1.55); animation: fall var(--duration, 4.2s) ease-in forwards; }
+@keyframes fall { to { transform: translate3d(var(--drift), 105vh, 0) rotate(700deg); opacity: .25; } }
+@keyframes overlay-in { from { opacity: 0; } }
+@keyframes modal-in { from { opacity: 0; transform: translateY(18px) scale(.97); } }
+@keyframes product-wave {
+  0%, 24%, 100% { transform: translateY(0); box-shadow: inset 0 0 0 1px var(--line), 0 7px 17px rgba(23,52,59,.08); }
+  12% { transform: translateY(-5px); box-shadow: inset 0 0 0 1px rgba(0,123,131,.3), 0 12px 24px rgba(0,123,131,.16); }
+}
+@media (max-width: 960px) {
+  .game-layout { grid-template-columns: 1fr; }
+  .story-card { grid-template-columns: minmax(220px, .65fr) 1fr; grid-template-rows: auto; }
+  .character-stage { min-height: 310px; }
+}
+@media (max-width: 680px) {
+  .game-header { align-items: flex-start; }
+  .game-header p { font-size: .88rem; }
+  .story-card { grid-template-columns: 1fr; grid-template-rows: 240px auto; }
+  .character-stage { min-height: 0; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .product-card { min-height: 0; }
+  .products-heading { align-items: flex-start; flex-direction: column; }
+  .feedback-modal { padding: 30px 20px 22px; }
+  .feedback-modal .primary-btn { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; } }

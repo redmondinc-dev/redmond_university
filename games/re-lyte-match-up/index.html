@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The Re-Lyte Match-Up</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=20260817-1" />
+  </head>
+  <body>
+    <div class="screen-text" id="live-region" aria-live="polite" aria-atomic="true"></div>
+
+    <main class="game-shell">
+      <header class="game-header">
+        <div>
+          <span class="kicker">Find their Re-Lyte</span>
+          <h1>The Re-Lyte Match-Up</h1>
+          <p>Read each customer’s story and choose the Re-Lyte product you think will help them most.</p>
+        </div>
+        <button class="secondary-btn" id="reset-btn" type="button">Reset</button>
+      </header>
+
+      <section class="progress-panel" aria-label="Game progress">
+        <div class="progress-copy"><strong id="progress-label">Story 1 of 12</strong><span id="score-label">0 matches</span></div>
+        <div class="progress-track" role="progressbar" aria-valuemin="0" aria-valuemax="12" aria-valuenow="0" id="progress-track"><span id="progress-fill"></span></div>
+      </section>
+
+      <section class="game-layout" id="game-layout">
+        <article class="story-card" aria-labelledby="customer-name">
+          <div class="character-stage">
+            <span class="story-number" id="story-number">01</span>
+            <img id="character-image" src="" alt="" />
+          </div>
+          <div class="story-copy">
+            <span class="small-label">Customer story</span>
+            <h2 id="customer-name"></h2>
+            <p id="customer-story"></p>
+          </div>
+        </article>
+
+        <section class="products-panel" aria-labelledby="products-title">
+          <div class="products-heading">
+            <div><span class="small-label">Choose one</span><h2 id="products-title">Which Re-Lyte product is the best match?</h2></div>
+            <span class="selection-status" id="selection-status">Select a product</span>
+          </div>
+          <div class="product-grid" id="product-grid"></div>
+        </section>
+      </section>
+
+    </main>
+
+    <div class="feedback-overlay" id="feedback-card" role="dialog" aria-modal="true" aria-labelledby="feedback-title" aria-describedby="feedback-copy" hidden>
+      <section class="feedback-modal">
+        <div class="feedback-icon" id="feedback-icon" aria-hidden="true"></div>
+        <span class="small-label" id="feedback-label"></span>
+        <h2 id="feedback-title"></h2>
+        <p id="feedback-copy"></p>
+        <button class="primary-btn" id="next-btn" type="button">Next story</button>
+      </section>
+    </div>
+
+    <div class="results-overlay" id="results-card" role="dialog" aria-modal="true" aria-labelledby="results-title" aria-describedby="results-copy" hidden>
+      <section class="results-modal">
+        <span class="kicker">Match-up complete</span>
+        <h2 id="results-title">You matched all 12 customer stories.</h2>
+        <div class="score-number" id="score-number">12 / 12</div>
+        <p id="results-copy"></p>
+        <button class="primary-btn" id="play-again-btn" type="button">Play again</button>
+      </section>
+    </div>
+
+    <div class="confetti-layer" id="confetti-layer" aria-hidden="true"></div>
+    <script src="script.js?v=20260817-1"></script>
+  </body>
+</html>
