@@ -98,21 +98,22 @@
         overflow: hidden;
       }
 
-      .visual::before {
-        content: "";
-        position: absolute;
-        width: 164px;
-        height: 164px;
-        border: 1px solid var(--forest);
-        border-radius: 50%;
+      .visual img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
       }
-
-      .visual svg { position: relative; width: 116px; height: 116px; color: var(--forest); }
 
       .number {
         position: absolute;
         top: 14px;
         left: 16px;
+        z-index: 1;
+        padding: 5px 7px;
+        border-radius: 999px;
+        background: var(--sage);
         color: var(--forest);
         font: 800 12px/1 "Montserrat", sans-serif;
         letter-spacing: .12em;
@@ -143,16 +144,21 @@
         border-radius: 999px;
         background: var(--wash);
         color: var(--forest);
-        font: 700 10px/1 "Montserrat", sans-serif;
+        font: 700 12px/1 "Avenir Next", Avenir, "Helvetica Neue", sans-serif;
         letter-spacing: .04em;
-        text-transform: uppercase;
         margin-top: auto;
       }
 
       .action-label svg { width: 14px; height: 14px; transition: transform .25s ease; }
       .card:hover .action-label svg { transform: translateX(2px) rotate(-8deg); }
 
-      .summary { margin: 9px 0 0; min-height: 48px; color: var(--muted); font-size: 14px; line-height: 1.55; }
+      .summary {
+        margin: 9px 0 0;
+        min-height: 48px;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.55;
+      }
 
       .details {
         position: absolute;
@@ -241,8 +247,6 @@
           grid-template-rows: minmax(0, 1fr);
         }
         .visual { height: 100%; min-height: 178px; }
-        .visual::before { width: 125px; height: 125px; }
-        .visual svg { width: 76px; height: 76px; }
         .card-copy { padding: 20px 18px 16px; }
         .summary { min-height: 0; }
         .details { grid-column: 1 / -1; }
@@ -252,7 +256,6 @@
       @media (max-width: 430px) {
         .card { grid-template-columns: 92px 1fr; }
         .visual { min-height: 164px; }
-        .visual svg { width: 66px; height: 66px; }
         h2 { font-size: 17px; }
       }
 
@@ -266,10 +269,7 @@
           <button class="card-button" type="button" aria-expanded="false">
             <div class="visual">
               <span class="number">01</span>
-              <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
-                <path d="M28 91h64M35 84V37h50v47M43 37v-9h34v9M46 50h28M46 61h28M46 72h17" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="m68 73 6 6 12-15" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <img src="assets/img/own-your-station/staying%20stocked.jpg" alt="" />
             </div>
             <div class="card-copy">
               <div class="title-row"><h2>Staying Stocked</h2></div>
@@ -281,7 +281,7 @@
             <div class="details-inner">
               <button class="close-card" type="button" aria-label="Close Staying Stocked details">×</button>
               <div class="divider"></div>
-              <p>One of the primary ways you can own your station is by ensuring that you are keeping ingredients fresh and stocked. A great way to cultivate this is by using the par sheet provided to check all of your ingredients at the start of your shift so that you can understand priorities in restocking and know what is low (and might run out in a rush). It is also important to ensure you stock items before shift change to set the next barista up for success.</p>
+              <p>A great way to cultivate this is by using the par sheet provided to check all of your ingredients at the start of your shift so that you can understand priorities in restocking and know what is low (and might run out in a rush). It is also important to ensure you stock items before shift change to set the next barista up for success.</p>
             </div>
           </div>
         </article>
@@ -290,10 +290,7 @@
           <button class="card-button" type="button" aria-expanded="false">
             <div class="visual">
               <span class="number">02</span>
-              <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
-                <path d="M28 86h64M34 76h52l5 10H29l5-10ZM42 33h36v43H42V33ZM49 25h22v8" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M51 48c6 5 12 5 18 0M88 29v18M79 38h18" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-              </svg>
+              <img src="assets/img/own-your-station/cleanliness.jpg" alt="" />
             </div>
             <div class="card-copy">
               <div class="title-row"><h2>Cleanliness</h2></div>
@@ -305,7 +302,7 @@
             <div class="details-inner">
               <button class="close-card" type="button" aria-label="Close Cleanliness details">×</button>
               <div class="divider"></div>
-              <p>Keeping your station clean massively effects how fast you will be able to get drinks out during a rush. Making sure utensils are rinsed immediately will prevent food from drying to it (making it take double the time to clean it). Wiping off the counter will prevent drinks from slipping (or sticking) and spilling. Keeping the sink clean will allow you to be able to rinse dishes faster and cut down on clutter. At the moment, each one of these things may seem insignificant, but together in a rush they make a massive difference.</p>
+              <p>Making sure utensils are rinsed immediately will prevent food from drying to it (making it take double the time to clean it). Wiping off the counter will prevent drinks from slipping (or sticking) and spilling. Keeping the sink clean will allow you to be able to rinse dishes faster and cut down on clutter. At the moment, each one of these things may seem insignificant, but together in a rush they make a massive difference.</p>
             </div>
           </div>
         </article>
@@ -314,10 +311,7 @@
           <button class="card-button" type="button" aria-expanded="false">
             <div class="visual">
               <span class="number">03</span>
-              <svg viewBox="0 0 120 120" fill="none" aria-hidden="true">
-                <path d="M25 35h39c13 0 22 9 22 21s-9 21-22 21H46" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
-                <path d="m35 24-11 11 11 11M55 66 44 77l11 11M75 31l6 6 12-14" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
+              <img src="assets/img/own-your-station/flow.jpg" alt="" />
             </div>
             <div class="card-copy">
               <div class="title-row"><h2>Flow</h2></div>
@@ -329,7 +323,7 @@
             <div class="details-inner">
               <button class="close-card" type="button" aria-label="Close Flow details">×</button>
               <div class="divider"></div>
-              <p>One important aspect of flow is about knowing where things are and having them in the exact spot at the exact time when you need them to make your work the most efficient. If things are hard to find, then it will take more time to get drinks done. In addition to knowing where everything is, another factor is proactive thinking. You'll discover that every second counts when you are in a rush on the barista station. You'll also discover that every barista has a slightly different flow. As you learn, figure out what flow works (and doesn't work) for YOU. Ask other baristas how they developed their flow, and advice on how to improve quicker.</p>
+              <p>If things are hard to find, then it will take more time to get drinks done. In addition to knowing where everything is, another factor is proactive thinking. You'll discover that every second counts when you are in a rush on the barista station. You'll also discover that every barista has a slightly different flow. As you learn, figure out what flow works (and doesn't work) for YOU. Ask other baristas how they developed their flow, and advice on how to improve quicker.</p>
             </div>
           </div>
         </article>
