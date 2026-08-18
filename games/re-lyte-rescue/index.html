@@ -29,6 +29,7 @@
             <strong id="mission-status">Stabilize</strong>
           </div>
           <button id="reset-btn" class="reset-btn" type="button">Replay</button>
+          <button id="help-btn" class="reset-btn help-btn" type="button">How to play</button>
         </div>
       </header>
 
@@ -87,15 +88,15 @@
             <ol class="mission-steps" aria-label="Mission progress">
               <li class="mission-step is-active" data-step="water">
                 <span class="step-number">1</span>
-                <span>Read daily target</span>
+                <span>Read the case</span>
               </li>
               <li class="mission-step" data-step="electrolytes">
                 <span class="step-number">2</span>
-                <span>Measure scoops or mg</span>
+                <span>Build &amp; mix</span>
               </li>
               <li class="mission-step" data-step="rescue">
                 <span class="step-number">3</span>
-                <span>Serve water</span>
+                <span>Serve</span>
               </li>
             </ol>
           </section>
@@ -187,24 +188,28 @@
                   <span class="item-label">Cup</span>
                 </button>
 
-                <button class="table-item electrolyte-btn sodium" data-electrolyte="sodium" type="button">
-                  <span class="electrolyte-icon" aria-hidden="true">Na</span>
-                  <span class="item-label">+810mg</span>
+                <button class="table-item electrolyte-btn sodium" data-electrolyte="sodium" type="button" aria-label="Add one sodium portion">
+                  <img class="molecule-image" src="../../assets/imgs/hydration-cards/sodiumandchloride.png" alt="" />
+                  <span class="portion-count" data-count="sodium">0</span>
+                  <span class="item-label">Sodium <small>+810mg</small></span>
                 </button>
 
-                <button class="table-item electrolyte-btn potassium" data-electrolyte="potassium" type="button">
-                  <span class="electrolyte-icon" aria-hidden="true">K</span>
-                  <span class="item-label">+400mg</span>
+                <button class="table-item electrolyte-btn potassium" data-electrolyte="potassium" type="button" aria-label="Add one potassium portion">
+                  <img class="molecule-image" src="../../assets/imgs/hydration-cards/potassium.png" alt="" />
+                  <span class="portion-count" data-count="potassium">0</span>
+                  <span class="item-label">Potassium <small>+400mg</small></span>
                 </button>
 
-                <button class="table-item electrolyte-btn magnesium" data-electrolyte="magnesium" type="button">
-                  <span class="electrolyte-icon" aria-hidden="true">Mg</span>
-                  <span class="item-label">+50mg</span>
+                <button class="table-item electrolyte-btn magnesium" data-electrolyte="magnesium" type="button" aria-label="Add one magnesium portion">
+                  <img class="molecule-image" src="../../assets/imgs/hydration-cards/magnesium.png" alt="" />
+                  <span class="portion-count" data-count="magnesium">0</span>
+                  <span class="item-label">Magnesium <small>+50mg</small></span>
                 </button>
 
-                <button class="table-item electrolyte-btn calcium" data-electrolyte="calcium" type="button">
-                  <span class="electrolyte-icon" aria-hidden="true">Ca</span>
-                  <span class="item-label">+60mg</span>
+                <button class="table-item electrolyte-btn calcium" data-electrolyte="calcium" type="button" aria-label="Add one calcium portion">
+                  <img class="molecule-image" src="../../assets/imgs/hydration-cards/calcium.png" alt="" />
+                  <span class="portion-count" data-count="calcium">0</span>
+                  <span class="item-label">Calcium <small>+60mg</small></span>
                 </button>
 
                 <button
@@ -219,6 +224,11 @@
                   </span>
                   <span class="item-label">+1 scoop</span>
                 </button>
+              </div>
+              <div class="mix-actions">
+                <span id="attempts-label" class="attempts-label">3 attempts</span>
+                <button id="clear-mix-btn" class="mix-secondary" type="button">Clear</button>
+                <button id="mix-btn" class="mix-primary" type="button">Mix formula</button>
               </div>
             </div>
 
@@ -259,6 +269,20 @@
             </div>
 
             <div id="action-toast" class="action-toast" aria-live="polite"></div>
+
+            <div id="tutorial-overlay" class="tutorial-overlay is-visible" aria-hidden="false">
+              <div class="tutorial-card">
+                <p class="victory-kicker">Your mission</p>
+                <h2>Prepare the right hydration mix</h2>
+                <ol class="tutorial-steps">
+                  <li><strong>1</strong><span>Read how many scoops Jonny needs.</span></li>
+                  <li><strong>2</strong><span>Add that many portions of every molecule, then mix.</span></li>
+                  <li><strong>3</strong><span>Serve the water. It only completes the rescue when the formula is correct.</span></li>
+                </ol>
+                <p class="tutorial-tip">Tip: each molecule card equals the amount in one Re-Lyte scoop. The Re-Lyte jar is a shortcut, but costs bonus points.</p>
+                <button id="start-game-btn" class="mix-primary tutorial-start" type="button">Start mission</button>
+              </div>
+            </div>
 
             <div
               id="victory-overlay"

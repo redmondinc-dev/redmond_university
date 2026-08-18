@@ -90,6 +90,13 @@ const refs = {
   victoryScore: document.getElementById("victory-score"),
   victoryCopy: document.getElementById("victory-copy"),
   overlayReplayBtn: document.getElementById("overlay-replay-btn"),
+  helpBtn: document.getElementById("help-btn"),
+  tutorialOverlay: document.getElementById("tutorial-overlay"),
+  startGameBtn: document.getElementById("start-game-btn"),
+  mixBtn: document.getElementById("mix-btn"),
+  clearMixBtn: document.getElementById("clear-mix-btn"),
+  attemptsLabel: document.getElementById("attempts-label"),
+  portionCounts: Array.from(document.querySelectorAll(".portion-count")),
   resetBtn: document.getElementById("reset-btn"),
   shortcutBtn: document.getElementById("shortcut-btn"),
   waterButtons: Array.from(document.querySelectorAll(".water-control")),
@@ -119,6 +126,9 @@ function createInitialState(profileIndex = 0) {
     puddle: 0,
     isDrinking: false,
     rescued: false,
+    mixed: false,
+    attempts: 3,
+    usedShortcut: false,
     instruction: `Match ${profile.name}'s daily target: ${formatScoops(profile.scoops)} or the equivalent electrolyte mg.`,
     message: profile.message,
   };
@@ -176,8 +186,12 @@ function hasAnyElectrolytes() {
   return getTotalAmount() > 0;
 }
 
+function hasOverMix() {
+  return ELECTROLYTES.some((electrolyte) => state.amounts[electrolyte.id] > getTargetAmount(electrolyte.id));
+}
+
 function getElectrolyteCount() {
-  return ELECTROLYTES.filter((electrolyte) => state.amounts[electrolyte.id] >= getTargetAmount(electrolyte.id))
+  return ELECTROLYTES.filter((electrolyte) => state.amounts[electrolyte.id] === getTargetAmount(electrolyte.id))
     .length;
 }
 
@@ -200,7 +214,7 @@ function getLeakRiskLabel() {
 
 function getMissionPhase() {
   if (state.rescued) return "Hydrated";
-  if (hasAllElectrolytes()) return "Serve water";
+  if (state.mixed) return "Serve water";
   if (hasAnyElectrolytes()) return "Measure mix";
   return "Study target";
 }
@@ -210,7 +224,9 @@ function getRescueScore() {
   const scoopScore = Math.min(state.scoops, getCurrentProfile().scoops) * 75;
   const leakPenalty = Math.round(state.puddle * 1.8);
   const rescueBonus = state.rescued ? 160 : 0;
-  return Math.max(0, accuracyScore + scoopScore + rescueBonus - leakPenalty);
+  const attemptBonus = state.mixed ? state.attempts * 70 : 0;
+  const shortcutPenalty = state.usedShortcut ? 120 : 0;
+  return Math.max(0, accuracyScore + scoopScore + rescueBonus + attemptBonus - shortcutPenalty - leakPenalty);
 }
 
 function ensureAudioContext() {
@@ -406,19 +422,23 @@ function renderChecklist() {
   refs.electrolyteButtons.forEach((button) => {
     const id = button.dataset.electrolyte;
     const active = state.amounts[id] > 0;
-    const complete = state.amounts[id] >= getTargetAmount(id);
+    const complete = state.amounts[id] === getTargetAmount(id);
+    const over = state.amounts[id] > getTargetAmount(id);
     button.classList.toggle("is-active", active);
     button.classList.toggle("is-complete", complete);
-    button.disabled = state.rescued || complete;
+    button.classList.toggle("is-over", over);
+    button.disabled = state.rescued || state.mixed || state.isDrinking || state.attempts <= 0;
     button.setAttribute("aria-pressed", String(active));
   });
 
   refs.checklistItems.forEach((item) => {
     const id = item.dataset.check;
     const active = state.amounts[id] > 0;
-    const complete = state.amounts[id] >= getTargetAmount(id);
+    const complete = state.amounts[id] === getTargetAmount(id);
+    const over = state.amounts[id] > getTargetAmount(id);
     item.classList.toggle("is-active", active);
     item.classList.toggle("is-complete", complete);
+    item.classList.toggle("is-over", over);
   });
 
   refs.checklistAmounts.forEach((item) => {
@@ -427,6 +447,11 @@ function renderChecklist() {
   });
 
   refs.electrolyteCount.textContent = `${getElectrolyteCount()} / ${ELECTROLYTES.length} met`;
+  refs.portionCounts.forEach((badge) => {
+    const id = badge.dataset.count;
+    const electrolyte = ELECTROLYTES.find((entry) => entry.id === id);
+    badge.textContent = String(state.amounts[id] / electrolyte.perScoop);
+  });
 }
 
 function renderMissionState() {
@@ -444,7 +469,7 @@ function renderMissionState() {
   refs.missionSteps.forEach((step) => {
     const stepName = step.dataset.step;
     const targetRead = hasAnyElectrolytes() || state.hydration > 0 || state.rescued;
-    const electrolytesComplete = hasAllElectrolytes();
+    const electrolytesComplete = state.mixed;
     const rescueComplete = state.rescued;
 
     step.classList.toggle(
@@ -468,7 +493,8 @@ function renderHydrationVisuals() {
   const puddleScaleY = 0.14 + state.puddle / 160;
 
   refs.hydrationFill.style.width = `${shownHydration}%`;
-  refs.hydrationLabel.textContent = `${Math.round(shownHydration)}%`;
+  refs.hydrationLabel.textContent = hasOverMix() ? "Over target" : `${Math.round(shownHydration)}%`;
+  refs.hydrationFill.classList.toggle("is-over", hasOverMix());
   if (refs.bellyFill) refs.bellyFill.style.height = `${shownHydration}%`;
   refs.puddle.style.opacity = String(0.12 + state.puddle / 120);
   refs.puddle.style.transform = `translateX(-50%) scale(${puddleScaleX}, ${puddleScaleY})`;
@@ -478,6 +504,15 @@ function render() {
   refs.instruction.textContent = state.instruction;
   refs.bubble.textContent = state.message;
   refs.shortcutBtn.disabled = state.rescued || hasAllElectrolytes();
+  refs.shortcutBtn.disabled = state.rescued || state.mixed || state.attempts <= 0;
+  refs.mixBtn.disabled = !hasAnyElectrolytes() || state.mixed || state.attempts <= 0;
+  refs.clearMixBtn.disabled = !hasAnyElectrolytes() || state.mixed;
+  refs.clearMixBtn.textContent = state.attempts <= 0 ? "Try again" : "Clear";
+  refs.attemptsLabel.textContent = `${state.attempts} ${state.attempts === 1 ? "attempt" : "attempts"}`;
+  refs.waterButtons.forEach((button) => {
+    button.disabled = state.rescued || state.isDrinking;
+    button.classList.remove("is-locked");
+  });
 
   renderProfile();
   updateSceneClasses();
@@ -506,12 +541,12 @@ function finishDrink() {
   state.isDrinking = false;
   refs.scene.classList.remove("is-drinking", "is-shortcut");
 
-  if (hasAllElectrolytes() && state.hydration >= 86) {
+  if (state.mixed && state.hydration >= 86) {
     settleAtFullHydration();
     return;
   }
 
-  if (hasAllElectrolytes()) {
+  if (state.mixed) {
     state.instruction = "The daily target is measured. Serve one more cup to finish.";
     state.message = "Target ready. Water please!";
   } else if (hasAnyElectrolytes()) {
@@ -533,14 +568,14 @@ function drinkWater() {
   const count = getElectrolyteCount();
   const leakLevel = getLeakLevel();
   const retention = getRetentionPercent() / 100;
-  const sipPower = hasAllElectrolytes() ? 120 : SIP_POWER[count];
+  const sipPower = state.mixed ? 120 : SIP_POWER[count];
   const netGain = Math.round(sipPower * retention);
   const previewLoss = Math.round(leakLevel * 18) + 4;
   const previewHydration = clamp(state.hydration + netGain + previewLoss, 0, 100);
-  const retainedHydration = hasAllElectrolytes()
+  const retainedHydration = state.mixed
     ? 100
     : clamp(state.hydration + netGain, 0, 100);
-  const puddleDelta = hasAllElectrolytes() ? -12 : Math.round(leakLevel * 26);
+  const puddleDelta = state.mixed ? -12 : Math.round(leakLevel * 26);
 
   state.isDrinking = true;
   refs.scene.classList.add("is-drinking");
@@ -550,7 +585,7 @@ function drinkWater() {
     state.instruction = "Water helps, but the daily electrolyte target is still empty.";
     state.message = "I still need the mix.";
     showToast("Measure the Re-Lyte scoop or mg target first.");
-  } else if (hasAllElectrolytes()) {
+  } else if (state.mixed) {
     state.instruction = "Target matched. Water completes the hydration rescue.";
     state.message = "That is the right mix!";
     showToast("Daily mix matched. Serving water.");
@@ -608,34 +643,25 @@ function launchElectrolyte(id, button) {
 }
 
 function addElectrolyte(id, button) {
-  if (state.isDrinking || state.rescued) return;
+  if (state.isDrinking || state.rescued || state.mixed || state.attempts <= 0) return;
 
   const electrolyte = ELECTROLYTES.find((entry) => entry.id === id);
   const target = getTargetAmount(id);
-  if (state.amounts[id] >= target) return;
-
-  state.amounts[id] = Math.min(target, state.amounts[id] + electrolyte.perScoop);
+  const maximum = target + electrolyte.perScoop;
+  state.amounts[id] = state.amounts[id] >= maximum ? 0 : state.amounts[id] + electrolyte.perScoop;
   if (button) launchElectrolyte(id, button);
   pulseCharacter("is-popping", 420);
   playTone("mineral");
 
-  if (hasAllElectrolytes()) {
-    state.instruction = "Daily scoop and mg target matched. Serve water to complete the rescue.";
-    state.message = "The mix is right!";
-    burstSparkles(12);
-    showToast("All electrolyte mg targets matched.");
-  } else {
-    state.instruction = `${electrolyte.label} is now ${formatMg(state.amounts[id])} of ${formatMg(target)}.`;
-    state.message = `${electrolyte.symbol} counted. Keep matching the target.`;
-    burstSparkles(7);
-    showToast(`${electrolyte.label} +${formatMg(electrolyte.perScoop)}.`);
-  }
+  state.instruction = `${electrolyte.label}: ${formatMg(state.amounts[id])}. Press Mix formula when your recipe is ready.`;
+  state.message = "Build the recipe, then mix it!";
+  showToast(state.amounts[id] ? `${electrolyte.label}: ${state.amounts[id] / electrolyte.perScoop} portion(s).` : `${electrolyte.label} reset.`);
 
   render();
 }
 
 function addScoop() {
-  if (state.isDrinking || hasAllElectrolytes()) return;
+  if (state.isDrinking || state.mixed || state.attempts <= 0) return;
 
   if (state.rescued) {
     state.instruction = "This person's daily target is already matched.";
@@ -646,6 +672,7 @@ function addScoop() {
   }
 
   state.scoops = Math.min(getCurrentProfile().scoops, state.scoops + 1);
+  state.usedShortcut = true;
   ELECTROLYTES.forEach((electrolyte) => {
     state.amounts[electrolyte.id] = Math.min(
       getTargetAmount(electrolyte.id),
@@ -653,10 +680,8 @@ function addScoop() {
     );
   });
 
-  state.instruction = `${formatScoops(state.scoops)} measured. Target is ${formatScoops(getCurrentProfile().scoops)}.`;
-  state.message = hasAllElectrolytes()
-    ? "Scoop target matched. Water please!"
-    : `${formatScoops(getCurrentProfile().scoops - state.scoops)} to go.`;
+  state.instruction = `${formatScoops(state.scoops)} added with the shortcut. Press Mix formula to check it.`;
+  state.message = "Shortcut used — fewer bonus points.";
   refs.shortcutBtn.classList.add("is-firing");
   showToast(`Re-Lyte +1 scoop: ${ELECTROLYTES.map((entry) => `${entry.symbol} ${formatMg(entry.perScoop)}`).join(", ")}.`);
   playTone("shortcut");
@@ -665,6 +690,56 @@ function addScoop() {
   render();
 
   queue(() => refs.shortcutBtn.classList.remove("is-firing"), 900);
+}
+
+function clearMix() {
+  if (state.mixed || state.rescued) return;
+  const restarting = state.attempts <= 0;
+  state.scoops = 0;
+  ELECTROLYTES.forEach((electrolyte) => { state.amounts[electrolyte.id] = 0; });
+  if (restarting) state.attempts = 3;
+  state.instruction = restarting
+    ? `New set of attempts. Add ${getCurrentProfile().scoops} portion(s) of every molecule.`
+    : `Mix cleared. Build ${formatScoops(getCurrentProfile().scoops)} or the equivalent molecule portions.`;
+  state.message = restarting ? "Let's rebuild the formula!" : getCurrentProfile().message;
+  showToast(restarting ? "Three new attempts — counters reset." : "Mix cleared.");
+  render();
+}
+
+function checkMix() {
+  if (!hasAnyElectrolytes() || state.mixed || state.attempts <= 0) return;
+  const wrong = ELECTROLYTES.filter((entry) => state.amounts[entry.id] !== getTargetAmount(entry.id));
+  if (wrong.length === 0) {
+    state.mixed = true;
+    state.instruction = "Perfect formula! The cup is unlocked — serve the water.";
+    state.message = "That mix is exactly right!";
+    burstSparkles(16);
+    playTone("victory");
+    showToast("Perfect mix! Water unlocked.");
+    render();
+    return;
+  }
+  state.attempts -= 1;
+  const clues = wrong.map((entry) => {
+    const amount = state.amounts[entry.id];
+    return `${entry.symbol} ${amount < getTargetAmount(entry.id) ? "needs more" : "has too much"}`;
+  });
+  state.instruction = state.attempts > 0 ? `Adjust the formula: ${clues.join(", ")}.` : "No attempts left. Press Try again to reset the counters.";
+  state.message = state.attempts > 0 ? "Almost — check the highlighted amounts." : "Reset the mix for three new attempts.";
+  showToast(`${clues.join(" · ")} (${state.attempts} attempts left)`);
+  refs.scene.classList.add("is-wrong-mix");
+  queue(() => refs.scene.classList.remove("is-wrong-mix"), 650);
+  render();
+}
+
+function showTutorial() {
+  refs.tutorialOverlay.classList.add("is-visible");
+  refs.tutorialOverlay.setAttribute("aria-hidden", "false");
+}
+
+function hideTutorial() {
+  refs.tutorialOverlay.classList.remove("is-visible");
+  refs.tutorialOverlay.setAttribute("aria-hidden", "true");
 }
 
 function resetGame() {
@@ -719,6 +794,10 @@ refs.electrolyteButtons.forEach((button) => {
 });
 
 refs.shortcutBtn.addEventListener("click", addScoop);
+refs.mixBtn.addEventListener("click", checkMix);
+refs.clearMixBtn.addEventListener("click", clearMix);
+refs.helpBtn.addEventListener("click", showTutorial);
+refs.startGameBtn.addEventListener("click", hideTutorial);
 refs.resetBtn.addEventListener("click", resetGame);
 refs.overlayReplayBtn.addEventListener("click", advanceProfile);
 

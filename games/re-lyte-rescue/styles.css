@@ -78,6 +78,8 @@ button {
   gap: 0.5rem;
 }
 
+.help-btn { order: -1; }
+
 .eyebrow {
   margin: 0 0 0.12rem;
   color: #d27042;
@@ -350,6 +352,10 @@ h1 {
   background: rgba(255, 255, 255, 0.42);
 }
 
+.hydration-fill.is-over {
+  background: linear-gradient(90deg, #f58da0, #dc4f68);
+}
+
 .retention-card p,
 .tiny-note {
   margin: 0.45rem 0 0;
@@ -386,6 +392,19 @@ h1 {
 .checklist-item.is-complete {
   background: rgba(86, 181, 126, 0.18);
 }
+
+.checklist-item.is-over {
+  color: #8d2f2f;
+  background: rgba(233, 95, 118, 0.16);
+  box-shadow: inset 3px 0 0 var(--rose);
+}
+
+.checklist-item.is-over .check-dot {
+  border-color: var(--rose);
+  background: var(--rose);
+}
+
+.checklist-item.is-over .check-mg { color: #a33647; }
 
 .check-copy {
   min-width: 0;
@@ -682,6 +701,85 @@ h1 {
   padding: 0.8rem 0.6rem 2.25rem;
   z-index: 2;
 }
+
+.molecule-image {
+  display: block;
+  width: 48px;
+  height: 58px;
+  margin: 0 auto;
+  object-fit: contain;
+  filter: drop-shadow(0 5px 5px rgba(18, 56, 70, 0.16));
+}
+
+.portion-count {
+  position: absolute;
+  right: -3px;
+  top: -4px;
+  display: grid;
+  place-items: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  color: #fff;
+  background: var(--orange);
+  border: 2px solid #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  box-shadow: 0 4px 10px rgba(18, 56, 70, 0.2);
+}
+
+.item-label small { display: block; color: var(--teal); font-size: 0.58rem; }
+.electrolyte-btn.is-over { background: rgba(233, 95, 118, .14); outline: 2px solid rgba(233, 95, 118, .55); }
+.electrolyte-btn.is-over .portion-count { background: var(--rose); }
+
+.mix-actions {
+  position: absolute;
+  left: 0.6rem;
+  right: 0.6rem;
+  bottom: -0.55rem;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.4rem;
+}
+
+.attempts-label { margin-right: auto; color: #fff; font-size: 0.72rem; font-weight: 700; }
+.mix-primary, .mix-secondary {
+  border: 0;
+  border-radius: var(--radius);
+  padding: 0.58rem 0.74rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.mix-primary { color: #fff; background: linear-gradient(180deg, #f47b49, #d9582d); box-shadow: 0 8px 16px rgba(176, 72, 35, .22); }
+.mix-secondary { color: var(--navy); background: rgba(255,255,255,.88); }
+.mix-primary:disabled, .mix-secondary:disabled { cursor: not-allowed; opacity: .48; }
+.water-control.is-locked { opacity: .48; filter: grayscale(.6); }
+
+.tutorial-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(11, 42, 52, .58);
+  backdrop-filter: blur(5px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .2s ease;
+}
+.tutorial-overlay.is-visible { opacity: 1; pointer-events: auto; }
+.tutorial-card { width: min(480px, 100%); padding: 1.35rem; border-radius: 12px; background: #fffdf8; box-shadow: var(--shadow); }
+.tutorial-card h2 { margin: .25rem 0 1rem; color: var(--navy); font-size: 1.35rem; }
+.tutorial-steps { margin: 0; padding: 0; list-style: none; display: grid; gap: .65rem; }
+.tutorial-steps li { display: flex; align-items: center; gap: .7rem; color: var(--muted); font-weight: 600; }
+.tutorial-steps strong { display: grid; place-items: center; flex: 0 0 30px; width: 30px; height: 30px; border-radius: 50%; color: #fff; background: var(--teal); }
+.tutorial-tip { margin: 1rem 0; padding: .65rem; border-radius: 8px; color: var(--teal); background: rgba(76, 200, 255, .12); font-size: .78rem; }
+.tutorial-start { width: 100%; }
+.scene.is-wrong-mix .table { animation: wrong-shake .55s ease; }
+@keyframes wrong-shake { 20%, 60% { transform: translateX(-7px); } 40%, 80% { transform: translateX(7px); } }
 
 .table::before {
   content: "";
