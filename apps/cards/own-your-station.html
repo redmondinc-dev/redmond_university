@@ -105,6 +105,12 @@
         object-position: center;
       }
 
+      .card:nth-child(3) .visual img {
+        position: absolute;
+        inset: 0;
+        object-position: center 75%;
+      }
+
       .number {
         position: absolute;
         top: 14px;
@@ -155,7 +161,7 @@
         margin: 9px 0 0;
         min-height: 48px;
         color: var(--muted);
-        font-size: 14px;
+        font-size: 15px;
         line-height: 1.55;
       }
 
@@ -192,7 +198,7 @@
       @keyframes card-sheen { 0% { opacity: 0; transform: translateX(-42%); } 35% { opacity: .8; } 100% { opacity: 0; transform: translateX(42%); } }
       .details-inner { position: relative; display: flex; flex-direction: column; justify-content: center; height: 100%; padding: 44px 24px 24px; }
       .divider { height: 1px; margin-bottom: 16px; background: color-mix(in srgb, var(--accent) 22%, transparent); }
-      .details p { margin: 0; color: var(--ink); font-size: 14px; line-height: 1.55; }
+      .details p { margin: 0; color: var(--ink); font-size: 15px; line-height: 1.55; }
 
       .close-card {
         position: absolute;
