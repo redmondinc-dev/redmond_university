@@ -15,7 +15,8 @@
   ];
 
   const characters = {
-    johnny: { image: CHARACTER_ROOT + "re-lyte-rescue/Johnny 1 1.png", alt: "Johnny" },
+    johnnyDaily: { image: "imgs/Johnny Waking Up.png", alt: "Johnny waking up and hydrating" },
+    johnnyWorkout: { image: "imgs/Johnny Exercising.png", alt: "Workout Johnny exercising" },
     silas: { image: CHARACTER_ROOT + "Stuard of the Land small.png", alt: "Silas" },
     caleb: { image: CHARACTER_ROOT + "Concious Caretaker.png", alt: "Caleb" },
     maya: { image: CHARACTER_ROOT + "Optimized Living Enthusiast.png", alt: "Maya" },
@@ -23,9 +24,9 @@
     shawna: { image: CHARACTER_ROOT + "Master of the Meal.png", alt: "Chef Shawna" },
   };
 
-  const stories = [
-    { name: "Johnny", character: "johnny", answer: "hydration", story: "My alarm goes off, and the day is already moving. I’ve got work, errands, and plenty to get done, but I’ve learned that starting my morning with good hydration helps me feel ready for whatever the day brings. I’m not an elite athlete—I just want something simple I can make part of my everyday routine." },
-    { name: "Workout Johnny", character: "johnny", answer: "pre-workout", story: "I’m not a professional athlete, but I like getting a good workout in when I can. When I know I’ve got a tough training session ahead, I want to show up ready to push myself and get the most out of my workout. I’m looking for something designed to support me before an intense workout." },
+  const storyBank = [
+    { name: "Johnny", character: "johnnyDaily", answer: "hydration", story: "My alarm goes off, and the day is already moving. I’ve got work, errands, and plenty to get done, but I’ve learned that starting my morning with good hydration helps me feel ready for whatever the day brings. I’m not an elite athlete—I just want something simple I can make part of my everyday routine." },
+    { name: "Workout Johnny", character: "johnnyWorkout", answer: "pre-workout", story: "I’m not a professional athlete, but I like getting a good workout in when I can. When I know I’ve got a tough training session ahead, I want to show up ready to push myself and get the most out of my workout. I’m looking for something designed to support me before an intense workout." },
     { name: "Silas", character: "silas", answer: "hydration-plus-capsules", story: "My days on the farm start early, and there’s always something that needs to be done. Between feeding animals, working the fields, and keeping up with the endless list of chores, I don’t always have time to stop and prepare a drink. I want a simple, convenient way to get the electrolytes I need while I’m working and keep moving through my day." },
     { name: "Caleb", character: "caleb", answer: "energy", story: "Between school drop-offs, work, and keeping up with the kids, my mornings can get hectic fast. By the afternoon, I’m running on fumes. I’m looking for something that can help support my energy so I can keep showing up for my family." },
     { name: "Caleb", character: "caleb", answer: "kids", story: "My kids spend most of their free time running around. Soccer practice, bike rides, playing outside—it seems like they’re always moving. I want to make hydration easy and enjoyable for them, with something designed specifically with kids in mind." },
@@ -38,11 +39,22 @@
     { name: "Chef Shawna", character: "shawna", answer: "immunity", story: "When I’m cooking for other people, getting sick isn’t an option I want to entertain. I’m proactive about my health and like to support my immune system before I’m feeling run down, especially when I have meals to prepare and people counting on me. I’m looking for something that can support hydration while also providing ingredients that support my immune health." },
   ];
 
+  let stories = shuffle(storyBank);
+
   const refs = Object.fromEntries(["live-region", "reset-btn", "progress-label", "score-label", "progress-track", "progress-fill", "game-layout", "story-number", "character-image", "customer-name", "customer-story", "product-grid", "selection-status", "feedback-card", "feedback-icon", "feedback-label", "feedback-title", "feedback-copy", "next-btn", "results-card", "results-title", "score-number", "results-copy", "play-again-btn", "confetti-layer"].map((id) => [id.replace(/-([a-z])/g, (_, c) => c.toUpperCase()), document.getElementById(id)]));
 
   let state = { index: 0, score: 0, answered: false, selected: "" };
 
   function productById(id) { return products.find((product) => product.id === id); }
+
+  function shuffle(items) {
+    const output = [...items];
+    for (let index = output.length - 1; index > 0; index -= 1) {
+      const randomIndex = Math.floor(Math.random() * (index + 1));
+      [output[index], output[randomIndex]] = [output[randomIndex], output[index]];
+    }
+    return output;
+  }
 
   function renderStory() {
     const item = stories[state.index];
@@ -132,12 +144,16 @@
     refs.progressTrack.setAttribute("aria-valuenow", stories.length);
     refs.progressFill.style.width = "100%";
     refs.scoreNumber.textContent = `${state.score} / ${stories.length}`;
+    refs.resultsTitle.textContent = state.score === stories.length
+      ? `You matched all ${stories.length} customer stories.`
+      : `You matched ${state.score} of ${stories.length} customer stories.`;
     refs.resultsCopy.textContent = state.score === stories.length ? "Every customer found their Re-Lyte match." : "Play again to match every customer with their Re-Lyte product.";
     refs.playAgainBtn.focus();
     celebrate();
   }
 
   function resetGame() {
+    stories = shuffle(storyBank);
     state = { index: 0, score: 0, answered: false, selected: "" };
     refs.gameLayout.hidden = false;
     refs.feedbackCard.hidden = true;

@@ -1,3 +1,59 @@
+@font-face {
+  font-family: "Redmond Avenir";
+  src: url("../../font/Avenir.ttc#Avenir-Book");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Redmond Avenir";
+  src: url("../../font/Avenir.ttc#Avenir-Medium");
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Redmond Avenir";
+  src: url("../../font/Avenir.ttc#Avenir-Heavy");
+  font-style: normal;
+  font-weight: 600 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Redmond Montserrat";
+  src: url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 500;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Redmond Montserrat";
+  src: url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-SemiBold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Redmond Montserrat";
+  src: url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Bold.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Redmond Avenir";
+  src: url("../../font/Avenir.ttc#Avenir-Black");
+  font-style: normal;
+  font-weight: 800 900;
+  font-display: swap;
+}
+
 :root {
   color-scheme: light;
   --ink: #17343b;
@@ -19,7 +75,8 @@ body {
   margin: 0;
   min-height: 100vh;
   color: var(--ink);
-  font-family: "Avenir Next", Avenir, "Helvetica Neue", Arial, sans-serif;
+  font-family: "Redmond Avenir", Avenir, "Avenir Next", "Helvetica Neue", Arial, sans-serif;
+  font-weight: 600;
   background:
     radial-gradient(circle at 9% 4%, rgba(230, 107, 56, 0.12), transparent 22rem),
     radial-gradient(circle at 95% 30%, rgba(0, 123, 131, 0.11), transparent 26rem),
@@ -30,7 +87,7 @@ button { font: inherit; }
 button:not(:disabled) { cursor: pointer; }
 img { display: block; max-width: 100%; }
 h1, h2, p { margin-top: 0; }
-h1, h2 { font-family: Montserrat, "Avenir Next", sans-serif; }
+h1, h2 { font-family: "Redmond Montserrat", Montserrat, "Redmond Avenir", Arial, sans-serif; }
 .screen-text { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 .game-shell { width: min(1240px, calc(100% - 24px)); margin: 0 auto; padding: 14px 0 24px; }
 .game-header, .progress-panel, .story-card, .products-panel {
@@ -39,16 +96,16 @@ h1, h2 { font-family: Montserrat, "Avenir Next", sans-serif; }
   box-shadow: var(--shadow);
 }
 .game-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 18px 20px; border-radius: var(--radius); }
-.game-header h1 { margin: 3px 0 5px; color: var(--teal-dark); font-size: clamp(1.7rem, 3vw, 2.5rem); line-height: 1; }
-.game-header p { margin: 0; color: var(--muted); font-size: .98rem; }
-.kicker, .small-label { color: var(--orange); font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-.secondary-btn, .primary-btn { min-height: 44px; padding: 10px 17px; border-radius: 10px; font-weight: 700; transition: transform .18s ease, box-shadow .18s ease; }
+.game-header h1 { margin: 3px 0 5px; color: var(--teal-dark); font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 800; line-height: 1; }
+.game-header p { margin: 0; color: var(--muted); font-size: .98rem; font-weight: 600; }
+.kicker, .small-label { color: var(--orange); font-family: "Redmond Montserrat", Montserrat, sans-serif; font-size: .7rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+.secondary-btn, .primary-btn { min-height: 44px; padding: 10px 17px; border-radius: 10px; font-family: "Redmond Montserrat", Montserrat, sans-serif; font-weight: 700; transition: transform .18s ease, box-shadow .18s ease; }
 .secondary-btn { color: var(--ink); border: 1px solid var(--line); background: #fff; }
 .primary-btn { color: #fff; border: 1px solid var(--teal-dark); background: linear-gradient(#04929a, var(--teal-dark)); box-shadow: 0 10px 22px rgba(0,123,131,.24); }
 .secondary-btn:hover, .primary-btn:hover, .product-card:not(:disabled):hover { transform: translateY(-2px); }
 button:focus-visible { outline: 3px solid rgba(230,107,56,.42); outline-offset: 3px; }
 .progress-panel { margin-top: 10px; padding: 10px 14px; border-radius: 11px; }
-.progress-copy { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 7px; font-size: .82rem; }
+.progress-copy { display: flex; justify-content: space-between; gap: 16px; margin-bottom: 7px; font-size: .82rem; font-weight: 600; }
 .progress-copy span { color: var(--muted); }
 .progress-track { height: 8px; overflow: hidden; border-radius: 99px; background: #e4eceb; }
 .progress-track span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--teal), #58a96f, #e6b54b); transition: width .45s ease; }
@@ -57,13 +114,13 @@ button:focus-visible { outline: 3px solid rgba(230,107,56,.42); outline-offset: 
 .story-card { display: grid; grid-template-rows: 270px 1fr; }
 .character-stage { position: relative; min-height: 260px; overflow: hidden; background: #fff; }
 .character-stage img { position: absolute; z-index: 1; inset: 18px 24px 0; width: calc(100% - 48px); height: calc(100% - 18px); max-width: none; object-fit: contain; object-position: center center; }
-.story-number { position: absolute; z-index: 2; top: 14px; left: 14px; display: grid; place-items: center; width: 47px; height: 47px; color: #fff; border-radius: 50%; background: var(--orange); font-family: Montserrat, sans-serif; font-weight: 800; }
+.story-number { position: absolute; z-index: 2; top: 14px; left: 14px; display: grid; place-items: center; width: 47px; height: 47px; color: #fff; border-radius: 50%; background: var(--orange); font-family: "Redmond Montserrat", Montserrat, sans-serif; font-weight: 700; }
 .story-copy { padding: 18px 20px 21px; }
-.story-copy h2 { margin: 4px 0 9px; color: var(--teal-dark); font-size: 1.35rem; }
-.story-copy p { margin: 0; color: #455d63; font-size: .94rem; line-height: 1.55; }
+.story-copy h2 { margin: 4px 0 9px; color: var(--teal-dark); font-size: 1.35rem; font-weight: 800; }
+.story-copy p { margin: 0; color: #455d63; font-size: .94rem; font-weight: 600; line-height: 1.55; }
 .products-panel { align-self: stretch; }
 .products-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 18px; border-bottom: 1px solid var(--line); }
-.products-heading h2 { margin: 3px 0 0; color: var(--teal-dark); font-size: 1.08rem; }
+.products-heading h2 { margin: 3px 0 0; color: var(--teal-dark); font-size: 1.08rem; font-weight: 800; }
 .selection-status { flex: 0 0 auto; padding: 7px 10px; color: var(--teal-dark); border-radius: 99px; background: rgba(0,123,131,.09); font-size: .72rem; font-weight: 700; }
 .product-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 9px; padding: 10px; }
 .product-card { position: relative; min-width: 0; min-height: 218px; padding: 8px; overflow: hidden; color: var(--ink); border: 2px solid transparent; border-radius: 11px; background: #fff; box-shadow: inset 0 0 0 1px var(--line), 0 7px 17px rgba(23,52,59,.08); transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease; }
@@ -82,7 +139,7 @@ button:focus-visible { outline: 3px solid rgba(230,107,56,.42); outline-offset: 
 .product-card:not(:disabled):hover img { transform: scale(1.04); }
 .product-card[data-id="hydration"]:not(:disabled):hover img { transform: scale(.76); }
 .product-card[data-id="kids"]:not(:disabled):hover img { transform: scale(.9); }
-.product-card strong { display: block; min-height: 36px; margin-top: 6px; font-family: Montserrat, sans-serif; font-size: .74rem; line-height: 1.25; }
+.product-card strong { display: block; min-height: 36px; margin-top: 6px; font-family: "Redmond Montserrat", Montserrat, sans-serif; font-size: .74rem; font-weight: 600; line-height: 1.25; }
 .product-card.is-correct { border-color: var(--green); box-shadow: 0 0 0 3px rgba(54,137,101,.13); }
 .product-card.is-wrong { border-color: var(--red); opacity: .72; }
 .product-card:disabled { cursor: default; }
@@ -93,15 +150,15 @@ button:focus-visible { outline: 3px solid rgba(230,107,56,.42); outline-offset: 
 .feedback-modal { position: relative; width: min(460px, 100%); padding: 34px 30px 28px; border: 1px solid rgba(255,255,255,.6); border-radius: 18px; background: #fff; box-shadow: 0 28px 80px rgba(7,44,49,.3); text-align: center; animation: modal-in .28s cubic-bezier(.2,.8,.2,1); }
 .feedback-icon { display: grid; place-items: center; width: 62px; height: 62px; margin: -2px auto 16px; color: #fff; border-radius: 50%; background: var(--green); box-shadow: 0 8px 20px rgba(54,137,101,.28); font-size: 2rem; font-weight: 800; }
 .feedback-overlay.is-wrong .feedback-icon { background: var(--orange); box-shadow: 0 8px 20px rgba(230,107,56,.28); }
-.feedback-modal h2 { margin: 5px 0 8px; color: var(--teal-dark); font-size: 1.35rem; }
-.feedback-modal p { margin: 0 0 22px; color: var(--muted); }
+.feedback-modal h2 { margin: 5px 0 8px; color: var(--teal-dark); font-size: 1.35rem; font-weight: 800; }
+.feedback-modal p { margin: 0 0 22px; color: var(--muted); font-weight: 600; }
 .feedback-modal .primary-btn { min-width: 170px; }
 .results-overlay { position: fixed; z-index: 25; inset: 0; display: grid; place-items: center; padding: 20px; background: rgba(7, 44, 49, .62); backdrop-filter: blur(6px); animation: overlay-in .25s ease-out; }
 .results-overlay[hidden] { display: none; }
 .results-modal { width: min(580px, 100%); padding: 42px 28px 34px; border: 1px solid rgba(255,255,255,.65); border-radius: 20px; background: #fff; box-shadow: 0 30px 90px rgba(7,44,49,.34); text-align: center; animation: modal-in .32s cubic-bezier(.2,.8,.2,1); }
-.results-modal h2 { margin: 6px 0 10px; color: var(--teal-dark); }
-.score-number { margin: 8px 0; color: var(--orange); font: 800 clamp(2.8rem, 8vw, 5rem)/1 Montserrat, sans-serif; }
-.results-modal p { color: var(--muted); }
+.results-modal h2 { margin: 6px 0 10px; color: var(--teal-dark); font-weight: 800; }
+.score-number { margin: 8px 0; color: var(--orange); font: 800 clamp(2.8rem, 8vw, 5rem)/1 "Redmond Montserrat", Montserrat, sans-serif; }
+.results-modal p { color: var(--muted); font-weight: 600; }
 .confetti-layer { position: fixed; z-index: 30; inset: 0; overflow: hidden; pointer-events: none; }
 .confetti { position: absolute; top: -24px; width: var(--size, 10px); height: calc(var(--size, 10px) * 1.55); animation: fall var(--duration, 4.2s) ease-in forwards; }
 @keyframes fall { to { transform: translate3d(var(--drift), 105vh, 0) rotate(700deg); opacity: .25; } }
