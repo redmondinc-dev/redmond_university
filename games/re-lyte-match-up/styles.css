@@ -77,10 +77,6 @@ body {
   color: var(--ink);
   font-family: "Redmond Avenir", Avenir, "Avenir Next", "Helvetica Neue", Arial, sans-serif;
   font-weight: 600;
-  background:
-    radial-gradient(circle at 9% 4%, rgba(230, 107, 56, 0.12), transparent 22rem),
-    radial-gradient(circle at 95% 30%, rgba(0, 123, 131, 0.11), transparent 26rem),
-    linear-gradient(145deg, #f5faf6, #f7fbff 53%, #fff7e9);
 }
 body.modal-open { overflow: hidden; }
 button { font: inherit; }
