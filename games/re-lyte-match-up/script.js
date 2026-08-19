@@ -3,13 +3,14 @@
 
   const ASSET_ROOT = "../memory/assets/";
   const CHARACTER_ROOT = "../../assets/imgs/png/";
+  const CANVAS_FILE_ROOT = "https://redmondlife.instructure.com/courses/266/files/";
   const products = [
-    { id: "hydration", name: "Hydration", image: ASSET_ROOT + "re-lyte-hydration.webp" },
+    { id: "hydration", name: "Hydration", image: CANVAS_FILE_ROOT + "4749/preview" },
     { id: "pre-workout", name: "Pre-Workout", image: ASSET_ROOT + "re-lyte-pre-workout.webp" },
-    { id: "hydration-plus-capsules", name: "Hydration Plus Capsules", image: ASSET_ROOT + "re-lyte-hydration-plus-capsules.jpg" },
-    { id: "energy", name: "Energy", image: ASSET_ROOT + "re-lyte-energy.webp" },
-    { id: "kids", name: "Kids", image: ASSET_ROOT + "re-lyte-kids.webp" },
-    { id: "immunity", name: "Immunity", image: ASSET_ROOT + "re-lyte-immunity.webp" },
+    { id: "hydration-plus-capsules", name: "Hydration Plus Capsules", image: CANVAS_FILE_ROOT + "4754/preview" },
+    { id: "energy", name: "Energy", image: CANVAS_FILE_ROOT + "4755/preview" },
+    { id: "kids", name: "Kids", image: CANVAS_FILE_ROOT + "4750/preview" },
+    { id: "immunity", name: "Immunity", image: CANVAS_FILE_ROOT + "4756/preview" },
     { id: "hydration-support-capsules", name: "Hydration Support Capsules", image: ASSET_ROOT + "re-lyte-hydration-capsules.jpg" },
     { id: "energy-boost-capsules", name: "Energy Boost Capsules", image: ASSET_ROOT + "re-lyte-capsules.webp" },
   ];
