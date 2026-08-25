@@ -128,13 +128,21 @@ button:focus-visible { outline: 3px solid rgba(230,107,56,.42); outline-offset: 
 .product-card:nth-child(6) { animation-delay: .6s; }
 .product-card:nth-child(7) { animation-delay: .72s; }
 .product-card:nth-child(8) { animation-delay: .84s; }
-.product-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 8px; background: #fff; transition: transform .2s ease; }
-.product-card[data-id="hydration"] img { transform: scale(.7); }
-.product-card[data-id="kids"] img { transform: scale(.84); }
+.product-card {
+  --product-scale: .7;
+  --product-hover-scale: .75;
+}
+.product-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 8px; background: #fff; transform: scale(var(--product-scale)); transition: transform .2s ease; }
+.product-card[data-id="hydration"] { --product-scale: .7; --product-hover-scale: .75; }
+.product-card[data-id="pre-workout"] { --product-scale: .67; --product-hover-scale: .72; }
+.product-card[data-id="hydration-plus-capsules"] { --product-scale: .66; --product-hover-scale: .71; }
+.product-card[data-id="energy"] { --product-scale: .68; --product-hover-scale: .73; }
+.product-card[data-id="kids"] { --product-scale: .72; --product-hover-scale: .77; }
+.product-card[data-id="immunity"] { --product-scale: .66; --product-hover-scale: .71; }
+.product-card[data-id="hydration-support-capsules"] { --product-scale: .64; --product-hover-scale: .69; }
+.product-card[data-id="energy-boost-capsules"] { --product-scale: .64; --product-hover-scale: .69; }
 .product-card:not(:disabled):hover { z-index: 2; animation-play-state: paused; box-shadow: inset 0 0 0 1px rgba(0,123,131,.38), 0 13px 25px rgba(0,123,131,.2); }
-.product-card:not(:disabled):hover img { transform: scale(1.04); }
-.product-card[data-id="hydration"]:not(:disabled):hover img { transform: scale(.76); }
-.product-card[data-id="kids"]:not(:disabled):hover img { transform: scale(.9); }
+.product-card:not(:disabled):hover img { transform: scale(var(--product-hover-scale)); }
 .product-card strong { display: block; min-height: 36px; margin-top: 6px; font-family: "Redmond Montserrat", Montserrat, sans-serif; font-size: .74rem; font-weight: 600; line-height: 1.25; }
 .product-card.is-correct { border-color: var(--green); box-shadow: 0 0 0 3px rgba(54,137,101,.13); }
 .product-card.is-wrong { border-color: var(--red); opacity: .72; }
