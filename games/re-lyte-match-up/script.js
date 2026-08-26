@@ -65,7 +65,7 @@
     refs.characterImage.alt = character.alt;
     refs.customerName.textContent = item.name;
     refs.customerStory.textContent = item.story;
-    refs.progressLabel.textContent = `Story ${state.index + 1} of ${stories.length}`;
+    refs.progressLabel.textContent = `Story ${state.index} of ${stories.length}`;
     refs.scoreLabel.textContent = `${state.score} ${state.score === 1 ? "match" : "matches"}`;
     refs.progressTrack.setAttribute("aria-valuenow", state.index);
     refs.progressFill.style.width = `${(state.index / stories.length) * 100}%`;

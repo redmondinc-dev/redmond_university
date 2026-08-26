@@ -28,3 +28,11 @@
 
 /* Clean white game background */
 html,body{background:#fff}.recipe-panel,.mix-stage{background:#fff}.mix-stage:before{background:#fff}.progress-card,.game-shell{background:#fff}
+
+/* Keep the mixing controls at the top of the station */
+.ingredient-dock{top:58px;bottom:auto}
+.bottle-zone{inset:108px 0 12px}
+
+@media(max-width:1000px){.ingredient-dock{top:52px}.bottle-zone{inset:100px 0 8px}}
+@media(max-width:760px){.bottle-zone{inset:116px 0 8px}}
+@media(max-width:600px){.mix-stage{min-height:650px}.ingredient-dock{top:52px}.bottle-zone{inset:182px 0 8px}.shake-meter{bottom:24px}}

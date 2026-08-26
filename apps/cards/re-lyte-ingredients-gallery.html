@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Inside Re-Lyte</title>
+    <style>
+      @font-face { font-family: Montserrat; src: url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Regular.ttf"); }
+      @font-face { font-family: Montserrat; src: url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Bold.ttf"); font-weight: 700; }
+      :root {
+        --navy: #0c5660;
+        --orange: #ef6c3e;
+        --ink: #173a42;
+        --muted: #5d7277;
+        --line: #d9e2df;
+        --paper: #fff;
+        --soft: #f0f6f3;
+        --radius: 14px;
+        --shadow: 0 10px 28px rgba(22, 53, 61, .14);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; min-height: 100%; }
+      body { padding: clamp(14px, 2.5vw, 30px); color: var(--ink); background: #fff; font-family: Avenir, "Avenir Next", Arial, sans-serif; }
+      .board { width: min(1280px, 100%); margin: auto; }
+      .board-header { display: flex; align-items: end; justify-content: space-between; gap: 24px; padding: clamp(20px, 3vw, 36px); border-radius: var(--radius); background: var(--navy); color: #fff; }
+      .eyebrow, .board-header h1, .board-header p { margin: 0; }
+      .eyebrow { color: #f7a07d; font: 700 .72rem/1 Montserrat, sans-serif; letter-spacing: .16em; text-transform: uppercase; }
+      .board-header h1 { margin-top: 8px; font: 700 clamp(2rem, 4vw, 3.6rem)/.96 Montserrat, sans-serif; letter-spacing: -.035em; }
+      .board-header > p { max-width: 34ch; font-size: clamp(.9rem, 1.2vw, 1.05rem); line-height: 1.45; text-align: right; }
+      .section-heading { display: flex; align-items: center; gap: 12px; margin: clamp(28px, 4vw, 48px) 0 14px; }
+      .section-heading h2 { margin: 0; font: 700 clamp(1.2rem, 2vw, 1.65rem)/1.1 Montserrat, sans-serif; }
+      .section-heading::after { content: ""; height: 1px; flex: 1; background: var(--line); }
+      .gallery { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+      .gallery-item { height: 390px; animation: rise .55s both; animation-delay: var(--delay); }
+      .gallery-card { width: 100%; height: 100%; padding: 0; border: 0; border-radius: var(--radius); background: transparent; cursor: pointer; perspective: 1200px; text-align: left; }
+      .gallery-card:focus-visible { outline: 3px solid rgba(239, 108, 62, .45); outline-offset: 4px; }
+      .card-inner { display: block; position: relative; width: 100%; height: 100%; border-radius: inherit; box-shadow: var(--shadow); transform-style: preserve-3d; transition: transform .6s cubic-bezier(.22, 1, .36, 1), box-shadow .2s; }
+      .gallery-card:hover .card-inner { box-shadow: 0 18px 40px rgba(22, 53, 61, .2); transform: translateY(-3px); }
+      .gallery-card.is-open .card-inner { transform: rotateY(180deg); }
+      .gallery-card.is-open:hover .card-inner { transform: rotateY(180deg) translateY(-2px); }
+      .card-face { position: absolute; inset: 0; overflow: hidden; border: 1px solid var(--line); border-radius: inherit; background: var(--paper); backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+      .card-front img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s; pointer-events: none; }
+      .card-front.molecule { background: radial-gradient(circle at 50% 42%, #fff 0, #eef6f2 72%); }
+      .card-front.molecule img { object-fit: contain; padding: 54px 48px 78px; filter: drop-shadow(0 12px 12px rgba(23, 58, 66, .14)); }
+      .gallery-card:hover .card-front img { transform: scale(1.04); }
+      .card-front::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 42%, rgba(10, 31, 36, .82)); }
+      .front-label { position: absolute; z-index: 1; left: 0; right: 0; bottom: 0; padding: 22px; color: #fff; font: 700 clamp(1rem, 1.4vw, 1.3rem)/1.1 Montserrat, sans-serif; }
+      .front-label small { display: block; margin-bottom: 7px; color: #f7a07d; font-size: .63rem; letter-spacing: .14em; text-transform: uppercase; }
+      .card-back { display: flex; flex-direction: column; justify-content: center; gap: 13px; padding: clamp(20px, 2.3vw, 28px); transform: rotateY(180deg); overflow-y: auto; scrollbar-width: thin; }
+      .card-back .eyebrow { color: var(--orange); }
+      .card-back h3 { margin: 0; color: var(--navy); font: 700 clamp(1.3rem, 1.7vw, 1.7rem)/1.08 Montserrat, sans-serif; }
+      .card-back hr { width: 100%; margin: 1px 0; border: 0; border-top: 1px solid var(--line); }
+      .card-back p { margin: 0; font-size: clamp(.86rem, 1vw, .98rem); line-height: 1.48; text-wrap: pretty; }
+      .card-back.long { justify-content: flex-start; }
+      .tap-note { margin: 18px 0 0; color: var(--muted); font-size: .78rem; text-align: center; }
+      @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+      @media (max-width: 980px) { .gallery { grid-template-columns: repeat(3, 1fr); } }
+      @media (max-width: 760px) { .board-header { align-items: flex-start; flex-direction: column; } .board-header > p { text-align: left; } .gallery { grid-template-columns: repeat(2, 1fr); } .gallery-item { height: 370px; } }
+      @media (max-width: 480px) { body { padding: 10px; } .gallery { grid-template-columns: 1fr; } .gallery-item { height: 410px; } }
+      @media (prefers-reduced-motion: reduce) { .gallery-item { animation: none; } .card-inner, .card-front img { transition: none; } }
+    </style>
+  </head>
+  <body>
+    <main class="board">
+      <section aria-labelledby="basic-title">
+        <div class="section-heading"><h2 id="basic-title">Basic ingredients</h2></div>
+        <div class="gallery" id="basic-gallery"></div>
+      </section>
+      <section aria-labelledby="additional-title">
+        <div class="section-heading"><h2 id="additional-title">Energy, Pre-Workout &amp; Boost capsules</h2></div>
+        <div class="gallery" id="additional-gallery"></div>
+      </section>
+      <p class="tap-note">Click or press Enter on a card to learn more.</p>
+    </main>
+    <script>
+      (function () {
+        const basic = [
+          { title: "Real Salt", image: "../../assets/imgs/hydration-cards/sodiumandchloride.png", molecule: true, alt: "Mineral-rich salt", copy: "An unrefined, mineral-rich sea salt from our mine in Redmond, Utah, that contains a spectrum of electrolytes (sodium, potassium, calcium, magnesium, chloride) creates a complete system that supports hydration at the cellular level." },
+          { title: "Potassium", image: "../../assets/imgs/hydration-cards/K.png", molecule: true, alt: "Potassium molecule character", copy: "Supports nerve function, promotes muscle contraction, and helps maintain a healthy heartbeat. We source our potassium citrate from a lab in Colombia that derives the mineral from fermented non-GMO glucose syrup." },
+          { title: "Magnesium", image: "../../assets/imgs/hydration-cards/Mg.png", molecule: true, alt: "Magnesium molecule character", copy: "Helps provide energy to cells, supports the contraction and relaxation of muscles, and promotes neurological functioning. We source our magnesium (in the form of magnesium glycinate and magnesium citrate) from the USA and Japan, where it's produced without unnecessary additives." },
+          { title: "Calcium", image: "../../assets/imgs/hydration-cards/Ca.png", molecule: true, alt: "Calcium molecule character", copy: "Supports muscle contractions (including those in the heart and smooth muscles), helps transmit nerve signals, contributes to hormone regulation and blood clotting, and plays a role in immune system function. Like many minerals, our calcium begins its life as a component of rock before it is mined and purified into the pharmaceutical grade form we use." },
+          { title: "Coconut Water", image: "../../assets/imgs/relyte-ingredients/coconut-water.webp", alt: "Fresh coconut with coconut water", copy: "A great natural hydrator because it's loaded with electrolytes like magnesium, calcium, potassium, and phosphorus, and contains less than 1 gram of naturally occurring sugar per serving! Coconut water is also a great source of antioxidants that protect the body against oxidative stress, free radicals, and inflammation. Our coconut water powder is carried by trace amounts of non-GMO corn and tapioca maltodextrin, and is sourced from Indonesia." },
+          { title: "Natural Flavors", image: "../../assets/imgs/relyte-ingredients/natural-flavors.webp", alt: "Fresh mango, strawberry, lemon, lime, and orange", copy: "The primary flavors of flavored Re-Lyte are derived from real fruit. In addition to these specific fruits, the general term “natural flavors” is listed on the ingredient labels. The flavor houses who create these natural flavors guard their recipes closely, which means the specific ingredient blends that make Re-Lyte unique cannot be shared. The natural flavors in flavored Re-Lyte varieties also include trace amounts of non-GMO corn maltodextrin." },
+          { title: "Stevia", image: "../../assets/imgs/relyte-ingredients/stevia.webp", alt: "Fresh stevia leaves and flowers", copy: "Stevia leaf extract is a natural sweetener added to flavored Re-Lyte products to give them just the right amount of sweetness. Flavored Re-Lyte products contain rebaudioside A, a type of stevia leaf extract that's less bitter than other stevia leaf extracts. Our stevia is suitable for food grade, contains no contaminants, is 100% stevia, and is Non-GMO Project Verified." },
+          { title: "Citric Acid", image: "../../assets/imgs/relyte-ingredients/citric-acid.webp", alt: "Fresh citrus fruit and cassava root", copy: "One of the best natural preservatives around, and its tangy flavor adds something special to Re-Lyte's taste! Research also shows that citric acid improves the gut's ability to absorb calcium, magnesium, phosphorus, and zinc. The citric acid in flavored Re-Lyte is sourced from fermented cassava and is kosher-certified, halal certified, and Non-GMO Project Verified." }
+        ];
+        const additional = [
+          { title: "Caffeine", image: "../../assets/imgs/relyte-ingredients/green-tea-caffeine.webp", alt: "Green tea leaves and a glass cup of green tea", copy: "From green tea extract, a plant-based source that many people find smoother and less jittery than synthetic caffeine or conventional energy drinks." },
+          { title: "Panax Ginseng Root Extract", image: "../../assets/imgs/relyte-ingredients/panax-ginseng.webp", alt: "Panax ginseng roots, leaves, and red berries", copy: "A well-studied botanical traditionally used to support energy, endurance, and overall vitality." },
+          { title: "Maca Root Extract", image: "../../assets/imgs/relyte-ingredients/maca-root.webp", alt: "Fresh maca roots in natural colors", copy: "A nutrient-dense adaptogenic root traditionally used to support energy, mood, and overall resilience." }
+        ];
+
+        function render(items, target, category) {
+          const gallery = document.getElementById(target);
+          items.forEach(function (item, index) {
+            const wrapper = document.createElement("article");
+            wrapper.className = "gallery-item";
+            wrapper.style.setProperty("--delay", (index * .045) + "s");
+            wrapper.innerHTML = `<button class="gallery-card" type="button" aria-pressed="false" aria-label="${item.title}. Click to read more."><span class="card-inner"><span class="card-face card-front${item.molecule ? " molecule" : ""}"><img src="${item.image}" alt="${item.alt}" loading="lazy"><span class="front-label"><small>${category}</small>${item.title}</span></span><span class="card-face card-back${item.copy.length > 320 ? " long" : ""}"><span class="eyebrow">Ingredient</span><h3>${item.title}</h3><hr><p>${item.copy}</p></span></span></button>`;
+            const card = wrapper.querySelector(".gallery-card");
+            card.addEventListener("click", function () {
+              const open = card.classList.toggle("is-open");
+              card.setAttribute("aria-pressed", String(open));
+              card.setAttribute("aria-label", item.title + (open ? ". Click to return to image." : ". Click to read more."));
+            });
+            gallery.append(wrapper);
+          });
+        }
+        render(basic, "basic-gallery", "Basic ingredient");
+        render(additional, "additional-gallery", "Additional ingredient");
+      })();
+    </script>
+  </body>
+</html>
