@@ -194,6 +194,29 @@ main {
   justify-content: flex-start;
   gap: 8px;
   scroll-snap-align: center;
+  /* Vertical gestures drag ingredients; horizontal gestures still scroll the carousel. */
+  touch-action: pan-x;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.card.touch-dragging {
+  opacity: 0.65;
+  cursor: grabbing;
+  transform: scale(0.98);
+}
+
+.touch-drag-preview {
+  position: fixed;
+  z-index: 1000;
+  width: 82px;
+  height: 82px;
+  object-fit: cover;
+  border-radius: 14px;
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(1.06);
+  box-shadow: 0 14px 34px rgba(25, 68, 102, 0.3);
+  opacity: 0.92;
 }
 
 .card h3 {

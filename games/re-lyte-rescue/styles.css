@@ -36,3 +36,19 @@ html,body{background:#fff}.recipe-panel,.mix-stage{background:#fff}.mix-stage:be
 @media(max-width:1000px){.ingredient-dock{top:52px}.bottle-zone{inset:100px 0 8px}}
 @media(max-width:760px){.bottle-zone{inset:116px 0 8px}}
 @media(max-width:600px){.mix-stage{min-height:650px}.ingredient-dock{top:52px}.bottle-zone{inset:182px 0 8px}.shake-meter{bottom:24px}}
+
+/* Nearly clear mixes: flavor hues are illustrative only; the real product is uncolored. */
+.liquid{
+  background:linear-gradient(90deg,color-mix(in srgb,var(--flavor-deep),white 34%),color-mix(in srgb,var(--flavor),white 40%) 44%,color-mix(in srgb,var(--flavor),white 60%));
+  opacity:.66;
+}
+.has-water:not(.has-powder) .liquid{background:#d9f1f6;opacity:.42}
+.liquid:after{background:color-mix(in srgb,var(--flavor),white 55%);opacity:.62}
+.has-powder .powder-cloud{opacity:.43}
+.scoop-bowl:after{background:color-mix(in srgb,var(--flavor),white 38%)}
+.scoop-powder b{background:color-mix(in srgb,var(--flavor),white 30%)}
+.shake-meter i{background:color-mix(in srgb,var(--flavor),white 18%)}
+
+/* Temporary always-visible HOW TO PLAY preview; the existing modal stays available. */
+.topbar-copy{min-width:0;flex:1}.always-visible-instructions{max-width:760px;margin-top:12px;padding:13px 15px;border:1px solid var(--line);border-radius:10px;background:#fffdf7}.always-visible-instructions h2{margin:0;color:var(--navy);font-size:15px}.always-visible-instructions ol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 24px;margin:9px 0;padding-left:20px;color:var(--muted);font-size:10px;line-height:1.45}.always-visible-instructions .dialog-tip{margin:0;padding:9px 10px}.topbar>.top-actions{flex:0 0 auto}
+@media(max-width:760px){.always-visible-instructions ol{grid-template-columns:1fr}.topbar>.top-actions{margin-top:10px}}

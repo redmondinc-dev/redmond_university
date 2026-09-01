@@ -107,7 +107,70 @@ function createIngredientCard({ id, name, measure, image }) {
     e.dataTransfer.setData("label", name);
   });
 
+  enableTouchDrag(card, { id, name, image });
+
   return card;
+}
+
+function enableTouchDrag(card, ingredient) {
+  let pointerId = null;
+  let dragPreview = null;
+
+  const movePreview = (clientX, clientY) => {
+    if (!dragPreview) return;
+    dragPreview.style.left = `${clientX}px`;
+    dragPreview.style.top = `${clientY}px`;
+
+    const overDropzone = isPointInsideDropzone(clientX, clientY);
+    dropzone.classList.toggle("dragover", overDropzone && isLidOpen);
+    dropzone.classList.toggle("lid-locked", overDropzone && !isLidOpen);
+  };
+
+  const finishDrag = (event, cancelled = false) => {
+    if (event.pointerId !== pointerId) return;
+
+    const droppedOnBlender = isPointInsideDropzone(event.clientX, event.clientY);
+    card.releasePointerCapture?.(pointerId);
+    pointerId = null;
+    card.classList.remove("touch-dragging");
+    dragPreview?.remove();
+    dragPreview = null;
+    dropzone.classList.remove("dragover", "lid-locked");
+
+    if (!cancelled && droppedOnBlender) {
+      addIngredientToBlender(ingredient.id, event.clientX, event.clientY);
+    }
+  };
+
+  card.addEventListener("pointerdown", (event) => {
+    if (event.pointerType === "mouse" || card.classList.contains("used")) return;
+    event.preventDefault();
+    pointerId = event.pointerId;
+    card.setPointerCapture(pointerId);
+    card.classList.add("touch-dragging");
+
+    dragPreview = document.createElement("img");
+    dragPreview.className = "touch-drag-preview";
+    dragPreview.src = ingredient.image;
+    dragPreview.alt = "";
+    dragPreview.setAttribute("aria-hidden", "true");
+    document.body.appendChild(dragPreview);
+    movePreview(event.clientX, event.clientY);
+  });
+
+  card.addEventListener("pointermove", (event) => {
+    if (event.pointerId !== pointerId) return;
+    event.preventDefault();
+    movePreview(event.clientX, event.clientY);
+  });
+  card.addEventListener("pointerup", (event) => finishDrag(event));
+  card.addEventListener("pointercancel", (event) => finishDrag(event, true));
+}
+
+function isPointInsideDropzone(clientX, clientY) {
+  const rect = dropzone.getBoundingClientRect();
+  return clientX >= rect.left && clientX <= rect.right &&
+    clientY >= rect.top && clientY <= rect.bottom;
 }
 
 function renderIngredientCards() {
@@ -251,6 +314,11 @@ dropzone.addEventListener("drop", (e) => {
   e.preventDefault();
   dropzone.classList.remove("dragover");
 
+  const ingredientId = e.dataTransfer.getData("text/plain");
+  addIngredientToBlender(ingredientId, e.clientX, e.clientY);
+});
+
+function addIngredientToBlender(ingredientId, clientX, clientY) {
   if (!isLidOpen) {
     dropzone.classList.add("lid-locked");
     setTimeout(() => dropzone.classList.remove("lid-locked"), 800);
@@ -259,7 +327,6 @@ dropzone.addEventListener("drop", (e) => {
     return;
   }
 
-  const ingredientId = e.dataTransfer.getData("text/plain");
   const ingredient = ingredients.find(({ id }) => id === ingredientId);
 
   if (!ingredient || addedIngredients.includes(ingredientId)) {
@@ -273,7 +340,7 @@ dropzone.addEventListener("drop", (e) => {
   card.classList.add("used");
   card.setAttribute("draggable", "false");
 
-  flyToBlender(ingredient.image, e);
+  flyToBlender(ingredient.image, { clientX, clientY });
   addLayer(ingredientId);
   addFloatingIngredient(ingredient.image, ingredient.name);
 
@@ -288,7 +355,7 @@ dropzone.addEventListener("drop", (e) => {
   } else {
     dropText.textContent = `Added ${requiredCount}/${requiredIds.length} required`;
   }
-});
+}
 
 function flyToBlender(image, dropEvent) {
   const fly = document.createElement("img");
