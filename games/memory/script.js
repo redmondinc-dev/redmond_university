@@ -17,37 +17,37 @@
     {
       id: "pre-workout",
       name: "Re-Lyte Pre-Workout",
-      image: "assets/re-lyte-pre-workout.webp",
+      image: "assets/re-lyte-pre-workout.png",
       description: "The highest level of caffeine of any of our products (150 mg) to fuel your workouts, plus amino acids to support muscle recovery.",
     },
     {
       id: "energy",
       name: "Re-Lyte Energy",
-      image: "assets/re-lyte-energy.webp",
+      image: "assets/re-lyte-energy.png",
       description: "Re-Lyte Energy contains 120 mg of caffeine per serving, B vitamins, and herbal energizers ginseng, maca root, ashwagandha, Rhodiola rosea, and beetroot extract.",
     },
     {
       id: "immunity",
       name: "Re-Lyte Immunity",
-      image: "assets/re-lyte-immunity.webp",
+      image: "assets/re-lyte-immunity.png",
       description: "Blends hydration and immune support in a clean, daily formula using electrolytes, vitamins, and herbs.",
     },
     {
       id: "hydration-capsules",
       name: "Re-Lyte Hydration Capsules",
-      image: "assets/re-lyte-hydration-capsules.jpg",
+      image: "assets/re-lyte-hydration-capsules.png",
       description: "Provide simple and convenient hydration to replenish electrolytes using a Real Salt-based sodium and chloride combination.",
     },
     {
       id: "hydration-plus-capsules",
       name: "Hydration Plus Capsules",
-      image: "assets/re-lyte-hydration-plus-capsules.jpg",
+      image: "assets/re-lyte-hydration-plus-capsules.png",
       description: "Provides key electrolytes paired with sea kelp, a natural source of iodine that supports healthy thyroid function and overall metabolic balance.",
     },
     {
       id: "energy-boost-capsules",
       name: "Energy Boost Capsules",
-      image: "assets/re-lyte-capsules.webp",
+      image: "assets/re-lyte-capsules.png",
       description: "A convenient and affordable Energy option with herbal energizers like ginseng and maca for a sustained lift without mixing.",
     },
   ];

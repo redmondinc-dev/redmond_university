@@ -6,7 +6,7 @@
   const CANVAS_FILE_ROOT = "https://redmondlife.instructure.com/courses/266/files/";
   const products = [
     { id: "hydration", name: "Hydration", image: CANVAS_FILE_ROOT + "4749/preview" },
-    { id: "pre-workout", name: "Pre-Workout", image: ASSET_ROOT + "re-lyte-pre-workout.webp" },
+    { id: "pre-workout", name: "Pre-Workout", image: ASSET_ROOT + "re-lyte-pre-workout.png" },
     { id: "hydration-plus-capsules", name: "Hydration Plus Capsules", image: CANVAS_FILE_ROOT + "4754/preview" },
     { id: "energy", name: "Energy", image: CANVAS_FILE_ROOT + "4755/preview" },
     { id: "kids", name: "Kids", image: CANVAS_FILE_ROOT + "4750/preview" },
