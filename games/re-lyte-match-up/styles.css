@@ -107,9 +107,9 @@ button:focus-visible { outline: 3px solid rgba(230,107,56,.42); outline-offset: 
 .progress-track span { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg, var(--teal), #58a96f, #e6b54b); transition: width .45s ease; }
 .game-layout { display: grid; grid-template-columns: minmax(320px, .78fr) minmax(560px, 1.4fr); gap: 10px; margin-top: 10px; }
 .story-card, .products-panel { min-width: 0; border-radius: var(--radius); overflow: hidden; }
-.story-card { display: grid; grid-template-rows: 270px 1fr; }
-.character-stage { position: relative; min-height: 260px; overflow: hidden; background: #fff; }
-.character-stage img { position: absolute; z-index: 1; inset: 18px 24px 0; width: calc(100% - 48px); height: calc(100% - 18px); max-width: none; object-fit: contain; object-position: center center; }
+.story-card { display: grid; grid-template-rows: 280px 1fr; }
+.character-stage { position: relative; min-height: 270px; overflow: hidden; background: #fff; }
+.character-stage img { position: absolute; z-index: 1; inset: 8px 12px 0; width: calc(100% - 24px); height: calc(100% - 8px); max-width: none; object-fit: contain; object-position: center center; }
 .story-number { position: absolute; z-index: 2; top: 14px; left: 14px; display: grid; place-items: center; width: 47px; height: 47px; color: #fff; border-radius: 50%; background: var(--orange); font-family: "Redmond Montserrat", Montserrat, sans-serif; font-weight: 700; }
 .story-copy { padding: 18px 20px 21px; }
 .story-copy h2 { margin: 4px 0 9px; color: var(--teal-dark); font-size: 1.35rem; font-weight: 800; }
@@ -129,18 +129,18 @@ button:focus-visible { outline: 3px solid rgba(230,107,56,.42); outline-offset: 
 .product-card:nth-child(7) { animation-delay: .72s; }
 .product-card:nth-child(8) { animation-delay: .84s; }
 .product-card {
-  --product-scale: .7;
-  --product-hover-scale: .75;
+  --product-scale: .92;
+  --product-hover-scale: .98;
 }
 .product-card img { width: 100%; aspect-ratio: 1; object-fit: contain; border-radius: 8px; background: #fff; transform: scale(var(--product-scale)); transition: transform .2s ease; }
-.product-card[data-id="hydration"] { --product-scale: .7; --product-hover-scale: .75; }
-.product-card[data-id="pre-workout"] { --product-scale: .67; --product-hover-scale: .72; }
-.product-card[data-id="hydration-plus-capsules"] { --product-scale: .66; --product-hover-scale: .71; }
-.product-card[data-id="energy"] { --product-scale: .68; --product-hover-scale: .73; }
-.product-card[data-id="kids"] { --product-scale: .72; --product-hover-scale: .77; }
-.product-card[data-id="immunity"] { --product-scale: .66; --product-hover-scale: .71; }
-.product-card[data-id="hydration-support-capsules"] { --product-scale: .64; --product-hover-scale: .69; }
-.product-card[data-id="energy-boost-capsules"] { --product-scale: .64; --product-hover-scale: .69; }
+.product-card[data-id="hydration"] { --product-scale: .95; --product-hover-scale: 1; }
+.product-card[data-id="pre-workout"] { --product-scale: .92; --product-hover-scale: .97; }
+.product-card[data-id="hydration-plus-capsules"] { --product-scale: .92; --product-hover-scale: .97; }
+.product-card[data-id="energy"] { --product-scale: .94; --product-hover-scale: .99; }
+.product-card[data-id="kids"] { --product-scale: .95; --product-hover-scale: 1; }
+.product-card[data-id="immunity"] { --product-scale: .92; --product-hover-scale: .97; }
+.product-card[data-id="hydration-support-capsules"] { --product-scale: .90; --product-hover-scale: .95; }
+.product-card[data-id="energy-boost-capsules"] { --product-scale: .90; --product-hover-scale: .95; }
 .product-card:not(:disabled):hover { z-index: 2; animation-play-state: paused; box-shadow: inset 0 0 0 1px rgba(0,123,131,.38), 0 13px 25px rgba(0,123,131,.2); }
 .product-card:not(:disabled):hover img { transform: scale(var(--product-hover-scale)); }
 .product-card strong { display: block; min-height: 36px; margin-top: 6px; font-family: "Redmond Montserrat", Montserrat, sans-serif; font-size: .74rem; font-weight: 600; line-height: 1.25; }
