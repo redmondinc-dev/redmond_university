@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#243d2d" />
+    <title>Return the Cow to Pasture</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css?v=controls-hidden-1" />
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js",
+          "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="top-actions">
+          <button class="icon-button" id="sound-button" type="button" aria-label="Mute sound" title="Sound on">♪</button>
+          <div class="language" role="group" aria-label="Language">
+            <button class="lang active" data-lang="en" type="button">EN</button>
+            <button class="lang" data-lang="es" type="button">ES</button>
+          </div>
+        </div>
+      </header>
+
+      <main>
+        <section class="intro">
+          <div>
+            <h1 data-i18n="title">Return the Cow to Pasture</h1>
+            <p class="dek" data-i18n="subtitle">Guide Ruby out of the industrial city and back to green pasture. Every answer brings her closer to home.</p>
+          </div>
+          <div class="journey-card" aria-label="Journey progress">
+            <div class="journey-top">
+              <span data-i18n="journey">Ruby’s journey</span>
+              <strong id="progress-percent">0%</strong>
+            </div>
+            <div class="progress-track"><span id="progress-fill"></span></div>
+            <div class="progress-labels"><span data-i18n="city">Industrial city</span><span data-i18n="pasture">Pasture</span></div>
+          </div>
+        </section>
+
+        <section class="game-card" id="game-card">
+          <div class="chapter-strip">
+            <div class="chapter active" data-stage="0"><span>01</span><div><small data-i18n="chapter">Chapter</small><strong data-i18n="stage1">Milk Through History</strong></div></div>
+            <div class="chapter" data-stage="1"><span>02</span><div><small data-i18n="chapter">Chapter</small><strong data-i18n="stage2">The Industrial City</strong></div></div>
+            <div class="chapter" data-stage="2"><span>03</span><div><small data-i18n="chapter">Chapter</small><strong data-i18n="stage3">Return to Pasture</strong></div></div>
+          </div>
+
+          <div class="scene stage-0" id="scene">
+            <div class="scene-atmosphere" aria-hidden="true"></div>
+            <div class="board" id="board" aria-label="Game path"></div>
+          </div>
+
+          <div class="control-bar">
+            <div class="stats">
+              <div><span class="stat-icon">⌁</span><p><small data-i18n="position">Position</small><strong><span id="position">1</span> / 24</strong></p></div>
+              <div><span class="stat-icon">♧</span><p><small data-i18n="grass">Grass earned</small><strong id="grass-count">0</strong></p></div>
+              <div><span class="stat-icon">✓</span><p><small data-i18n="facts">Facts discovered</small><strong><span id="facts-count">0</span> / 18</strong></p></div>
+            </div>
+            <div class="primary-actions">
+              <button class="text-button" id="rules-button" type="button" data-i18n="how">How to play</button>
+              <button class="spin-button" id="spin-button" type="button"><span class="mini-spinner"><b>1–6</b></span><span><small data-i18n="yourTurn">Your turn</small><strong data-i18n="spin">Spin to move</strong></span><em>→</em></button>
+              <button class="spin-button replay-button hidden" id="replay-button" type="button"><span class="replay-icon">↻</span><strong data-i18n="playAgain">Play again</strong><em>→</em></button>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+    <div class="backdrop hidden" id="backdrop"></div>
+
+    <section class="modal spinner-modal hidden" id="spinner-modal" role="dialog" aria-modal="true" aria-label="Spinner">
+      <button class="modal-close" type="button" aria-label="Close" disabled>×</button>
+      <p class="modal-kicker" data-i18n="spinKicker">THE JOURNEY CONTINUES</p>
+      <h2 data-i18n="spinTitle">Let’s see how far Ruby trots</h2>
+      <div class="wheel-wrap"><div class="pointer"></div><div class="wheel" id="wheel"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div><div class="wheel-center">♧</div></div>
+      <p class="roll-copy" id="roll-copy" data-i18n="spinning">Spinning…</p>
+    </section>
+
+    <section class="modal question-modal hidden" id="question-modal" role="dialog" aria-modal="true" aria-labelledby="question-text">
+      <div class="question-head">
+        <div><p class="modal-kicker" id="question-stage"></p><span class="question-count" id="question-count"></span></div>
+        <span class="fact-chip" data-i18n="historyFact">History fact</span>
+      </div>
+      <h2 id="question-text"></h2>
+      <div class="answers" id="answers"></div>
+      <div class="feedback hidden" id="feedback"><span id="feedback-icon"></span><div><strong id="feedback-title"></strong><p id="feedback-copy"></p></div></div>
+      <button class="continue-button hidden" id="continue-button" type="button"><span data-i18n="continue">Continue the journey</span> →</button>
+    </section>
+
+    <section class="modal rules-modal hidden" id="rules-modal" role="dialog" aria-modal="true">
+      <button class="modal-close" id="rules-close" type="button" aria-label="Close">×</button>
+      <p class="modal-kicker" data-i18n="quickGuide">QUICK GUIDE</p>
+      <h2 data-i18n="howTitle">Help Ruby find her way home</h2>
+      <ol>
+        <li><span>1</span><p><strong data-i18n="rule1Title">Spin the wheel</strong><small data-i18n="rule1">Move 1–6 spaces along the trail.</small></p></li>
+        <li><span>2</span><p><strong data-i18n="rule2Title">Discover the story</strong><small data-i18n="rule2">Answer a new history question after every turn.</small></p></li>
+        <li><span>3</span><p><strong data-i18n="rule3Title">Grow the pasture</strong><small data-i18n="rule3">Correct answers earn grass. A wrong answer sends Ruby back one space.</small></p></li>
+      </ol>
+    </section>
+
+    <section class="modal finish-modal hidden" id="finish-modal" role="dialog" aria-modal="true">
+      <div class="finish-art"><span>✦</span><img src="../farm/assets/RU Cow 2.png" alt="Ruby the cow" /><span>✦</span></div>
+      <p class="modal-kicker" data-i18n="homeKicker">WELCOME HOME, RUBY</p>
+      <h2 data-i18n="won">Ruby is back where cows belong.</h2>
+      <p data-i18n="wonCopy">You explored the history of raw milk and helped return Ruby to green pasture.</p>
+      <div class="finish-stats"><div><strong id="finish-correct">0</strong><span data-i18n="correct">Correct</span></div><div><strong id="finish-grass">0</strong><span data-i18n="grass">Grass earned</span></div><div><strong id="finish-turns">0</strong><span data-i18n="turns">Turns</span></div></div>
+      <div class="finish-actions">
+        <button class="continue-button secondary-button" id="close-game-button" type="button"><span data-i18n="closeGame">Close game</span> ×</button>
+        <button class="continue-button" id="finish-replay-button" type="button"><span data-i18n="playAgain">Play again</span> ↻</button>
+      </div>
+    </section>
+
+    <canvas id="confetti" aria-hidden="true"></canvas>
+    <script src="script.js?v=replay-1"></script>
+    <script type="module" src="cow3d.js?v=replay-1"></script>
+  </body>
+</html>
