@@ -97,3 +97,11 @@
 .replay-button{justify-content:center}.replay-icon{width:40px;height:40px;display:grid;place-items:center;border-radius:50%;background:#d8ad55;color:#273a2c;font-family:"Fraunces",serif;font-size:23px}.finish-actions{display:grid;grid-template-columns:1fr 1.35fr;gap:10px;margin-top:17px}.finish-actions .continue-button{margin-top:0}.secondary-button{background:#eef0e8;color:#46554a;border:1px solid var(--line)}
 @media(max-width:480px){.finish-actions{grid-template-columns:1fr}}
 .topbar{display:none}.intro{margin-top:4px}
+
+/* Typography system: Montserrat for headings, Avenir for all supporting copy. */
+@font-face{font-family:"Pasture Montserrat";src:url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Regular.ttf") format("truetype");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"Pasture Montserrat";src:url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-SemiBold.ttf") format("truetype");font-weight:600;font-style:normal;font-display:swap}
+@font-face{font-family:"Pasture Montserrat";src:url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Bold.ttf") format("truetype");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"Pasture Avenir";src:url("../../font/Avenir.ttc") format("truetype-collection");font-weight:400 800;font-style:normal;font-display:swap}
+:root,button,input,textarea,select{font-family:"Pasture Avenir",Avenir,"Avenir Next",sans-serif}
+h1,h2,h3,h4,h5,h6,.intro h1,.modal h2,.chapter strong,.spin-button strong,.stats strong,.finish-stats strong,.replay-icon{font-family:"Pasture Montserrat",Montserrat,sans-serif}

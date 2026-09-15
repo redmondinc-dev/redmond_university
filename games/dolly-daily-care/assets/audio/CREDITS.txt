@@ -1,0 +1,6 @@
+moo.m4a
+  "Single Cow Moo" — a cow mooing at a farm in Pitlochry, United Kingdom.
+  Source: https://commons.wikimedia.org/wiki/File:Single_Cow_Moo.ogg
+  Author: Wikimedia Commons user "MichaeltheFox8621"
+  License: CC BY-SA 4.0 — https://creativecommons.org/licenses/by-sa/4.0/
+  Changes: decoded from Ogg Vorbis, downmixed to mono, normalised, re-encoded as AAC (m4a).

@@ -38,6 +38,7 @@ if (container && typeof WebGLRenderingContext !== "undefined") {
 
     const ruby = new THREE.Group();
     ruby.rotation.x = -0.06;
+    ruby.visible = false;
     scene.add(ruby);
 
     const mesh = (geometry, mat, parent = ruby) => {
@@ -180,6 +181,7 @@ if (container && typeof WebGLRenderingContext !== "undefined") {
       ruby.clear();
       ruby.add(model, shadow);
       ruby.rotation.x = 0;
+      ruby.visible = true;
       model.rotation.y = -Math.PI / 2;
       importedModel = model;
       importedMixer = new THREE.AnimationMixer(model);
@@ -286,6 +288,6 @@ if (container && typeof WebGLRenderingContext !== "undefined") {
     container.querySelector(":scope > .cow-token")?.remove();
     requestAnimationFrame(animate);
   } catch (error) {
-    console.warn("Ruby 3D could not start; using the illustrated fallback.", error);
+    console.warn("Ruby 3D could not start.", error);
   }
 }

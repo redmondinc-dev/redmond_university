@@ -1,4 +1,3 @@
-const cowImage = "../farm/assets/RU Cow 2.png";
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => [...document.querySelectorAll(selector)];
 
@@ -65,8 +64,6 @@ function buildBoard(){
 function stageForPosition(pos){return pos<9?0:pos<17?1:2}
 function updateBoard(){
   tileMap.forEach((tile,n)=>{tile.classList.toggle("passed",n<state.position);tile.classList.toggle("current",n===state.position)});
-  if(!cowToken){cowToken=document.createElement("img");cowToken.src=cowImage;cowToken.alt="Dolly the cow";cowToken.className="cow-token";els.scene.append(cowToken)}
-  const active=tileMap.get(state.position);if(active){const tileRect=active.getBoundingClientRect(),sceneRect=els.scene.getBoundingClientRect();cowToken.style.left=`${tileRect.left-sceneRect.left+tileRect.width/2}px`;cowToken.style.top=`${tileRect.top-sceneRect.top+tileRect.height/2}px`;cowToken.classList.toggle("left",state.facing==="left")}
   const pct=Math.round((state.position-1)/23*100);$("#progress-percent").textContent=`${pct}%`;$("#progress-fill").style.width=`${pct}%`;$("#position").textContent=state.position;$("#grass-count").textContent=state.grass;$("#facts-count").textContent=state.questionIndex;
   const completed=state.position>=24;els.spin.classList.toggle("hidden",completed);$("#replay-button").classList.toggle("hidden",!completed);
   const stage=stageForPosition(state.position);els.scene.className=`scene stage-${stage}`;$$('.chapter').forEach((c,i)=>c.classList.toggle("active",i===stage));
