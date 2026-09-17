@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+import { clone as cloneSkinned } from "three/addons/utils/SkeletonUtils.js";
 
 const pasture = document.querySelector("#pasture");
 
@@ -25,32 +26,67 @@ if (pasture && window.WebGLRenderingContext) {
   // The canvas covers the whole pasture. Dolly's "home" spot is described as fractions of the
   // pasture so the layout can differ per breakpoint while the scene keeps the same look.
   const STAGE = {
-    desktop: { x: .49, box: .79, bottom: .07 },
-    phone: { x: .38, box: .64, bottom: .08 },
+    desktop: { x: .49, box: .79, bottom: .07, friend: { x: -2.4, y: .3, s: .86 } },
+    phone: { x: .38, box: .64, bottom: .08, friend: { x: -1.3, y: .55, s: .78 } },
   };
-  const MARGIN = .28;                      // world units under the hooves inside the "box"
-  const BARN = { x: .06, doorPx: 52.5, bottom: .24 }; // matches .barn / .barn i in styles.css
+  const MARGIN = .28;                                  // world units under the hooves inside the "box"
+  const BARN = { x: .06, doorPx: 52.5, bottom: .24 };  // matches .barn / .barn i in styles.css
   const FACE_FRONT = -Math.PI / 2, FACE_SIDE = 0;
+  const WALK_SECONDS = 3.2;
+  const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
 
-  // rig = what we move/turn/scale; model = the loaded cow standing on rig's origin.
+  // A cow that can walk between two stage points {x, y, s} (s = scale, fakes depth) while
+  // facing the way it is going, then turn toward a target heading when it stands still.
+  class Walker {
+    constructor(rig, walkAction) {
+      this.rig = rig; this.walk = walkAction;
+      this.moving = false; this.baseY = 0;
+      this.heading = FACE_FRONT; this.headingTarget = FACE_FRONT;
+      this.onDone = null;
+    }
+    go(from, to, seconds, onDone) {
+      this.from = from; this.to = to; this.seconds = seconds; this.t = 0; this.onDone = onDone;
+      this.moving = true; this.rig.visible = true;
+      // Forward is +x in model space; growing scale = coming toward the camera.
+      const dz = (to.s - from.s) * 2.4;
+      this.heading = this.headingTarget = -Math.atan2(dz, to.x - from.x);
+      this.walk?.reset().setEffectiveTimeScale(1.15).fadeIn(.2).play();
+    }
+    update(delta) {
+      if (this.moving) {
+        this.t = Math.min(1, this.t + delta / this.seconds);
+        const k = ease(this.t), a = this.from, b = this.to;
+        this.rig.position.x = a.x + (b.x - a.x) * k;
+        this.baseY = a.y + (b.y - a.y) * k;
+        this.rig.scale.setScalar(a.s + (b.s - a.s) * k);
+        if (this.t >= 1) { this.moving = false; this.walk?.fadeOut(.35); this.onDone?.(); }
+      }
+      let diff = this.headingTarget - this.heading;
+      diff = Math.atan2(Math.sin(diff), Math.cos(diff));
+      this.heading += diff * Math.min(1, delta * 5.5);
+      this.rig.rotation.y = this.heading;
+    }
+  }
+
   const rig = new THREE.Group();
   scene.add(rig);
-  let model, mixer, eat, walk, udder, eyes = [], head, headRest;
+  let model, mixer, eat, walkClip, udder, eyes = [], head, headRest, dolly;
   let size = null, frameHalf = 2.75, frameCenterY = 1.4, frameCenterX = 0, aspect = 1;
-  let door = { x: -3, y: 1 }, home = { x: 0, y: 0 };
+  let door = { x: -3, y: 1, s: .5 }, home = { x: 0, y: 0, s: 1 }, friendHome = { x: -2.4, y: .3, s: .86 };
   const clock = new THREE.Clock();
 
-  // ---- state ---------------------------------------------------------------
-  let state = "waiting";        // waiting → walking → front → side
+  // ---- Dolly's state ----------------------------------------------------------
+  let state = "waiting";        // waiting → walking → front | side | leaving | inside
   let entered = false;          // "enter" was requested before the model finished loading
-  let walkT = 0;                // 0..1 progress along the path
-  let heading = FACE_FRONT, headingTarget = FACE_FRONT;
-  let pendingEat = false;
+  let pendingEat = false, mood = null;   // mood: null | "sad" | "thirsty"
+  let wantFront = true;                  // orientation the current step asked for (applied on arrival)
   let actionUntil = 0, badUntil = 0, happyUntil = 0, blinkAt = 2.5, blinkT = 1;
-  let baseY = 0;                 // rig height without hops (hops are added on top each frame)
-  let celebrateAt = 0, celebrating = false;   // celebrateAt = ms timestamp the dance started
+  let celebrateAt = 0, celebrating = false;
+  let udderFull = false;        // evening milking: the udder swells until she is milked
   const CELEBRATE_MS = 3200;
-  const WALK_SECONDS = 3.2;
+
+  // ---- The friend cow ----------------------------------------------------------
+  let friend = null;            // { rig, model, mixer, walker, state }
 
   function stageFor() {
     return innerWidth <= 800 ? STAGE.phone : STAGE.desktop;
@@ -75,8 +111,9 @@ if (pasture && window.WebGLRenderingContext) {
       frameCenterX = (.5 - st.x) * frameHalf * 2 * aspect;
       const pxToWorld = frameHalf * 2 / height;
       const doorFrac = BARN.x + BARN.doorPx / width;
-      door = { x: (doorFrac - st.x) * width * pxToWorld, y: (BARN.bottom - hoovesFrac) * height * pxToWorld };
-      home = { x: 0, y: 0 };
+      door = { x: (doorFrac - st.x) * width * pxToWorld, y: (BARN.bottom - hoovesFrac) * height * pxToWorld, s: .5 };
+      home = { x: 0, y: 0, s: 1 };
+      friendHome = { ...st.friend };
     }
     camera.position.set(frameCenterX, frameCenterY + .8, 9);
     camera.lookAt(frameCenterX, frameCenterY, 0);
@@ -105,38 +142,40 @@ if (pasture && window.WebGLRenderingContext) {
 
     mixer = new THREE.AnimationMixer(model);
     const eatClip = gltf.animations.find(item => item.name === "Eat");
-    const walkClip = gltf.animations.find(item => item.name === "Walk");
+    walkClip = gltf.animations.find(item => item.name === "Walk");
     if (eatClip) {
       eat = mixer.clipAction(eatClip);
       eat.setLoop(THREE.LoopOnce, 1);
       eat.clampWhenFinished = true;
     }
-    if (walkClip) {
-      walk = mixer.clipAction(walkClip);
-      walk.setLoop(THREE.LoopRepeat, Infinity);
-    }
+    const walk = walkClip ? mixer.clipAction(walkClip) : null;
+    walk?.setLoop(THREE.LoopRepeat, Infinity);
+    dolly = new Walker(rig, walk);
 
     rig.visible = false;
+    if (new URLSearchParams(location.search).has("debug3d")) window.__dolly = { head, headRest, rig, model };
     pasture.classList.add("dolly-3d-ready");
     resize();
     if (entered || new URLSearchParams(location.search).has("previeweat")) beginEntrance();
   }, undefined, error => console.warn("Dolly 3D could not load; keeping the 2D fallback.", error));
 
   function beginEntrance() {
-    if (!model || state !== "waiting") return;
+    if (!dolly || !(state === "waiting" || state === "inside")) return;
     state = "walking";
-    walkT = 0;
-    rig.visible = true;
-    // Head toward the camera-ish: forward is +x in model space, so heading = -atan2(dz, dx).
-    heading = headingTarget = -Math.atan2(1.1, home.x - door.x);
-    walk?.reset().setEffectiveTimeScale(1.15).fadeIn(.2).play();
+    mood = null;
+    dolly.go(door, home, WALK_SECONDS, () => {
+      state = wantFront ? "front" : "side";
+      dolly.headingTarget = wantFront ? FACE_FRONT : FACE_SIDE;
+      if (pendingEat) { pendingEat = false; turnAndEat(); }
+    });
   }
 
-  function arrive() {
-    state = "front";
-    walk?.fadeOut(.35);
-    headingTarget = FACE_FRONT;
-    if (pendingEat) { pendingEat = false; turnAndEat(); }
+  function goInside() {
+    if (!dolly || state === "leaving" || state === "inside") return;
+    state = "leaving";
+    mood = null;
+    if (eat) { eat.stop(); actionUntil = 0; }
+    dolly.go(home, door, WALK_SECONDS * .9, () => { state = "inside"; rig.visible = false; });
   }
 
   function playEat() {
@@ -148,30 +187,83 @@ if (pasture && window.WebGLRenderingContext) {
   function turnAndEat() {
     if (state === "side") { playEat(); return; }
     if (state === "walking") { pendingEat = true; return; }
+    if (state !== "front") return;
     state = "side";
-    headingTarget = FACE_SIDE;
+    dolly.headingTarget = FACE_SIDE;
     setTimeout(playEat, 550);
+  }
+
+  function makeFriend() {
+    if (friend || !model) return;
+    const fModel = cloneSkinned(model);
+    // A lighter, creamier coat so she reads as a different cow.
+    fModel.traverse(obj => {
+      if (!obj.isMesh || /eye|catchlight|horn|hoof/i.test(obj.name)) return;
+      obj.material = obj.material.clone();
+      if (obj.material.color) obj.material.color.lerp(new THREE.Color(0xf6e7c9), .42);
+    });
+    const fRig = new THREE.Group();
+    fRig.position.z = -1.6;                 // stands a little behind Dolly
+    fRig.add(fModel);
+    scene.add(fRig);
+    const fMixer = new THREE.AnimationMixer(fModel);
+    const fWalk = walkClip ? fMixer.clipAction(walkClip) : null;
+    fWalk?.setLoop(THREE.LoopRepeat, Infinity);
+    friend = { rig: fRig, model: fModel, mixer: fMixer, walker: new Walker(fRig, fWalk), state: "inside" };
+    fRig.visible = false;
+  }
+
+  function friendArrive() {
+    makeFriend();
+    if (!friend || friend.state !== "inside") return;
+    friend.state = "walking";
+    friend.walker.go({ ...door, y: door.y + .15 }, friendHome, WALK_SECONDS * 1.05, () => {
+      friend.state = "here";
+      friend.walker.headingTarget = FACE_SIDE;
+      happyUntil = performance.now() + 700;
+      window.dispatchEvent(new CustomEvent("dolly3d-event", { detail: "friend-arrived" }));
+    });
+  }
+
+  function friendLeave() {
+    if (!friend || friend.state === "inside") return;
+    friend.state = "walking";
+    friend.walker.go(friendHome, { ...door, y: door.y + .15 }, WALK_SECONDS, () => {
+      friend.state = "inside";
+      friend.rig.visible = false;
+    });
   }
 
   window.addEventListener("dolly3d-action", event => {
     const what = event.detail;
     if (what === "enter") { entered = true; beginEntrance(); return; }
     if (!model) return;
+    if (what === "return") beginEntrance();
+    if (what === "shelter") goInside();
     if (what === "eat") turnAndEat();
+    if (what === "front") { wantFront = true; mood = null; if (state === "side") { state = "front"; dolly.headingTarget = FACE_FRONT; } }
     if (what === "bad") badUntil = performance.now() + 900;
-    if (what === "happy" && !celebrating) happyUntil = performance.now() + 700;
+    if (what === "sad" || what === "thirsty") mood = what;
+    if (what === "happy") { mood = null; if (!celebrating) happyUntil = performance.now() + 700; }
+    if (what === "friend") friendArrive();
+    if (what === "udder-full") udderFull = true;
+    if (what === "udder-empty") udderFull = false;
+    if (what === "friend-leave") friendLeave();
     if (what === "celebrate") {
       // Finale: face the camera, then a little dance (hops, sways and head tosses).
       if (eat) { eat.stop(); actionUntil = 0; }
       state = "front";
-      headingTarget = FACE_FRONT;
+      mood = null;
+      dolly.headingTarget = FACE_FRONT;
       celebrating = true;
       celebrateAt = performance.now() + 650; // wait for the turn before jumping
     }
     if (what === "idle") {
       // Care steps (cloth, iodine, milking) always work on her side.
-      if (state === "front") { state = "side"; headingTarget = FACE_SIDE; }
+      wantFront = false;
+      if (state === "front") { state = "side"; dolly.headingTarget = FACE_SIDE; }
       if (eat) { eat.stop(); actionUntil = 0; }
+      mood = null;
       rig.rotation.z = 0;
     }
   });
@@ -207,7 +299,6 @@ if (pasture && window.WebGLRenderingContext) {
   }
 
   // ---- frame loop -----------------------------------------------------------
-  const ease = t => t < .5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2;
   new ResizeObserver(resize).observe(host);
 
   function animate(now) {
@@ -215,31 +306,24 @@ if (pasture && window.WebGLRenderingContext) {
     const delta = Math.min(clock.getDelta(), .05);
     const t = now / 1000;
     mixer?.update(delta);
-    if (model && rig.visible) {
+    friend?.mixer.update(delta);
+    if (friend) {
+      friend.walker.update(delta);
+      friend.rig.position.y = friend.walker.baseY;
+      friend.model.scale.set(1.24, 1.24 * (1 + Math.sin(t * 1.7 + 1) * .009), 1.24);
+    }
+    if (dolly && rig.visible) {
       if (now > actionUntil && eat?.isRunning()) eat.fadeOut(.2);
-
-      // Path from the barn door to her spot, growing as she comes toward us.
-      if (state === "walking") {
-        walkT = Math.min(1, walkT + delta / WALK_SECONDS);
-        const k = ease(walkT);
-        rig.position.x = door.x + (home.x - door.x) * k;
-        baseY = door.y + (home.y - door.y) * k;
-        rig.scale.setScalar(.5 + .5 * k);
-        if (walkT >= 1) arrive();
-      } else {
+      dolly.update(delta);
+      const walking = dolly.moving;
+      if (!walking) {
+        dolly.baseY = THREE.MathUtils.damp(dolly.baseY, home.y, 12, delta);
         rig.position.x = THREE.MathUtils.damp(rig.position.x, home.x, 6, delta);
         rig.scale.setScalar(THREE.MathUtils.damp(rig.scale.x, 1, 6, delta));
       }
 
-      // Turning (shortest way) toward the current target heading.
-      let diff = headingTarget - heading;
-      diff = Math.atan2(Math.sin(diff), Math.cos(diff));
-      heading += diff * Math.min(1, delta * 5.5);
-      rig.rotation.y = heading;
-
       // Reactions.
       const bad = now < badUntil;
-      rig.rotation.z = bad ? Math.sin(now * .035) * .055 : THREE.MathUtils.damp(rig.rotation.z, 0, 8, delta);
       const happy = Math.max(0, happyUntil - now) / 700;
       let hop = happy ? Math.sin(happy * Math.PI) * .35 : 0;
       let sway = 0, headToss = 0;
@@ -249,31 +333,36 @@ if (pasture && window.WebGLRenderingContext) {
           const fade = Math.sin(Math.min(1, c * 4) * Math.PI / 2) * (c > .8 ? (1 - c) / .2 : 1);
           hop += Math.abs(Math.sin(c * Math.PI * 4)) * .45 * fade;           // 4 hops
           sway = Math.sin(c * Math.PI * 4) * .12 * fade;                    // side-to-side lean
-          headToss = -Math.abs(Math.sin(c * Math.PI * 4 + .6)) * .35 * fade; // head up on each hop
+          headToss = Math.abs(Math.sin(c * Math.PI * 4 + .6)) * .35 * fade;  // head up on each hop
         } else if (c >= 1) celebrating = false;
       }
-      if (state !== "walking") baseY = THREE.MathUtils.damp(baseY, home.y, 12, delta);
-      rig.position.y = baseY + hop;
-      if (!bad) rig.rotation.z = THREE.MathUtils.damp(rig.rotation.z, sway, 10, delta);
+      rig.position.y = dolly.baseY + hop;
+      rig.rotation.z = bad ? Math.sin(now * .035) * .055 : THREE.MathUtils.damp(rig.rotation.z, sway, 10, delta);
 
-      // Idle life: breathing, a curious head and blinking.
-      const idle = state !== "walking" && !(eat?.isRunning());
-      const breathe = 1 + Math.sin(t * 2.1) * .009;
+      // Idle life: breathing, a curious head and blinking. Moods drop the head.
+      const idle = !walking && !(eat?.isRunning());
+      const rate = mood === "thirsty" ? 4.2 : 2.1;
+      const breathe = 1 + Math.sin(t * rate) * (mood === "thirsty" ? .012 : .009);
       model.scale.set(1.24, 1.24 * breathe, 1.24);
-      if (head && headRest) {
-        const lookX = idle ? Math.sin(t * .7) * .07 + Math.sin(t * 1.9) * .02 : 0;
-        const lookY = idle ? Math.sin(t * .45 + 1) * .09 : 0;
-        if (idle) {
-          head.rotation.x = THREE.MathUtils.damp(head.rotation.x, headRest.x + lookX, 4, delta);
-          head.rotation.y = THREE.MathUtils.damp(head.rotation.y, headRest.y + lookY, 4, delta);
-          head.rotation.z = THREE.MathUtils.damp(head.rotation.z, headRest.z + headToss, 12, delta);
-        }
+      if (head && headRest && idle) {
+        const droop = mood === "sad" ? -.75 : mood === "thirsty" ? -.5 : 0;
+        const lookX = mood ? Math.sin(t * .5) * .03 : Math.sin(t * .7) * .07 + Math.sin(t * 1.9) * .02;
+        const lookY = mood ? 0 : Math.sin(t * .45 + 1) * .09;
+        head.rotation.x = THREE.MathUtils.damp(head.rotation.x, headRest.x + lookX, 4, delta);
+        head.rotation.y = THREE.MathUtils.damp(head.rotation.y, headRest.y + lookY, 4, delta);
+        head.rotation.z = THREE.MathUtils.damp(head.rotation.z, headRest.z + headToss + droop, mood ? 3 : 12, delta);
+      }
+      if (udder) {
+        const target = udderFull ? 1.32 : 1;
+        const k = THREE.MathUtils.damp(udder.scale.x, target, 1.5, delta);
+        udder.scale.setScalar(k);
       }
       if (eyes.length) {
-        if (t > blinkAt) { blinkT = 0; blinkAt = t + 2.5 + Math.random() * 3; }
+        if (t > blinkAt) { blinkT = 0; blinkAt = t + (mood === "sad" ? 1.4 : 2.5) + Math.random() * 3; }
         blinkT = Math.min(1, blinkT + delta * 7);
         const open = blinkT < .5 ? 1 - blinkT * 2 : (blinkT - .5) * 2;
-        eyes.forEach(eye => eye.scale.y = eye.userData.scaleY * (.12 + .88 * open));
+        const lid = mood === "sad" ? .7 : 1;
+        eyes.forEach(eye => eye.scale.y = eye.userData.scaleY * (.12 + .88 * open) * lid);
       }
     }
     renderer.render(scene, camera);
