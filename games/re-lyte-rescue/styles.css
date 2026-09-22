@@ -28,6 +28,7 @@
 
 /* Clean white game background */
 html,body{background:#fff}.recipe-panel,.mix-stage{background:#fff}.mix-stage:before{background:#fff}.progress-card,.game-shell{background:#fff}
+.workspace{display:block}
 
 /* Keep the mixing controls at the top of the station */
 .ingredient-dock{top:58px;bottom:auto}

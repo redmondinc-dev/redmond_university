@@ -1,4 +1,4 @@
-document.body.insertAdjacentHTML('afterbegin',`<div class="story-modal" id="story-modal" role="dialog" aria-modal="true" aria-labelledby="story-title"><div class="story-panel"><p class="kicker">DOLLY'S DAILY CARE</p><h1 id="story-title">Meet Dolly</h1><div class="official-copy"><p><strong>Intro: Dolly is a beautiful Jersey cow who carries the A2/A2 gene and produces rich, A2/A2 milk.</strong></p><p><strong>Help us take care of Dolly so she can stay healthy, happy, and produce nutritious raw milk.</strong></p><p><strong>Dolly needs nutritious food, water, companionship, health care, and shelter. And of course, don’t forget to milk her!&nbsp;</strong></p><p><strong>Let’s get started.&nbsp;</strong></p></div><button id="start-day" class="action" type="button">Start Dolly's day <span>→</span></button></div></div>`);
+document.body.insertAdjacentHTML('afterbegin',`<div class="launch-screen" id="launch-screen"><div class="launch-card"><p class="kicker">DOLLY'S DAILY CARE</p><h1>A day with Dolly</h1><p>Care for Dolly from sunrise to golden hour.</p><button id="open-story" class="action" type="button">Start <span>→</span></button></div></div><div class="story-modal dismissed" id="story-modal" role="dialog" aria-modal="true" aria-labelledby="story-title"><div class="story-panel"><p class="kicker">DOLLY'S DAILY CARE</p><h1 id="story-title">Meet Dolly</h1><div class="official-copy"><p><strong>Intro: Dolly is a beautiful Jersey cow who carries the A2/A2 gene and produces rich, A2/A2 milk.</strong></p><p><strong>Help us take care of Dolly so she can stay healthy, happy, and produce nutritious raw milk.</strong></p><p><strong>Dolly needs nutritious food, water, companionship, health care, and shelter. And of course, don’t forget to milk her!&nbsp;</strong></p><p><strong>Let’s get started.&nbsp;</strong></p></div><button id="start-day" class="action" type="button">Start Dolly's day <span>→</span></button></div></div><div class="finish-celebration dismissed" id="finish-celebration" role="dialog" aria-modal="true" aria-labelledby="finish-title"><div class="confetti" aria-hidden="true">${Array.from({length:36},(_,i)=>`<i style="--i:${i}"></i>`).join('')}</div><div class="finish-panel"><span class="finish-medal">★</span><p class="kicker">DOLLY'S DAY IS COMPLETE</p><h2 id="finish-title">Great work, farmer!</h2><p>Dolly is healthy, happy, and ready to enjoy the golden hour.</p><div class="finish-milk">🥛 <strong>Fresh A2/A2 milk</strong></div><button id="play-again" class="action" type="button">Play again <span>↻</span></button></div></div>`);
 
 // One day with Dolly, in the order of the original copy. `kind` picks the interaction:
 // rub (drag a cloth on the udder) · milk (pull the udder) · food (pick the ration)
@@ -11,13 +11,14 @@ const steps=[
  {id:'water',short:'Water',kind:'water',time:'11:30 AM',scene:'LATE MORNING',title:'Dolly needs water',copy:'What does Dolly need? Her trough is empty and she is panting. Dolly needs water!',tip:'A cow drinks 30–50 gallons of water a day.',label:'Water hose',art:'assets/tools/water-hose.png',speech:'Pant… pant… 💧'},
  {id:'friends',short:'Friends',kind:'friends',time:'12:30 PM',scene:'MIDDAY',title:'Dolly needs friends',copy:'What does Dolly need? She looks sad and lonely. Cows are herd animals — Dolly needs friends!',tip:'Cows form close friendships and get stressed when alone.',speech:'…'},
  {id:'shelter',short:'Shelter',kind:'shelter',time:'2:00 PM',scene:'AFTERNOON STORM',title:'Dolly needs shelter',copy:'What does Dolly need? It’s raining hard! Tap the barn so Dolly can take shelter.',tip:'Shade in the heat and a dry barn in the rain keep Dolly comfortable.',speech:'Brrr… it’s raining!'},
- {id:'milk-pm',short:'PM milking',kind:'milk',time:'4:30 PM',scene:'LATE AFTERNOON',alarm:true,full:true,title:'Second milking',copy:'4:30 pm. It’s time for the second milking of the day! Dolly’s udder is full — she looks a little desperate.',tip:'Cows are milked twice a day: 4:30 am and 4:30 pm.',speech:'Moooo! Hurry, please!'}
+ {id:'milk-pm',short:'PM milking',kind:'milk',time:'4:30 PM',scene:'LATE AFTERNOON',alarm:true,title:'Second milking',copy:'4:30 pm. It’s time for the second milking of the day! Dolly’s udder is full — she looks a little desperate.',tip:'Cows are milked twice a day: 4:30 am and 4:30 pm.',speech:'Moooo! Hurry, please!'}
 ];
 const goodFoods=['Pasture','Fodder','Organic alfalfa hay','Redmond conditioner','Sprouted barley (for treats!)','Redmond Real Salt','Molasses'];
 const badFoods=['Corn','Soybeans','Spent grain from liquor and ethanol production','Candy bars','Potatoes','Bakery remnants'];
 const allFoods=[...goodFoods,...badFoods];
 let current=0,progress=0,dragging=false,dragOffset={x:0,y:0},audioContext,lastPoint=null,milkPulls=0,foodSelected=new Set(),wrongFood=null,stepDone=false;
 const $=id=>document.getElementById(id);
+$('pasture').append($('launch-screen'));
 const act=detail=>window.dispatchEvent(new CustomEvent('dolly3d-action',{detail}));
 const SCENE_CLASSES=['feeding','watering','direct-milking','raining','sheltering','friends'];
 
@@ -48,7 +49,7 @@ function renderRub(){
 
 // ---- milking --------------------------------------------------------------------------
 function renderMilk(){
- act('idle');act(steps[current].full?'udder-full':'udder-empty');$('pasture').classList.add('direct-milking');
+ act('idle');act('udder-empty');$('pasture').classList.add('direct-milking');
  $('instruction').innerHTML='<span>↓</span> Pull downward and release 10 times.';
  $('udder-target').className='udder-target target-milk';
  $('udder-target').innerHTML='<button class="udder-hotspot" aria-label="Milk Dolly by pulling downward on her udder"></button><div class="milk-stream" aria-hidden="true"></div><div class="bucket" aria-hidden="true"><div class="milk-level"></div><b></b></div>';
@@ -142,7 +143,7 @@ function finishDay(){
  $('progress-steps').innerHTML=steps.map(item=>`<div class="progress-step done"><i>✓</i><span>${item.short||item.title}</span></div>`).join('');
  $('status').textContent='Dolly’s day is complete!';$('speech').textContent='Moooo! Best day ever!';
  SCENE_CLASSES.forEach(c=>$('pasture').classList.remove(c));$('scene-label').textContent='GOLDEN HOUR';$('clock-time').textContent='6:00 PM';
- setDolly('happy');act('celebrate');setTimeout(moo,600);
+ setDolly('happy');act('celebrate');setTimeout(moo,600);setTimeout(()=>$('finish-celebration').classList.remove('dismissed'),500);
 }
 function setDolly(pose){$('dolly').className=`dolly-sprite pose-${pose}`;$('dolly-wrap').className=`dolly-wrap mood-${pose}`;if(pose==='happy')act('happy')}
 function overlaps(a,b){const x=a.getBoundingClientRect(),y=b.getBoundingClientRect();return x.left<y.right&&x.right>y.left&&x.top<y.bottom&&x.bottom>y.top}
@@ -160,7 +161,9 @@ function rumble(){try{audioContext||=new(window.AudioContext||window.webkitAudio
 
 // ---- wiring ---------------------------------------------------------------------------
 $('continue-btn').addEventListener('click',()=>{if(current<steps.length-1){current++;render();return}finishDay()});
+$('open-story').addEventListener('click',()=>{$('launch-screen').classList.add('dismissed');$('story-modal').classList.remove('dismissed');$('story-modal').querySelector('button').focus()});
 $('start-day').addEventListener('click',()=>{$('story-modal').classList.add('dismissed');act('enter');act(steps[current].kind==='food'?'front':'idle');tone(760,.05,.18);setTimeout(()=>tone(540,.04,.28),130);setTimeout(()=>{if(current===0)alarm()},3400)});
+$('play-again').addEventListener('click',()=>{current=0;foodSelected.clear();wrongFood=null;$('score').textContent='0%';$('meter-fill').style.width='0';$('finish-celebration').classList.add('dismissed');$('launch-screen').classList.remove('dismissed');render()});
 $('restart')?.addEventListener('click',()=>{current=0;foodSelected.clear();wrongFood=null;$('score').textContent='0%';$('meter-fill').style.width='0';render()});
 render();
-if(new URLSearchParams(location.search).has('preview3d'))$('story-modal').classList.add('dismissed');
+if(new URLSearchParams(location.search).has('preview3d'))$('launch-screen').classList.add('dismissed');
