@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Milk Processing — Clickable Cards</title>
+    <style>
+      @font-face {
+        font-family: "Montserrat";
+        src: url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Regular.ttf");
+        font-weight: 400;
+      }
+
+      @font-face {
+        font-family: "Montserrat";
+        src: url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-SemiBold.ttf");
+        font-weight: 600;
+      }
+
+      @font-face {
+        font-family: "Montserrat";
+        src: url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Bold.ttf");
+        font-weight: 700;
+      }
+
+      :root {
+        --forest: #283d2d;
+        --sage: #74846c;
+        --cream: #f7f0df;
+        --paper: #fffdf7;
+        --gold: #c78d3d;
+        --terracotta: #a95735;
+        --ink: #2f312b;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        min-height: 100vh;
+        margin: 0;
+        display: grid;
+        place-items: center;
+        padding: clamp(24px, 5vw, 64px) 20px;
+        background: transparent;
+        color: var(--ink);
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+      }
+
+      .cards {
+        width: min(720px, 100%);
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: clamp(14px, 2.5vw, 20px);
+      }
+
+      .flip-card {
+        min-width: 0;
+        border: 0;
+        padding: 0;
+        background: transparent;
+        color: inherit;
+        font: inherit;
+        text-align: left;
+        cursor: pointer;
+        perspective: 1600px;
+      }
+
+      .flip-card__inner {
+        position: relative;
+        display: grid;
+        min-height: clamp(500px, 82vw, 540px);
+        transform-style: preserve-3d;
+        transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .flip-card:is(:hover, :focus-visible) .flip-card__inner {
+        transform: translateY(-6px);
+      }
+
+      .flip-card.is-open .flip-card__inner {
+        transform: rotateY(180deg);
+      }
+
+      .flip-card.is-open:is(:hover, :focus-visible) .flip-card__inner {
+        transform: rotateY(180deg) translateY(-6px);
+      }
+
+      .flip-card:focus-visible {
+        outline: 3px solid var(--gold);
+        outline-offset: 6px;
+        border-radius: 28px;
+      }
+
+      .card-face {
+        grid-area: 1 / 1;
+        min-width: 0;
+        border: 1px solid rgba(58, 70, 50, 0.18);
+        border-radius: 28px;
+        overflow: hidden;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        box-shadow: 0 22px 55px rgba(54, 45, 30, 0.17);
+      }
+
+      .card-front {
+        position: relative;
+        display: grid;
+        grid-template-rows: minmax(0, 1fr) auto;
+        background: var(--paper);
+      }
+
+      .card-front::after {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        border: 1px solid rgba(255, 253, 247, 0.72);
+        border-radius: 20px;
+        pointer-events: none;
+      }
+
+      .card-image {
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        object-fit: cover;
+        object-position: center;
+      }
+
+      .front-copy {
+        position: relative;
+        z-index: 1;
+        padding: 20px 23px 22px;
+        background: var(--forest);
+        color: var(--paper);
+      }
+
+      .front-copy::before {
+        content: "";
+        display: block;
+        width: 44px;
+        height: 3px;
+        margin-bottom: 14px;
+        border-radius: 99px;
+        background: var(--gold);
+      }
+
+      .card-title {
+        margin: 0;
+        font-size: clamp(1.15rem, 2.25vw, 1.65rem);
+        line-height: 1.12;
+        letter-spacing: -0.025em;
+      }
+
+      .card-action {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 12px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #e7d6ae;
+      }
+
+      .card-action svg {
+        width: 18px;
+        height: 18px;
+        transition: transform 200ms ease;
+      }
+
+      .flip-card:hover .card-action svg {
+        transform: translateX(3px);
+      }
+
+      .card-back {
+        transform: rotateY(180deg);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(22px, 3vw, 28px);
+        background:
+          radial-gradient(circle at 86% 12%, rgba(199, 141, 61, 0.18), transparent 30%),
+          linear-gradient(145deg, #fffdf7, var(--cream));
+      }
+
+      .back-number {
+        margin-bottom: 14px;
+        color: var(--terracotta);
+        font-size: 0.72rem;
+        font-weight: 700;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+
+      .back-title {
+        margin: 0 0 18px;
+        color: var(--forest);
+        font-size: clamp(1.25rem, 2.4vw, 1.7rem);
+        line-height: 1.12;
+        letter-spacing: -0.03em;
+      }
+
+      .back-text {
+        margin: 0;
+        font-family: "Avenir", "Avenir Next", "Helvetica Neue", sans-serif;
+        font-size: clamp(0.78rem, 1.65vw, 0.88rem);
+        line-height: 1.45;
+      }
+
+      .back-text strong {
+        color: var(--forest);
+      }
+
+      @media (max-width: 760px) {
+        .cards {
+          grid-template-columns: 1fr;
+          width: min(520px, 100%);
+        }
+
+        .flip-card__inner {
+          min-height: 570px;
+        }
+      }
+
+      @media (max-width: 430px) {
+        body {
+          padding-inline: 14px;
+        }
+
+        .flip-card__inner {
+          min-height: 620px;
+        }
+
+        .card-back {
+          padding: 28px 24px;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .flip-card__inner,
+        .card-action svg {
+          transition: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="cards" aria-label="Learn about milk processing">
+      <button class="flip-card" type="button" aria-pressed="false" aria-label="Learn about Pasteurization. Click to read more.">
+        <span class="flip-card__inner">
+          <span class="card-face card-front">
+            <img class="card-image" src="assets/img/milk-processing/pasteurization.png" alt="Illustration of milk being gently heated during pasteurization" />
+            <span class="front-copy">
+              <span class="card-title">Learn about Pasteurization!</span>
+              <span class="card-action">Click to learn
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </span>
+            </span>
+          </span>
+          <span class="card-face card-back">
+            <span class="back-number">01 · Pasteurization</span>
+            <span class="back-title">Learn about Pasteurization!</span>
+            <span class="back-text">During pasteurization, milk is heated to a temperature that destroys harmful bacteria, but also the beneficial lactase present in raw milk. This leaves behind lactose without the enzyme needed to break it down. As a result, many people who are lactose intolerant struggle to digest pasteurized milk. Because raw milk still contains this enzyme, it may help some individuals with lactose intolerance digest it more easily. In addition, raw milk retains more of its natural vitamins and minerals—such as vitamin D and zinc—which can be diminished or destroyed during the pasteurization process.</span>
+          </span>
+        </span>
+      </button>
+
+      <button class="flip-card" type="button" aria-pressed="false" aria-label="Learn about Homogenization. Click to read more.">
+        <span class="flip-card__inner">
+          <span class="card-face card-front">
+            <img class="card-image" src="assets/img/milk-processing/homogenization.png" alt="Illustration comparing naturally separated cream with homogenized milk" />
+            <span class="front-copy">
+              <span class="card-title">Learn about Homogenization!</span>
+              <span class="card-action">Click to learn
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+              </span>
+            </span>
+          </span>
+          <span class="card-face card-back">
+            <span class="back-number">02 · Homogenization</span>
+            <span class="back-title">Learn about Homogenization!</span>
+            <span class="back-text">Homogenization—or emulsifying fat droplets in the milk so the cream doesn’t separate—began in the late 19th and early 20th centuries. While this did improve milk’s shelf life, it also altered the structure of the fat molecules, which may make homogenized milk difficult for some to digest and has unknown impacts on nutrient absorbency.<br /><br />Though some prefer that uniform consistency, we’ll agree to disagree here. <strong>We love the creamy texture of non-homogenized milk!</strong></span>
+          </span>
+        </span>
+      </button>
+    </main>
+
+    <script>
+      document.querySelectorAll(".flip-card").forEach((card) => {
+        card.addEventListener("click", () => {
+          const isOpen = card.classList.toggle("is-open");
+          card.setAttribute("aria-pressed", String(isOpen));
+        });
+      });
+    </script>
+  </body>
+</html>
