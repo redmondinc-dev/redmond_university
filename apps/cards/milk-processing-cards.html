@@ -42,7 +42,7 @@
         margin: 0;
         display: grid;
         place-items: center;
-        padding: clamp(24px, 5vw, 64px) 20px;
+        padding: 0;
         background: transparent;
         color: var(--ink);
         font-family: "Montserrat", "Avenir Next", sans-serif;
@@ -53,6 +53,7 @@
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: clamp(14px, 2.5vw, 20px);
+        background: transparent;
       }
 
       .flip-card {
@@ -101,7 +102,7 @@
         overflow: hidden;
         backface-visibility: hidden;
         -webkit-backface-visibility: hidden;
-        box-shadow: 0 22px 55px rgba(54, 45, 30, 0.17);
+        box-shadow: none;
       }
 
       .card-front {
@@ -226,10 +227,6 @@
       }
 
       @media (max-width: 430px) {
-        body {
-          padding-inline: 14px;
-        }
-
         .flip-card__inner {
           min-height: 620px;
         }
