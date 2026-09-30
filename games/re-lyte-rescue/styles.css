@@ -103,7 +103,7 @@ html,body{background:#fff}.recipe-panel,.mix-stage{background:#fff}.mix-stage:be
 .mineral-dock{gap:4px}
 .mineral-btn{min-width:0;padding:4px 3px;gap:1px}
 .mineral-btn img,.mineral-btn span{width:27px;height:27px}
-.mineral-btn b{font-size:7px}.mineral-btn small{font-size:6px}
+.mineral-btn b{font-size:10px;line-height:1.2}.mineral-btn small{font-size:9px;line-height:1.2}
 .bottle{scale:.58}
 .bottle-zone{inset:165px 0 8px}
 @media(max-width:760px){.bottle{scale:.52}.bottle-zone{inset:220px 0 8px}}
@@ -115,6 +115,13 @@ html,body{background:#fff}.recipe-panel,.mix-stage{background:#fff}.mix-stage:be
 .mineral-btn.danger span img{width:25px;height:25px;object-fit:contain;filter:drop-shadow(0 2px 2px #18394225)}
 .bottle-molecules .molecule-danger{object-fit:contain;filter:drop-shadow(0 2px 3px #17383f45)}
 .mineral-btn.danger:hover:not(:disabled){border-color:#54aaa6;background:#fff;box-shadow:none}
+
+/* Keep gameplay copy comfortably readable in the compact embedded layout. */
+.always-visible-instructions ol{font-size:12px;line-height:1.55;font-weight:500}
+.always-visible-instructions .dialog-tip{font-size:12px;line-height:1.4;font-weight:500}
+.instruction{font-weight:500}
+.ingredient b{font-size:12px}.ingredient small,.ingredient em{font-size:10px}
+.shake-meter span{font-size:10px}.shake-meter strong{font-size:12px}
 
 /* A real, self-contained game-over modal instead of a full-station overlay. */
 .game-over-card{position:fixed!important;z-index:10000!important;inset:auto!important;left:50%!important;top:50%!important;width:min(570px,calc(100vw - 32px));min-height:350px;padding:38px 34px;transform:translate(-50%,-46%) scale(.94)!important;border:5px solid #fff8;border-radius:26px;box-shadow:0 28px 90px #102020a8;background:#7f8f4d!important;color:#102b2d}
