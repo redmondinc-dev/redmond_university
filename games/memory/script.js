@@ -24,7 +24,7 @@
       id: "energy",
       name: "Re-Lyte Energy",
       image: "assets/re-lyte-energy.png",
-      description: "Re-Lyte Energy contains 120 mg of caffeine per serving, B vitamins, and herbal energizers ginseng, maca root, ashwagandha, Rhodiola rosea, and beetroot extract.",
+      description: "Provides 120 mg of caffeine per serving, B vitamins, and herbal energizers including ginseng, maca root, ashwagandha, Rhodiola rosea, and beetroot extract.",
     },
     {
       id: "immunity",
@@ -312,7 +312,11 @@
     refs.live.textContent = "No match. Try another pair.";
     playTone("miss");
 
-    if (state.cards[secondIndex].kind === "description") {
+    const pairIncludesDescription = [firstIndex, secondIndex].some(
+      (index) => state.cards[index].kind === "description",
+    );
+
+    if (pairIncludesDescription) {
       startReadingPrompt(firstIndex, secondIndex);
       return;
     }
