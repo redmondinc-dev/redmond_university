@@ -1,0 +1,704 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Redmond University | Re-Lyte 101 Finish</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700;800&amp;display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #172e42;
+        --blue: #00a5cd;
+        --sky: #e3f8fc;
+        --coral: #e55746;
+        --ink: #263542;
+        --muted: #667987;
+        --paper: #ffffff;
+      }
+
+      * { box-sizing: border-box; }
+
+      [hidden] { display: none !important; }
+
+      html, body { margin: 0; min-height: 100%; }
+
+      body {
+        min-height: 100vh;
+        overflow-x: hidden;
+        font-family: "Avenir Next", Avenir, "Trebuchet MS", sans-serif;
+        color: var(--ink);
+        background: #fff;
+      }
+
+      body.game-active {
+        background:
+          radial-gradient(circle at 12% 15%, rgba(255,255,255,.95) 0 9%, transparent 30%),
+          linear-gradient(145deg, #f8fdfe 0%, var(--sky) 58%, #b8eaf4 100%);
+      }
+
+      html.is-embedded, html.is-embedded body {
+        height: 100%;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      button { font: inherit; }
+
+      .confetti {
+        position: fixed;
+        inset: 0;
+        z-index: 20;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+      }
+
+      .page {
+        position: relative;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: clamp(20px, 5vw, 64px);
+        isolation: isolate;
+      }
+
+      .page::before, .page::after {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        border-radius: 50%;
+        background: rgba(255,255,255,.38);
+        opacity: 0;
+      }
+
+      body.game-active .page::before,
+      body.game-active .page::after { opacity: 1; }
+
+      .page::before { width: 340px; height: 340px; left: -130px; bottom: -90px; }
+      .page::after { width: 220px; height: 220px; right: -70px; top: -55px; }
+
+      .finish-intro {
+        width: min(86vw, 1180px);
+        text-align: center;
+      }
+
+      .finish-intro h1 {
+        margin: 0;
+        color: var(--navy);
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 5rem;
+        font-weight: 800;
+        line-height: .94;
+        letter-spacing: 0;
+        text-transform: uppercase;
+        text-wrap: balance;
+      }
+
+      .finish-intro h2 {
+        max-width: 80%;
+        margin: 10px auto 8px;
+        color: var(--blue);
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 3rem;
+        font-weight: 800;
+        line-height: .92;
+        text-transform: uppercase;
+        text-wrap: balance;
+      }
+
+      .finish-intro__message {
+        max-width: 920px;
+        margin: clamp(1.15rem, 2.4vw, 2rem) auto 0;
+        color: var(--ink);
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-size: 1.75rem;
+        font-weight: 700;
+        line-height: 1.16;
+        text-wrap: balance;
+      }
+
+      .finish-intro__note {
+        max-width: 890px;
+        margin: clamp(1rem, 2vw, 1.7rem) auto 0;
+        color: var(--muted);
+        font-size: 1.08rem;
+        font-weight: 500;
+        line-height: 1.34;
+        text-wrap: balance;
+      }
+
+      .finish-intro__actions {
+        min-height: 124px;
+        margin-top: clamp(1rem, 2vw, 1.8rem);
+        padding-bottom: 64px;
+        display: grid;
+        place-items: center;
+      }
+
+      .celebrate-button {
+        min-width: min(100%, 260px);
+        padding: 15px 30px;
+        border: 0;
+        border-radius: 999px;
+        color: #fff;
+        background: linear-gradient(135deg, #5dd2e9 0%, var(--blue) 46%, var(--navy) 100%);
+        box-shadow: 0 18px 34px rgba(23,46,66,.24), 0 0 0 0 rgba(0,165,205,.26);
+        font-family: "Montserrat", "Avenir Next", sans-serif;
+        font-weight: 800;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+      }
+
+      .celebrate-button:hover,
+      .celebrate-button:focus-visible {
+        outline: none;
+        filter: brightness(1.06) saturate(1.05);
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 24px 42px rgba(23,46,66,.3), 0 0 0 10px rgba(0,165,205,.14);
+      }
+
+      .card {
+        width: min(1080px, 100%);
+        min-height: min(690px, calc(100vh - 40px));
+        display: grid;
+        grid-template-columns: minmax(0, 1.12fr) minmax(290px, .88fr);
+        overflow: hidden;
+        border: 1px solid rgba(23,46,66,.1);
+        border-radius: 30px;
+        background: rgba(255,255,255,.9);
+        box-shadow: 0 34px 90px rgba(23,46,66,.18);
+      }
+
+      .copy {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: clamp(38px, 6vw, 78px);
+      }
+
+      .eyebrow {
+        margin: 0 0 14px;
+        color: var(--blue);
+        font-size: .78rem;
+        font-weight: 800;
+        letter-spacing: .18em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        color: var(--coral);
+        font-size: clamp(3.7rem, 8vw, 7rem);
+        line-height: .88;
+        letter-spacing: -.065em;
+      }
+
+      .message {
+        max-width: 620px;
+        margin: clamp(24px, 4vw, 38px) 0 0;
+        font-size: clamp(1.15rem, 2.1vw, 1.55rem);
+        font-weight: 600;
+        line-height: 1.5;
+      }
+
+      h2 {
+        margin: clamp(26px, 4vw, 42px) 0 0;
+        color: var(--navy);
+        font-size: clamp(1.5rem, 3vw, 2.15rem);
+        line-height: 1;
+      }
+
+      .mixing-status {
+        width: fit-content;
+        margin-top: 20px;
+        margin-bottom: 0;
+        color: var(--blue);
+        font-weight: 800;
+      }
+
+      .art {
+        position: relative;
+        display: grid;
+        place-items: center;
+        min-height: 430px;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at 50% 42%, rgba(255,255,255,.95) 0 14%, transparent 42%),
+          linear-gradient(160deg, var(--blue), var(--navy));
+      }
+
+      .art::before {
+        content: "H₂O";
+        position: absolute;
+        right: -18px;
+        top: 20px;
+        color: rgba(255,255,255,.09);
+        font-size: clamp(6rem, 12vw, 11rem);
+        font-weight: 900;
+        letter-spacing: -.08em;
+      }
+
+      .product {
+        position: relative;
+        z-index: 2;
+        width: min(78%, 390px);
+        max-height: 520px;
+        object-fit: contain;
+        filter: drop-shadow(0 28px 26px rgba(6,20,31,.35));
+        transition: opacity .25s ease, transform .25s ease;
+      }
+
+      .shaker {
+        position: absolute;
+        z-index: 3;
+        width: min(92%, 470px);
+        opacity: 0;
+        transform: scale(.82);
+        pointer-events: none;
+      }
+
+      .card.is-celebrating .product { opacity: 0; transform: scale(.88); }
+      .card.is-celebrating .shaker { opacity: 1; transform: scale(1); }
+
+      .mix-station {
+        position: relative;
+        z-index: 2;
+        display: grid;
+        justify-items: center;
+        gap: 18px;
+        transition: opacity .25s ease, transform .25s ease;
+      }
+
+      .johnny-animation {
+        position: absolute;
+        z-index: 4;
+        width: min(76%, 362px);
+        aspect-ratio: 1 / 2;
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(18px) scale(.96);
+        filter: drop-shadow(0 24px 20px rgba(6,20,31,.28));
+      }
+
+      .johnny-animation video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+
+      .bottle {
+        position: relative;
+        width: 218px;
+        height: 480px;
+        border: 0;
+        background: none;
+        filter: drop-shadow(0 24px 18px rgba(7,24,36,.38));
+        transform-origin: 50% 82%;
+      }
+
+      .bottle.is-shaking { animation: bottle-shake .68s ease-in-out; }
+
+      .bottle-shadow {
+        position: absolute;
+        bottom: 0;
+        left: 15%;
+        width: 70%;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(5,20,30,.35);
+        filter: blur(8px);
+      }
+
+      .cap-wrap {
+        position: absolute;
+        z-index: 6;
+        top: 3px;
+        left: 43px;
+        width: 132px;
+        height: 105px;
+      }
+
+      .handle {
+        position: absolute;
+        top: 0;
+        left: 17px;
+        width: 98px;
+        height: 60px;
+        border: 12px solid #151919;
+        border-bottom: 0;
+        border-radius: 35px 35px 8px 8px;
+      }
+
+      .cap {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 132px;
+        height: 63px;
+        border-radius: 13px 13px 18px 18px;
+        background: repeating-linear-gradient(90deg,#111 0 3px,#2c2d2d 4px 6px);
+        box-shadow: inset 0 -10px 0 #050606, 0 5px 5px #0004;
+      }
+
+      .neck {
+        position: absolute;
+        z-index: 2;
+        top: 86px;
+        left: 64px;
+        width: 90px;
+        height: 38px;
+        border: 5px solid #495657;
+        border-radius: 10px 10px 3px 3px;
+        background: #e9eeee99;
+      }
+
+      .bottle-body {
+        position: absolute;
+        z-index: 3;
+        left: 24px;
+        top: 108px;
+        width: 170px;
+        height: 350px;
+        overflow: hidden;
+        border: 5px solid #344849b8;
+        border-radius: 30px 30px 38px 38px;
+        background: linear-gradient(90deg,#5a6d6d4d,#d9e4df66 18%,#788d8c35 58%,#384c4c55);
+        box-shadow: inset 13px 0 20px #fff5, inset -13px 0 22px #152d3145;
+      }
+
+      .liquid {
+        position: absolute;
+        inset: 64px 0 0;
+        background: linear-gradient(90deg,#b7e4ea,#dff6f7 48%,#8ccbd7);
+        opacity: .78;
+      }
+
+      .liquid::before {
+        content: "";
+        position: absolute;
+        left: -10%;
+        top: -9px;
+        width: 120%;
+        height: 20px;
+        border-radius: 50%;
+        background: #d8f3f5;
+      }
+
+      .bubbles {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(circle at 20% 70%, #fff 0 3px, transparent 4px),
+          radial-gradient(circle at 68% 42%, #fff 0 4px, transparent 5px),
+          radial-gradient(circle at 44% 82%, #fff 0 2px, transparent 3px),
+          radial-gradient(circle at 78% 76%, #fff 0 3px, transparent 4px);
+        opacity: .7;
+      }
+
+      .brand-label {
+        position: absolute;
+        z-index: 2;
+        left: 16px;
+        right: 16px;
+        top: 112px;
+        padding: 17px 4px 15px;
+        border-radius: 8px;
+        color: #fff;
+        background: rgba(23,46,66,.9);
+        text-align: center;
+        font-size: 1.45rem;
+        font-weight: 900;
+        letter-spacing: -.04em;
+      }
+
+      .brand-label small {
+        display: block;
+        margin-top: 5px;
+        color: #a9dce6;
+        font-size: .52rem;
+        letter-spacing: .16em;
+      }
+
+      .shine {
+        position: absolute;
+        z-index: 3;
+        top: 14px;
+        bottom: 18px;
+        left: 18px;
+        width: 14px;
+        border-radius: 999px;
+        background: linear-gradient(#fff8,#fff1);
+      }
+
+      .shake-progress { width: 250px; color: white; }
+      .shake-copy { display: flex; justify-content: space-between; font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+      .shake-track { height: 9px; margin-top: 8px; overflow: hidden; border-radius: 999px; background: rgba(255,255,255,.2); }
+      .shake-fill { display: block; width: 0; height: 100%; border-radius: inherit; background: linear-gradient(90deg,#f3c449,var(--coral)); transition: width .28s ease; }
+      .shake-hint { margin: 0; color: rgba(255,255,255,.76); font-size: .78rem; text-align: center; }
+
+      .card.is-complete .bottle { animation: bottle-pop .75s ease both; }
+      .card.is-complete .shake-hint { color: #fff; font-weight: 800; }
+      .card.is-complete .mix-station { opacity: 0; transform: scale(.92); pointer-events: none; }
+      .card.is-complete .johnny-animation {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+      }
+
+      @keyframes bottle-shake {
+        0%,100% { transform: translateX(0) rotate(0); }
+        15% { transform: translateX(-20px) rotate(-8deg); }
+        32% { transform: translateX(18px) rotate(7deg); }
+        50% { transform: translateX(-15px) rotate(-6deg); }
+        68% { transform: translateX(13px) rotate(5deg); }
+        84% { transform: translateX(-7px) rotate(-2deg); }
+      }
+
+      @keyframes bottle-pop {
+        45% { transform: translateY(-20px) scale(1.06); }
+        72% { transform: translateY(0) scale(.98); }
+        100% { transform: scale(1); }
+      }
+
+      .status {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+      }
+
+      @media (max-width: 760px) {
+        html.is-embedded, html.is-embedded body { overflow: auto; }
+        .page { padding: 14px; }
+        .card { grid-template-columns: 1fr; }
+        .copy { padding: 42px 28px 34px; }
+        .art { min-height: 330px; }
+        .bottle { scale: .72; margin-block: -65px; }
+        .shake-progress { width: 220px; }
+        .finish-intro { width: 100%; }
+        .finish-intro h1 { font-size: 2.7rem; }
+        .finish-intro h2 { max-width: 100%; font-size: 1.9rem; }
+        .finish-intro__message { font-size: 1.18rem; line-height: 1.25; }
+        .finish-intro__message, .finish-intro__note { max-width: 100%; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { transition-duration: .01ms !important; }
+      }
+    </style>
+    <script>
+      try { if (window.self !== window.top) document.documentElement.classList.add("is-embedded"); }
+      catch { document.documentElement.classList.add("is-embedded"); }
+    </script>
+  </head>
+  <body>
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+    <audio id="claps" preload="auto" src="../../finish/claps.mp3"></audio>
+    <audio id="music" preload="auto" src="../../finish/finish%20game.mp3"></audio>
+
+    <main class="page">
+      <section class="finish-intro" id="finish-intro" aria-labelledby="intro-title">
+        <h1 id="intro-title">Great job!</h1>
+        <h2>You made it to the end of the course!</h2>
+        <p class="finish-intro__message">Now you're a pro at using Re-Lyte to support your lifestyle and helping others use Re-Lyte to support theirs!</p>
+        <p class="finish-intro__note">Keep sharing what you've learned, and we'll see you in the next course.</p>
+        <div class="finish-intro__actions">
+          <button class="celebrate-button" id="start-celebration" type="button">Celebrate</button>
+        </div>
+      </section>
+
+      <section class="card" id="finish-card" aria-labelledby="finish-title" hidden>
+        <div class="copy">
+          <h1 id="finish-title">You did it!</h1>
+          <p class="message">Congratulations! You've completed Re-Lyte 101, and now you're a pro at using Re-Lyte to support your lifestyle, and helping others use Re-Lyte to support theirs!&nbsp;</p>
+          <h2>What's next?</h2>
+          <p class="mixing-status" id="mixing-status" aria-live="polite">Mixing Re-Lyte...</p>
+        </div>
+        <div class="art">
+          <div class="johnny-animation" role="img" aria-label="Johnny drinks Re-Lyte and celebrates">
+            <video id="johnny-video" muted playsinline preload="auto">
+              <source src="./assets/johnny-drinks-re-lyte.webm?v=3" type="video/webm" />
+            </video>
+          </div>
+          <div class="mix-station">
+            <div class="bottle" id="bottle" aria-hidden="true">
+              <span class="bottle-shadow"></span>
+              <span class="cap-wrap"><span class="handle"></span><span class="cap"></span></span>
+              <span class="neck"></span>
+              <span class="bottle-body">
+                <span class="liquid"><span class="bubbles"></span></span>
+                <span class="brand-label">RE-LYTE<small>COURSE COMPLETE</small></span>
+                <span class="shine"></span>
+              </span>
+            </div>
+            <div class="shake-progress" aria-live="polite">
+              <div class="shake-copy"><span>Shake power</span><strong id="shake-count">0 / 2</strong></div>
+              <div class="shake-track"><span class="shake-fill" id="shake-fill"></span></div>
+            </div>
+            <p class="shake-hint" id="shake-hint">Two shakes to celebrate.</p>
+          </div>
+        </div>
+      </section>
+      <p class="status" id="status" aria-live="polite"></p>
+    </main>
+
+    <script>
+      (() => {
+        const card = document.getElementById("finish-card");
+        const intro = document.getElementById("finish-intro");
+        const startCelebration = document.getElementById("start-celebration");
+        const mixingStatus = document.getElementById("mixing-status");
+        const johnnyVideo = document.getElementById("johnny-video");
+        const bottle = document.getElementById("bottle");
+        const shakeCount = document.getElementById("shake-count");
+        const shakeFill = document.getElementById("shake-fill");
+        const shakeHint = document.getElementById("shake-hint");
+        const status = document.getElementById("status");
+        const canvas = document.getElementById("confetti");
+        const context = canvas.getContext("2d");
+        const claps = document.getElementById("claps");
+        const music = document.getElementById("music");
+        let frame = 0;
+        let shakes = 0;
+        const totalShakes = 2;
+        let locked = false;
+
+        startCelebration.addEventListener("click", () => {
+          startCelebration.disabled = true;
+          intro.hidden = true;
+          card.hidden = false;
+          document.body.classList.add("game-active");
+          mixingStatus.textContent = "Mixing Re-Lyte...";
+          shakeHint.textContent = "Watch the bottle mix itself!";
+          status.textContent = "Automatic celebration started.";
+          primeAudio();
+          window.setTimeout(runAutomaticShakes, 450);
+        });
+
+        function primeAudio() {
+          [claps, music].forEach((audio) => {
+            audio.volume = 0;
+            const playback = audio.play();
+            if (!playback) return;
+            playback.then(() => {
+              audio.pause();
+              audio.currentTime = 0;
+            }).catch(() => {});
+          });
+        }
+
+        function runAutomaticShakes() {
+          performShake();
+          if (!locked) window.setTimeout(runAutomaticShakes, 900);
+        }
+
+        function resize() {
+          const ratio = window.devicePixelRatio || 1;
+          canvas.width = Math.floor(innerWidth * ratio);
+          canvas.height = Math.floor(innerHeight * ratio);
+          canvas.style.width = `${innerWidth}px`;
+          canvas.style.height = `${innerHeight}px`;
+          context.setTransform(ratio, 0, 0, ratio, 0, 0);
+        }
+
+        function launchConfetti() {
+          if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+          const colors = ["#e55746", "#00a5cd", "#f3c449", "#5dd2e9", "#ffffff"];
+          const pieces = Array.from({ length: 120 }, (_, index) => ({
+            x: Math.random() * innerWidth,
+            y: -20 - Math.random() * innerHeight * .35,
+            w: 6 + Math.random() * 7,
+            h: 9 + Math.random() * 10,
+            speed: 2.8 + Math.random() * 4.2,
+            drift: (Math.random() - .5) * 2.5,
+            spin: Math.random() * Math.PI,
+            color: colors[index % colors.length],
+          }));
+          cancelAnimationFrame(frame);
+          const started = performance.now();
+          const draw = (now) => {
+            context.clearRect(0, 0, innerWidth, innerHeight);
+            pieces.forEach((piece) => {
+              piece.y += piece.speed;
+              piece.x += piece.drift;
+              piece.spin += .08;
+              context.save();
+              context.translate(piece.x, piece.y);
+              context.rotate(piece.spin);
+              context.fillStyle = piece.color;
+              context.fillRect(-piece.w / 2, -piece.h / 2, piece.w, piece.h);
+              context.restore();
+            });
+            if (now - started < 4200) frame = requestAnimationFrame(draw);
+            else context.clearRect(0, 0, innerWidth, innerHeight);
+          };
+          frame = requestAnimationFrame(draw);
+        }
+
+        function performShake() {
+          if (locked) return;
+          shakes += 1;
+          bottle.classList.remove("is-shaking");
+          void bottle.offsetWidth;
+          bottle.classList.add("is-shaking");
+          shakeCount.textContent = `${shakes} / ${totalShakes}`;
+          shakeFill.style.width = `${(shakes / totalShakes) * 100}%`;
+          status.textContent = `Shake ${shakes} of ${totalShakes}.`;
+
+          if (shakes < totalShakes) return;
+          locked = true;
+          card.classList.add("is-complete");
+          mixingStatus.textContent = "You did it!";
+          shakeHint.textContent = "Perfectly mixed. Re-Lyte 101 complete!";
+          status.textContent = "Celebration started. Re-Lyte 101 complete.";
+          claps.currentTime = 0;
+          music.currentTime = 0;
+          claps.volume = 1;
+          music.volume = .75;
+          Promise.allSettled([claps.play(), music.play()]);
+          johnnyVideo.currentTime = 0;
+          johnnyVideo.play().catch(() => {});
+          window.setTimeout(launchConfetti, 3400);
+          window.setTimeout(resetCelebration, 8000);
+        }
+
+        function resetCelebration() {
+          cancelAnimationFrame(frame);
+          context.clearRect(0, 0, innerWidth, innerHeight);
+          [claps, music].forEach((audio) => {
+            audio.pause();
+            audio.currentTime = 0;
+          });
+          shakes = 0;
+          locked = false;
+          card.classList.remove("is-complete");
+          bottle.classList.remove("is-shaking");
+          johnnyVideo.pause();
+          johnnyVideo.currentTime = 0;
+          shakeCount.textContent = `0 / ${totalShakes}`;
+          shakeFill.style.width = "0%";
+          shakeHint.textContent = "Two shakes to celebrate.";
+          mixingStatus.textContent = "Mixing Re-Lyte...";
+          status.textContent = "Celebration finished.";
+          card.hidden = true;
+          intro.hidden = false;
+          document.body.classList.remove("game-active");
+          startCelebration.disabled = false;
+          startCelebration.focus({ preventScroll: true });
+        }
+
+        resize();
+        addEventListener("resize", resize);
+      })();
+    </script>
+  </body>
+</html>

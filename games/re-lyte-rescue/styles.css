@@ -117,9 +117,10 @@ html,body{background:#fff}.recipe-panel,.mix-stage{background:#fff}.mix-stage:be
 .mineral-btn.danger:hover:not(:disabled){border-color:#54aaa6;background:#fff;box-shadow:none}
 
 /* Keep gameplay copy comfortably readable in the compact embedded layout. */
-.always-visible-instructions ol{font-size:12px;line-height:1.55;font-weight:500}
-.always-visible-instructions .dialog-tip{font-size:12px;line-height:1.4;font-weight:500}
-.instruction{font-weight:500}
+@font-face{font-family:Mont;src:url('../../font/drive-download-20260817T221509Z-1-001/Montserrat-SemiBold.ttf');font-weight:600}
+.always-visible-instructions ol{font-size:12px;line-height:1.55;font-weight:600}
+.always-visible-instructions .dialog-tip{font-size:12px;line-height:1.4;font-weight:600}
+.instruction{font-weight:600}
 .ingredient b{font-size:12px}.ingredient small,.ingredient em{font-size:10px}
 .shake-meter span{font-size:10px}.shake-meter strong{font-size:12px}
 
