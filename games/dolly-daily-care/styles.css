@@ -142,6 +142,18 @@
 @media(max-width:800px){.food-grid{touch-action:pan-x;overscroll-behavior-x:contain;scrollbar-width:thin}.food-choice{touch-action:pan-x}.food-choice[aria-disabled="true"]{cursor:default;pointer-events:auto}.food-choice.selected{opacity:.45}}
 .food-choice[aria-disabled="true"]{cursor:default}
 
+/* Important care facts sit near the task description so they are seen before the interaction. */
+.task-card>.tip{display:flex;align-items:flex-start;gap:8px;margin:10px 0 0!important;padding:9px 11px;border-left:3px solid #91a629;border-radius:7px;background:#f0f5df;color:#526543;font-size:11px!important;font-weight:600;line-height:1.4}
+.task-card>.tip:before{content:"!";flex:0 0 18px;width:18px;height:18px;border-radius:50%;background:#91a629;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800}
+@media(max-width:800px){.task-card>.tip{display:flex;margin-top:6px!important;padding:6px 8px;font-size:9px!important;line-height:1.25}.task-card>.tip:before{flex-basis:16px;width:16px;height:16px;font-size:9px}.progress-steps{margin-top:7px}}
+
+/* Keep the care fact and the required action together above the interactive area. */
+.task-guidance{margin:10px 0 0;border-left:3px solid #91a629;border-radius:7px;background:#f0f5df;overflow:hidden}
+.task-guidance>.tip{display:flex;align-items:flex-start;gap:8px;margin:0!important;padding:9px 11px 7px;color:#526543;font-size:11px!important;font-weight:600;line-height:1.4}
+.task-guidance>.tip:before{content:"!";flex:0 0 18px;width:18px;height:18px;border-radius:50%;background:#91a629;color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800}
+.task-guidance>.instruction{margin:0;padding:7px 11px;border-top:1px solid #dce6bd;border-radius:0;background:#e8f0d2;color:#526543;font-size:11px;font-weight:600}
+@media(max-width:800px){.task-guidance{margin-top:6px}.task-guidance>.tip{display:flex;padding:6px 8px 5px;font-size:9px!important;line-height:1.25}.task-guidance>.tip:before{flex-basis:16px;width:16px;height:16px;font-size:9px}.task-guidance>.instruction{margin:0;padding:5px 8px;font-size:9px}.progress-steps{margin-top:7px}}
+
 /* Valid arithmetic-only confetti positioning; overrides the experimental modulo expressions above. */
 .confetti i{left:calc(var(--i)*2.77%);background:hsl(calc(var(--i)*47) 75% 58%);animation-name:confettiFall;animation-duration:calc(2.6s + var(--i)*.03s);animation-delay:calc(var(--i)*-.06s);animation-timing-function:linear;animation-iteration-count:infinite}
 @keyframes confettiFall{to{translate:calc((var(--i) - 18)*2px) 120vh;rotate:720deg}}
