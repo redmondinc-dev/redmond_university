@@ -133,6 +133,21 @@
         place-items: center;
       }
 
+      .celebration-stage {
+        width: min(92vw, 520px);
+        height: min(86vh, 760px);
+        display: grid;
+        place-items: center;
+      }
+
+      .celebration-stage video {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        filter: drop-shadow(0 24px 22px rgba(23,46,66,.2));
+      }
+
       .celebrate-button {
         min-width: min(100%, 260px);
         padding: 15px 30px;
@@ -500,99 +515,51 @@
 
     <main class="page">
       <section class="finish-intro" id="finish-intro" aria-labelledby="intro-title">
-        <h1 id="intro-title">Great job!</h1>
-        <h2>You made it to the end of the course!</h2>
-        <p class="finish-intro__message">Now you're a pro at using Re-Lyte to support your lifestyle and helping others use Re-Lyte to support theirs!</p>
-        <p class="finish-intro__note">Keep sharing what you've learned, and we'll see you in the next course.</p>
+        <h1 id="intro-title">You did it!</h1>
+        <p class="finish-intro__message">Congratulations! You've completed Re-Lyte 101! Now you're a pro at using Re-Lyte to support your lifestyle and helping others use Re-Lyte to support theirs.</p>
+        <h2>What's next?</h2>
         <div class="finish-intro__actions">
           <button class="celebrate-button" id="start-celebration" type="button">Celebrate</button>
         </div>
       </section>
 
-      <section class="card" id="finish-card" aria-labelledby="finish-title" hidden>
-        <div class="copy">
-          <h1 id="finish-title">You did it!</h1>
-          <p class="message">Congratulations! You've completed Re-Lyte 101, and now you're a pro at using Re-Lyte to support your lifestyle, and helping others use Re-Lyte to support theirs!&nbsp;</p>
-          <h2>What's next?</h2>
-          <p class="mixing-status" id="mixing-status" aria-live="polite">Mixing Re-Lyte...</p>
-        </div>
-        <div class="art">
-          <div class="johnny-animation" role="img" aria-label="Johnny drinks Re-Lyte and celebrates">
-            <video id="johnny-video" muted playsinline preload="auto">
-              <source src="./assets/johnny-drinks-re-lyte.webm?v=3" type="video/webm" />
-            </video>
-          </div>
-          <div class="mix-station">
-            <div class="bottle" id="bottle" aria-hidden="true">
-              <span class="bottle-shadow"></span>
-              <span class="cap-wrap"><span class="handle"></span><span class="cap"></span></span>
-              <span class="neck"></span>
-              <span class="bottle-body">
-                <span class="liquid"><span class="bubbles"></span></span>
-                <span class="brand-label">RE-LYTE<small>COURSE COMPLETE</small></span>
-                <span class="shine"></span>
-              </span>
-            </div>
-            <div class="shake-progress" aria-live="polite">
-              <div class="shake-copy"><span>Shake power</span><strong id="shake-count">0 / 2</strong></div>
-              <div class="shake-track"><span class="shake-fill" id="shake-fill"></span></div>
-            </div>
-            <p class="shake-hint" id="shake-hint">Two shakes to celebrate.</p>
-          </div>
-        </div>
+      <section class="celebration-stage" id="celebration-stage" aria-label="Johnny celebrates" hidden>
+        <video id="johnny-video" muted playsinline preload="auto">
+          <source src="./assets/johnny-drinks-re-lyte.webm?v=3" type="video/webm" />
+        </video>
       </section>
       <p class="status" id="status" aria-live="polite"></p>
     </main>
 
     <script>
       (() => {
-        const card = document.getElementById("finish-card");
         const intro = document.getElementById("finish-intro");
+        const celebrationStage = document.getElementById("celebration-stage");
         const startCelebration = document.getElementById("start-celebration");
-        const mixingStatus = document.getElementById("mixing-status");
         const johnnyVideo = document.getElementById("johnny-video");
-        const bottle = document.getElementById("bottle");
-        const shakeCount = document.getElementById("shake-count");
-        const shakeFill = document.getElementById("shake-fill");
-        const shakeHint = document.getElementById("shake-hint");
         const status = document.getElementById("status");
         const canvas = document.getElementById("confetti");
         const context = canvas.getContext("2d");
         const claps = document.getElementById("claps");
         const music = document.getElementById("music");
         let frame = 0;
-        let shakes = 0;
-        const totalShakes = 2;
-        let locked = false;
 
         startCelebration.addEventListener("click", () => {
           startCelebration.disabled = true;
           intro.hidden = true;
-          card.hidden = false;
-          document.body.classList.add("game-active");
-          mixingStatus.textContent = "Mixing Re-Lyte...";
-          shakeHint.textContent = "Watch the bottle mix itself!";
-          status.textContent = "Automatic celebration started.";
-          primeAudio();
-          window.setTimeout(runAutomaticShakes, 450);
+          celebrationStage.hidden = false;
+          status.textContent = "Celebration started.";
+          claps.currentTime = 0;
+          music.currentTime = 0;
+          claps.volume = 1;
+          music.volume = .75;
+          claps.play().catch(() => {});
+          music.play().catch(() => {});
+          johnnyVideo.currentTime = 0;
+          johnnyVideo.play().catch(() => {});
+          launchConfetti();
+          window.setTimeout(resetCelebration, 8000);
         });
-
-        function primeAudio() {
-          [claps, music].forEach((audio) => {
-            audio.volume = 0;
-            const playback = audio.play();
-            if (!playback) return;
-            playback.then(() => {
-              audio.pause();
-              audio.currentTime = 0;
-            }).catch(() => {});
-          });
-        }
-
-        function runAutomaticShakes() {
-          performShake();
-          if (!locked) window.setTimeout(runAutomaticShakes, 900);
-        }
 
         function resize() {
           const ratio = window.devicePixelRatio || 1;
@@ -637,33 +604,6 @@
           frame = requestAnimationFrame(draw);
         }
 
-        function performShake() {
-          if (locked) return;
-          shakes += 1;
-          bottle.classList.remove("is-shaking");
-          void bottle.offsetWidth;
-          bottle.classList.add("is-shaking");
-          shakeCount.textContent = `${shakes} / ${totalShakes}`;
-          shakeFill.style.width = `${(shakes / totalShakes) * 100}%`;
-          status.textContent = `Shake ${shakes} of ${totalShakes}.`;
-
-          if (shakes < totalShakes) return;
-          locked = true;
-          card.classList.add("is-complete");
-          mixingStatus.textContent = "You did it!";
-          shakeHint.textContent = "Perfectly mixed. Re-Lyte 101 complete!";
-          status.textContent = "Celebration started. Re-Lyte 101 complete.";
-          claps.currentTime = 0;
-          music.currentTime = 0;
-          claps.volume = 1;
-          music.volume = .75;
-          Promise.allSettled([claps.play(), music.play()]);
-          johnnyVideo.currentTime = 0;
-          johnnyVideo.play().catch(() => {});
-          window.setTimeout(launchConfetti, 3400);
-          window.setTimeout(resetCelebration, 8000);
-        }
-
         function resetCelebration() {
           cancelAnimationFrame(frame);
           context.clearRect(0, 0, innerWidth, innerHeight);
@@ -671,20 +611,11 @@
             audio.pause();
             audio.currentTime = 0;
           });
-          shakes = 0;
-          locked = false;
-          card.classList.remove("is-complete");
-          bottle.classList.remove("is-shaking");
           johnnyVideo.pause();
           johnnyVideo.currentTime = 0;
-          shakeCount.textContent = `0 / ${totalShakes}`;
-          shakeFill.style.width = "0%";
-          shakeHint.textContent = "Two shakes to celebrate.";
-          mixingStatus.textContent = "Mixing Re-Lyte...";
           status.textContent = "Celebration finished.";
-          card.hidden = true;
+          celebrationStage.hidden = true;
           intro.hidden = false;
-          document.body.classList.remove("game-active");
           startCelebration.disabled = false;
           startCelebration.focus({ preventScroll: true });
         }
