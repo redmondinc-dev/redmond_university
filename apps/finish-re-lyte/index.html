@@ -140,12 +140,33 @@
         place-items: center;
       }
 
+      .celebration-stage > * { grid-area: 1 / 1; }
+
       .celebration-stage video {
         display: block;
         width: 100%;
         height: 100%;
         object-fit: contain;
+        opacity: 0;
+        transform: translateY(14px) scale(.96);
         filter: drop-shadow(0 24px 22px rgba(23,46,66,.2));
+        transition: opacity .35s ease, transform .35s ease;
+      }
+
+      .celebration-stage .bottle {
+        opacity: 1;
+        transition: opacity .25s ease, transform .25s ease;
+        animation: bottle-shake .68s ease-in-out 2;
+      }
+
+      .celebration-stage.is-drinking .bottle {
+        opacity: 0;
+        transform: scale(.86);
+      }
+
+      .celebration-stage.is-drinking video {
+        opacity: 1;
+        transform: translateY(0) scale(1);
       }
 
       .celebrate-button {
@@ -524,6 +545,16 @@
       </section>
 
       <section class="celebration-stage" id="celebration-stage" aria-label="Johnny celebrates" hidden>
+        <div class="bottle" aria-hidden="true">
+          <span class="bottle-shadow"></span>
+          <span class="cap-wrap"><span class="handle"></span><span class="cap"></span></span>
+          <span class="neck"></span>
+          <span class="bottle-body">
+            <span class="liquid"><span class="bubbles"></span></span>
+            <span class="brand-label">RE-LYTE<small>COURSE COMPLETE</small></span>
+            <span class="shine"></span>
+          </span>
+        </div>
         <video id="johnny-video" muted playsinline preload="auto">
           <source src="./assets/johnny-drinks-re-lyte.webm?v=3" type="video/webm" />
         </video>
@@ -547,8 +578,9 @@
         startCelebration.addEventListener("click", () => {
           startCelebration.disabled = true;
           intro.hidden = true;
+          celebrationStage.classList.remove("is-drinking");
           celebrationStage.hidden = false;
-          status.textContent = "Celebration started.";
+          status.textContent = "The Re-Lyte bottle is shaking.";
           claps.currentTime = 0;
           music.currentTime = 0;
           claps.volume = 1;
@@ -556,9 +588,13 @@
           claps.play().catch(() => {});
           music.play().catch(() => {});
           johnnyVideo.currentTime = 0;
-          johnnyVideo.play().catch(() => {});
-          launchConfetti();
-          window.setTimeout(resetCelebration, 8000);
+          window.setTimeout(() => {
+            celebrationStage.classList.add("is-drinking");
+            status.textContent = "Johnny drinks Re-Lyte and celebrates.";
+            johnnyVideo.play().catch(() => {});
+            launchConfetti();
+          }, 1550);
+          window.setTimeout(resetCelebration, 7500);
         });
 
         function resize() {
@@ -613,6 +649,7 @@
           });
           johnnyVideo.pause();
           johnnyVideo.currentTime = 0;
+          celebrationStage.classList.remove("is-drinking");
           status.textContent = "Celebration finished.";
           celebrationStage.hidden = true;
           intro.hidden = false;
