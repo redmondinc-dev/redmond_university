@@ -154,6 +154,12 @@
         filter: drop-shadow(0 12px 12px rgba(24,56,74,.12));
         animation: arrive .38s ease both;
       }
+      .visual__icon img {
+        display: block;
+        width: min(260px, 42vw);
+        height: 138px;
+        object-fit: contain;
+      }
       .visual__year {
         position: absolute;
         right: 24px;
@@ -298,7 +304,8 @@
             label: "Industry standard",
             title: "How pasteurization became the norm",
             year: "TODAY",
-            icon: "🏪",
+            icon: "assets/img/babe-ruth-baseball.png",
+            iconType: "image",
             html: `<p>Initially, many people were hesitant to embrace pasteurization, aware that the process eliminated not only harmful bacteria but also beneficial microbes. Despite this concern, public support grew, especially with influential figures like Babe Ruth publicly endorsing pasteurized milk. As pasteurization technology improved and became more reliable, pasteurized milk emerged as the new industry standard. Over time, raw milk became increasingly rare—and in many regions, its sale was eventually made illegal, claiming to ensure public safety in this product. <a href="https://www.researchgate.net/publication/248920842_The_Untold_Story_of_Milk_The_History_Politics_and_Science_of_Nature's_Perfect_Food_Raw_Milk_from_Pasture-Fed_Cows_by_Ron_Schmid" target="_blank" rel="noopener">[2]</a></p><div class="sources"><a href="https://www.rawmilkinstitute.org/updates/category/Raw+Milk+History" target="_blank" rel="noopener">[1] https://www.rawmilkinstitute.org/updates/category/Raw+Milk+History</a><a href="https://www.researchgate.net/publication/248920842_The_Untold_Story_of_Milk_The_History_Politics_and_Science_of_Nature's_Perfect_Food_Raw_Milk_from_Pasture-Fed_Cows_by_Ron_Schmid" target="_blank" rel="noopener">[2] https://www.researchgate.net/publication/248920842_The_Untold_Story_of_Milk_The_History_Politics_and_Science_of_Nature's_Perfect_Food_Raw_Milk_from_Pasture-Fed_Cows_by_Ron_Schmid (pg 5)</a></div>`
           }
         ];
@@ -331,7 +338,11 @@
           counter.textContent = `Moment ${current + 1} of ${moments.length}`;
           title.textContent = moment.title;
           year.textContent = moment.year;
-          icon.textContent = moment.icon;
+          if (moment.iconType === "image") {
+            icon.innerHTML = `<img src="${moment.icon}" alt="" />`;
+          } else {
+            icon.textContent = moment.icon;
+          }
           icon.style.animation = "none";
           copy.style.animation = "none";
           void copy.offsetWidth;
