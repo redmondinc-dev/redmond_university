@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Raw Milk 101 | Course Complete</title>
+    <script type="importmap">{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.185.1/build/three.module.js","three/addons/":"https://cdn.jsdelivr.net/npm/three@0.185.1/examples/jsm/"}}</script>
+    <style>
+      @font-face{font-family:Montserrat;src:url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Regular.ttf");font-weight:400}@font-face{font-family:Montserrat;src:url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-SemiBold.ttf");font-weight:600}@font-face{font-family:Montserrat;src:url("../../font/drive-download-20260817T221509Z-1-001/Montserrat-Bold.ttf");font-weight:700}
+      :root{--forest:#213c2b;--cream:#f7f0df;--paper:#fffdf8;--rust:#a95738;--gold:#d59b3d;--ink:#263129}*{box-sizing:border-box}body{margin:0;min-height:100vh;display:grid;place-items:center;overflow:hidden;background:var(--cream);color:var(--ink);font-family:Montserrat,Arial,sans-serif}button{font:inherit}
+      .finish{position:relative;width:min(1180px,calc(100% - 32px));height:min(690px,calc(100vh - 32px));min-height:560px;overflow:hidden;border:1px solid #243a2922;border-radius:30px;background:radial-gradient(circle at 72% 18%,#dce8bd 0 7%,transparent 28%),linear-gradient(#9eb29a 0 58%,#5f7f4c 58% 100%);box-shadow:0 28px 80px #1d32232a}.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 47%;filter:saturate(.78) brightness(.7);opacity:1;transition:opacity .55s}.finish.celebrating .photo{opacity:0}.finish:after{content:"";position:absolute;inset:0;background:#14271e99;transition:background .55s}.finish.celebrating:after{background:linear-gradient(180deg,#1831255c 0,#18312518 46%,#1831254f 100%)}
+      .copy{position:absolute;z-index:6;left:50%;top:50%;width:min(680px,calc(100% - 48px));transform:translate(-50%,-50%);color:#fff;text-align:center;transition:top .55s,transform .55s}.eyebrow{display:flex;align-items:center;justify-content:center;gap:12px;margin:0 0 16px;color:#ffe0a2;font-size:clamp(13px,1.15vw,15px);font-weight:700;letter-spacing:.16em;text-shadow:0 2px 8px #0d1d15,0 1px 2px #0d1d15;text-transform:uppercase}.eyebrow:before,.eyebrow:after{content:"";width:42px;height:3px;border-radius:99px;background:#e6ad4d;box-shadow:0 2px 6px #0d1d1588}h1{margin:0;font-size:clamp(52px,6.8vw,94px);line-height:.88;letter-spacing:-.065em}h1 span{display:block;color:#efb07a}.message{max-width:590px;margin:22px auto 28px;padding:9px 18px;border-radius:12px;background:#14271e8c;box-shadow:0 8px 24px #0d1d1538;color:#fff;font-size:clamp(17px,1.7vw,21px);font-weight:600;line-height:1.45;text-shadow:0 2px 7px #0d1d15;transition:.35s;backdrop-filter:blur(3px)}.complete{display:inline-flex;align-items:center;gap:25px;min-height:54px;padding:0 23px;border:0;border-radius:12px;background:#f5e2b7;color:var(--forest);font-weight:700;cursor:pointer;box-shadow:0 12px 30px #13251b66;transition:.2s}.complete:hover{transform:translateY(-3px);background:#fff0cf}.arrow{font-size:20px;transition:.5s}
+      .finish.celebrating .copy{top:13%;transform:translate(-50%,0)}.finish.celebrating .eyebrow,.finish.celebrating .message,.finish.celebrating .complete{visibility:hidden;opacity:0;pointer-events:none}.finish.celebrating h1{font-size:clamp(42px,5vw,68px)}.finish.celebrating h1 span{display:inline}
+      .herd{position:absolute;z-index:5;inset:42% 0 0;pointer-events:none;opacity:0;transition:opacity .6s .2s}.finish.celebrating .herd{opacity:1}.herd-cow{position:absolute;left:var(--x);bottom:var(--y);width:var(--size);aspect-ratio:1.49;background-image:url("../../games/farm/assets/RU%20Cow%202.png");background-size:contain;background-position:center;background-repeat:no-repeat;filter:saturate(.68) brightness(.86) drop-shadow(0 7px 5px #1d321f48);opacity:var(--opacity,.78);transform:translateX(-50%) scaleX(var(--flip,1));transform-origin:50% 100%}.dolly-scene{position:absolute;z-index:7;inset:18% 0 0;width:100%;height:82%;pointer-events:none;opacity:0;transform:translateY(38px) scale(.88);transition:opacity .45s .15s,transform .65s cubic-bezier(.2,.8,.2,1)}.finish.celebrating .dolly-scene{opacity:1;transform:translateY(0) scale(1)}.ruby-3d-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:3;pointer-events:none;filter:drop-shadow(0 18px 12px #17241a66)}.cow-home{position:absolute;left:43%;bottom:25%;width:10px;height:10px;opacity:0}
+      .confetti{position:fixed;z-index:20;inset:0;pointer-events:none}.toast{position:fixed;z-index:22;left:50%;bottom:24px;transform:translate(-50%,20px);padding:12px 18px;border-radius:99px;background:var(--forest);color:#fff;font-size:12px;font-weight:600;opacity:0;transition:.25s}.toast.show{opacity:1;transform:translate(-50%,0)}
+      @media(max-width:760px){body{overflow:auto}.finish{height:calc(100vh - 20px);min-height:700px;width:calc(100% - 20px);margin:10px;border-radius:22px}.photo{object-position:56% center}.copy{width:calc(100% - 38px)}.copy h1{font-size:52px}.eyebrow{font-size:12px}.message{font-size:16px;padding:9px 13px}.finish.celebrating .copy{top:10%}.finish.celebrating h1{font-size:39px}.herd{inset:44% 0 0}.herd-cow{width:calc(var(--size) * .72)}.dolly-scene{inset:17% 0 0;height:83%}.cow-home{left:46%;bottom:21%}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important}}
+    </style>
+  </head>
+  <body>
+    <audio id="applause-audio" preload="auto" src="../../finish/claps.mp3"></audio>
+    <audio id="dolly-audio" preload="auto" src="../../games/dolly-daily-care/assets/audio/moo.m4a"></audio>
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+    <main class="finish" aria-labelledby="finish-title">
+      <img class="photo" src="../../assets/imgs/jpg/rawmilk.jpg" alt="Redmond raw milk bottles and cows at the farm" />
+      <div class="copy"><p class="eyebrow">Course complete</p><h1 id="finish-title">You’re <span>Raw Milk Ready!</span></h1><p class="message">From pasture to pour, you now know what makes raw milk different.</p><button class="complete" id="complete-button" type="button"><span>Finish Raw Milk 101</span><span class="arrow" aria-hidden="true">→</span></button></div>
+      <div class="herd" aria-hidden="true">
+        <span class="herd-cow" style="--x:5%;--y:9%;--size:112px;--pose:0%;--opacity:.8"></span>
+        <span class="herd-cow" style="--x:14%;--y:28%;--size:78px;--pose:33.333%;--flip:-1;--opacity:.58"></span>
+        <span class="herd-cow" style="--x:24%;--y:12%;--size:105px;--pose:100%;--flip:-1;--opacity:.74"></span>
+        <span class="herd-cow" style="--x:34%;--y:32%;--size:72px;--pose:66.666%;--opacity:.52"></span>
+        <span class="herd-cow" style="--x:55%;--y:31%;--size:70px;--pose:0%;--flip:-1;--opacity:.5"></span>
+        <span class="herd-cow" style="--x:65%;--y:13%;--size:104px;--pose:33.333%;--opacity:.72"></span>
+        <span class="herd-cow" style="--x:75%;--y:29%;--size:76px;--pose:100%;--flip:-1;--opacity:.55"></span>
+        <span class="herd-cow" style="--x:84%;--y:10%;--size:116px;--pose:66.666%;--opacity:.78"></span>
+        <span class="herd-cow" style="--x:93%;--y:30%;--size:72px;--pose:0%;--opacity:.5"></span>
+        <span class="herd-cow" style="--x:97%;--y:6%;--size:98px;--pose:33.333%;--flip:-1;--opacity:.68"></span>
+      </div>
+      <div class="dolly-scene" id="scene" data-cow-scale="3.25" aria-label="Dolly celebrating at the pasture"><span class="cow-home tile current"></span></div>
+    </main>
+    <div class="toast" id="toast" role="status">Raw Milk 101 complete!</div>
+    <script type="module" src="../../games/return-cow-to-pasture/cow3d.js"></script>
+    <script>
+      const button=document.getElementById("complete-button"),finish=document.querySelector(".finish"),toast=document.getElementById("toast"),canvas=document.getElementById("confetti"),ctx=canvas.getContext("2d"),applause=document.getElementById("applause-audio"),dollyAudio=document.getElementById("dolly-audio"),reducedMotion=matchMedia("(prefers-reduced-motion: reduce)").matches;let pieces=[],frame=0,mooTimer=null,finishTimer=null;
+      function callDolly(action="celebrate"){if(window.Ruby3D){window.Ruby3D.setAction(action,1900);return true}return false}
+      function playCelebrationAudio(){
+        clearTimeout(mooTimer);
+        [applause,dollyAudio].forEach(audio=>{audio.pause();audio.currentTime=0});
+        applause.volume=.9;
+        dollyAudio.volume=.95;
+        applause.play().catch(()=>{});
+        mooTimer=setTimeout(()=>{dollyAudio.currentTime=0;dollyAudio.play().catch(()=>{})},650);
+      }
+      function celebrationDuration(){
+        const applauseMs=Number.isFinite(applause.duration)?applause.duration*1000:5042;
+        const dollyMs=650+(Number.isFinite(dollyAudio.duration)?dollyAudio.duration*1000:3768);
+        return Math.ceil(Math.max(applauseMs,dollyMs));
+      }
+      function finishCelebration(){
+        pieces=[];
+        frame=251;
+        ctx.clearRect(0,0,innerWidth,innerHeight);
+        toast.classList.remove("show");
+        finish.classList.remove("celebrating");
+        window.parent?.postMessage({type:"redmond-course-complete",course:"raw-milk-101"},"*");
+      }
+      function resize(){const ratio=Math.min(devicePixelRatio||1,2);canvas.width=innerWidth*ratio;canvas.height=innerHeight*ratio;canvas.style.width=`${innerWidth}px`;canvas.style.height=`${innerHeight}px`;ctx.setTransform(ratio,0,0,ratio,0,0)}function celebrate(count=75){if(reducedMotion)return;resize();const colors=["#a8bd63","#d49a3f","#a95738","#f7e9bc","#31543a"];pieces=Array.from({length:count},()=>({x:innerWidth*.2+Math.random()*innerWidth*.65,y:-20-Math.random()*160,vx:(Math.random()-.5)*2.5,vy:2+Math.random()*4,w:5+Math.random()*8,h:8+Math.random()*10,r:Math.random()*6,vr:(Math.random()-.5)*.18,c:colors[Math.floor(Math.random()*colors.length)]}));frame=0;requestAnimationFrame(draw)}function draw(){ctx.clearRect(0,0,innerWidth,innerHeight);pieces.forEach(p=>{p.x+=p.vx;p.y+=p.vy;p.r+=p.vr;p.vy+=.012;ctx.save();ctx.translate(p.x,p.y);ctx.rotate(p.r);ctx.fillStyle=p.c;ctx.fillRect(-p.w/2,-p.h/2,p.w,p.h);ctx.restore()});if(frame++<250)requestAnimationFrame(draw);else ctx.clearRect(0,0,innerWidth,innerHeight)}
+      button.addEventListener("click",()=>{if(finish.classList.contains("celebrating"))return;finish.classList.add("celebrating");toast.classList.add("show");setTimeout(()=>toast.classList.remove("show"),2200);setTimeout(()=>callDolly("arrived"),180);playCelebrationAudio();celebrate(110);clearTimeout(finishTimer);finishTimer=setTimeout(finishCelebration,celebrationDuration())});addEventListener("resize",resize);
+    </script>
+  </body>
+</html>

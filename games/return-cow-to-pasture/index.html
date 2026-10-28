@@ -66,7 +66,7 @@
             </div>
             <div class="primary-actions">
               <button class="text-button" id="rules-button" type="button" data-i18n="how">How to play</button>
-              <button class="spin-button" id="spin-button" type="button"><span class="mini-spinner"><b>1–6</b></span><span><small data-i18n="yourTurn">Your turn</small><strong data-i18n="spin">Spin to move</strong></span><em>→</em></button>
+              <button class="spin-button" id="spin-button" type="button"><span class="mini-spinner"><b>1–4</b></span><span><small data-i18n="yourTurn">Your turn</small><strong data-i18n="spin">Spin to move</strong></span><em>→</em></button>
               <button class="spin-button replay-button hidden" id="replay-button" type="button"><span class="replay-icon">↻</span><strong data-i18n="playAgain">Play again</strong><em>→</em></button>
             </div>
           </div>
@@ -81,7 +81,7 @@
       <button class="modal-close" type="button" aria-label="Close" disabled>×</button>
       <p class="modal-kicker" data-i18n="spinKicker">THE JOURNEY CONTINUES</p>
       <h2 data-i18n="spinTitle">Let’s see how far Dolly trots</h2>
-      <div class="wheel-wrap"><div class="pointer"></div><div class="wheel" id="wheel"><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span><span>6</span></div><div class="wheel-center">♧</div></div>
+      <div class="wheel-wrap"><div class="pointer"></div><div class="wheel" id="wheel"><span>1</span><span>2</span><span>3</span><span>4</span></div><div class="wheel-center">♧</div></div>
       <p class="roll-copy" id="roll-copy" data-i18n="spinning">Spinning…</p>
     </section>
 
@@ -101,7 +101,7 @@
       <p class="modal-kicker" data-i18n="quickGuide">QUICK GUIDE</p>
       <h2 data-i18n="howTitle">Help Dolly find her way home</h2>
       <ol>
-        <li><span>1</span><p><strong data-i18n="rule1Title">Spin the wheel</strong><small data-i18n="rule1">Move 1–6 spaces along the trail.</small></p></li>
+        <li><span>1</span><p><strong data-i18n="rule1Title">Spin the wheel</strong><small data-i18n="rule1">Move 1–4 spaces along the trail.</small></p></li>
         <li><span>2</span><p><strong data-i18n="rule2Title">Discover the story</strong><small data-i18n="rule2">Answer a new history question after every turn.</small></p></li>
         <li><span>3</span><p><strong data-i18n="rule3Title">Grow the pasture</strong><small data-i18n="rule3">Correct answers earn grass. A wrong answer sends Dolly back one space.</small></p></li>
       </ol>
@@ -120,7 +120,7 @@
     </section>
 
     <canvas id="confetti" aria-hidden="true"></canvas>
-    <script src="script.js?v=answer-shuffle-2"></script>
+    <script src="script.js?v=question-shuffle-spin-4"></script>
     <script type="module" src="cow3d.js?v=cow-3d-only-2"></script>
   </body>
 </html>

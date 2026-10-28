@@ -161,7 +161,7 @@ if (container && typeof WebGLRenderingContext !== "undefined") {
     let walkAction = null;
     let importedWalking = false;
     let commandedMoving = false;
-    new GLTFLoader().load("assets/ruby.glb", (gltf) => {
+    new GLTFLoader().load(new URL("assets/ruby.glb", import.meta.url).href, (gltf) => {
       const model = gltf.scene;
       model.updateMatrixWorld(true);
       let bounds = new THREE.Box3().setFromObject(model);
@@ -197,6 +197,7 @@ if (container && typeof WebGLRenderingContext !== "undefined") {
 
     let width = 0, height = 0, currentX = 0, currentY = 0, targetX = 0, targetY = 0;
     let initialized = false, facing = 1, action = "idle", actionUntil = 0, lastTime = performance.now();
+    const presentationScale = Number(container.dataset.cowScale) || 1.22;
 
     function resize() {
       const rect = container.getBoundingClientRect();
@@ -258,7 +259,7 @@ if (container && typeof WebGLRenderingContext !== "undefined") {
       }
 
       ruby.position.set(currentX, currentY + bob + jump, 0);
-      ruby.scale.set(1.22 * facing, 1.22, 1.22);
+      ruby.scale.set(presentationScale * facing, presentationScale, presentationScale);
       ruby.rotation.z = pitch;
       if (!importedModel) {
         legs.forEach((leg) => {

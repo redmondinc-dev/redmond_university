@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Nutritional Misinformation</title>
+    <title>Milk Myths</title>
     <style>
       @font-face {
         font-family: "Montserrat";
@@ -49,7 +49,7 @@
 
       .misinformation {
         width: min(720px, 100%);
-        height: 400px;
+        height: 500px;
         display: grid;
         grid-template-rows: auto minmax(0, 1fr);
         overflow: hidden;
@@ -221,7 +221,7 @@
 
       @media (max-width: 560px) {
         .misinformation {
-          height: 440px;
+          height: 560px;
           border-radius: 20px;
         }
 
@@ -250,11 +250,11 @@
       <header class="graphic-header">
         <span class="header-copy">
           <span class="eyebrow">Let’s clear things up</span>
-          <h1>Nutritional Misinformation</h1>
+          <h1>Milk Myths</h1>
         </span>
       </header>
 
-      <section class="accordion" aria-label="Nutritional misinformation topics">
+      <section class="accordion" aria-label="Milk myth topics">
         <article class="accordion-item is-open">
           <button class="accordion-trigger" type="button" aria-expanded="true" aria-controls="panel-saturated-fat" id="trigger-saturated-fat">
             <span class="topic-icon" style="--icon-bg: #d49a3f" aria-hidden="true">1</span>
@@ -262,7 +262,7 @@
             <span class="toggle-icon" aria-hidden="true"></span>
           </button>
           <div class="accordion-panel" id="panel-saturated-fat" role="region" aria-labelledby="trigger-saturated-fat">
-            <p>In the past few decades, lobby groups vilified dairy products due to concerns over saturated fat content, which has been inaccurately linked to heart disease. This gave birth to a generation of low-fat and fat-free dairy products.</p>
+            <p>In the past few decades, lobby groups vilified dairy products due to concerns over saturated fat content, which has been inaccurately linked to heart disease. This gave birth to a generation of low-fat and fat-free dairy products. The problem with this is that the mineral content in the fat is essential for digestion and nourishment. In other words, if you remove the fat, you also remove the nutrients and minerals.</p>
           </div>
         </article>
 
@@ -273,7 +273,7 @@
             <span class="toggle-icon" aria-hidden="true"></span>
           </button>
           <div class="accordion-panel" id="panel-lactose" role="region" aria-labelledby="trigger-lactose" hidden>
-            <p>Lactose intolerance affects many people, causing digestive issues like bloating and discomfort, although we believe the type of milk may be a factor here.&nbsp;</p>
+            <p>Lactose intolerance affects many people, causing digestive issues like bloating and discomfort, although some would argue the type of milk may be a factor here.</p>
           </div>
         </article>
 
@@ -284,7 +284,7 @@
             <span class="toggle-icon" aria-hidden="true"></span>
           </button>
           <div class="accordion-panel" id="panel-hormones" role="region" aria-labelledby="trigger-hormones" hidden>
-            <p>Hormones and antibiotics have long been used to ward off disease in factory farmed cows, and increase their milk production. However, the presence of hormones and antibiotics in commercially produced dairy also raises health concerns.&nbsp;</p>
+            <p>Hormones and antibiotics have long been used to ward off disease in factory-farmed cows, and to increase their milk production. However, hormones and antibiotics in commercially-produced dairy also raise health concerns.</p>
           </div>
         </article>
       </section>
