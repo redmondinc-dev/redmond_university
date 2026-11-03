@@ -49,9 +49,10 @@
       }
 
       .cards {
-        width: min(720px, 100%);
+        width: 100%;
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 320px));
+        justify-content: center;
         gap: clamp(14px, 2.5vw, 20px);
         background: transparent;
       }
@@ -203,7 +204,7 @@
       @media (max-width: 520px) {
         .cards {
           grid-template-columns: 1fr;
-          width: min(400px, 100%);
+          width: min(320px, 100%);
         }
 
         .flip-card__inner {
