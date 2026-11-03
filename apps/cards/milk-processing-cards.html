@@ -71,7 +71,7 @@
       .flip-card__inner {
         position: relative;
         display: grid;
-        min-height: clamp(500px, 82vw, 540px);
+        min-height: clamp(430px, 72vw, 520px);
         transform-style: preserve-3d;
         transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
       }
@@ -190,7 +190,7 @@
       .back-text {
         margin: 0;
         font-family: "Avenir", "Avenir Next", "Helvetica Neue", sans-serif;
-        font-size: clamp(0.78rem, 1.65vw, 0.88rem);
+        font-size: clamp(0.84rem, 1.5vw, 0.94rem);
         line-height: 1.45;
       }
 
@@ -198,24 +198,26 @@
         color: var(--forest);
       }
 
-      @media (max-width: 760px) {
+      /* Canvas narrows embedded content even on desktop. Keep both cards side by
+         side there, and stack only when the iframe itself is phone-sized. */
+      @media (max-width: 520px) {
         .cards {
           grid-template-columns: 1fr;
-          width: min(520px, 100%);
+          width: min(400px, 100%);
         }
 
         .flip-card__inner {
-          min-height: 570px;
+          min-height: clamp(460px, 125vw, 540px);
         }
       }
 
       @media (max-width: 430px) {
         .flip-card__inner {
-          min-height: 620px;
+          min-height: clamp(440px, 132vw, 520px);
         }
 
         .card-back {
-          padding: 28px 24px;
+          padding: 24px 20px;
         }
       }
 
